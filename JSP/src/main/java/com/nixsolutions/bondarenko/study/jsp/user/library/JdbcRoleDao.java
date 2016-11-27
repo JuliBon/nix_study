@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.jsp;
+package com.nixsolutions.bondarenko.study.jsp.user.library;
 
 import java.sql.*;
 
@@ -88,7 +88,8 @@ public class JdbcRoleDao extends AbstractJdbcDao implements RoleDao {
             }
 
         } catch (SQLException e) {
-            throw new SQLException("Error while removing role", e);
+            throw new SQLException("Error while removing role",
+                    e);
         }
     }
 }

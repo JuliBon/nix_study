@@ -1,5 +1,9 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
+import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
+import com.nixsolutions.bondarenko.study.jsp.user.library.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
+import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -59,7 +63,7 @@ public class JdbcUserDaoTest {
     }
 
     private IDataSet getDataSet() throws Exception {
-        return new FlatXmlDataSet(new File(dataSetsDir + "InitialDataSet"),
+        return new FlatXmlDataSet(new File(dataSetsDir + "InitialDataSet" + ".xml"),
                 false);
     }
 
@@ -76,7 +80,7 @@ public class JdbcUserDaoTest {
         }
 
         IDataSet expectedDataSet = new FlatXmlDataSet(
-                new File(dataSetsDir + expectedDataSetName));
+                new File(dataSetsDir + expectedDataSetName + ".xml"));
 
         ITable expectedTable = expectedDataSet.getTable("User");
         ITable filteredActualTable = DefaultColumnFilter.includedColumnsTable(

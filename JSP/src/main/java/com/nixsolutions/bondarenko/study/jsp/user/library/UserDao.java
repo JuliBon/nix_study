@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.jsp;
+package com.nixsolutions.bondarenko.study.jsp.user.library;
 
 import java.sql.SQLException;
 import java.util.List;

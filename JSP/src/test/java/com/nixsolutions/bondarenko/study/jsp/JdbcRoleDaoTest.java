@@ -1,5 +1,9 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
+import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
+import com.nixsolutions.bondarenko.study.jsp.user.library.JdbcRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
+import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -55,7 +59,7 @@ public class JdbcRoleDaoTest {
     }
 
     private IDataSet getDataSet() throws Exception {
-        return new FlatXmlDataSet( new File(dataSetsDir + "InitialDataSet"),
+        return new FlatXmlDataSet( new File(dataSetsDir + "InitialDataSet" + ".xml"),
                 false);
     }
 
@@ -71,7 +75,7 @@ public class JdbcRoleDaoTest {
             actualTable = databaseDataSet.getTable("Role");
         }
         IDataSet expectedDataSet = new FlatXmlDataSet(
-                new File(dataSetsDir + expectedDataSetName));
+                new File(dataSetsDir + expectedDataSetName + ".xml"));
 
         ITable expectedTable = expectedDataSet.getTable("Role");
         Assertion.assertEquals(expectedTable, actualTable);
@@ -82,7 +86,7 @@ public class JdbcRoleDaoTest {
         IDataSet databaseDataSet = getConnection().createDataSet();
 
         IDataSet expectedDataSet = new FlatXmlDataSet(
-                new File(dataSetsDir + expectedDataSetName));
+                new File(dataSetsDir + expectedDataSetName + ".xml"));
 
         ITable expectedTableRole = expectedDataSet.getTable("Role");
         ITable expectedTableUser = expectedDataSet.getTable("User");
