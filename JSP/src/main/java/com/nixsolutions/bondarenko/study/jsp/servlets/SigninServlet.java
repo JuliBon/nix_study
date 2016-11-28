@@ -27,23 +27,19 @@ public class SigninServlet extends HttpServlet {
         String password = request.getParameter("password");
         try {
             User user = jdbcUserDao.findByLogin(login);
-            if (user != null){
+            if (user != null) {
                 if (user.getPassword().equals(password)) {
-                    if(user.getIdRole() == 2){
+                    if (user.getIdRole() == 2) {
                         request.setAttribute("user", user);
                         RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
                         dispatcher.forward(request, response);
-                    } else{
-                        List<User> userList = jdbcUserDao.findAll();
-                        request.setAttribute("userList", userList);
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
-                        dispatcher.forward(request, response);
+                    } else if (user.getIdRole() == 1) {
+                        response.sendRedirect("/admin");
                     }
                 }
             }
         } catch (SQLException e) {
-            RequestDispatcher rd = request.getRequestDispatcher("signin.jsp");
-            rd.forward(request, response);
+            request.getRequestDispatcher("signin.jsp").forward(request, response);
         }
     }
 }

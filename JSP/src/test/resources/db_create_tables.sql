@@ -20,6 +20,3 @@ FOREIGN KEY (id_role) REFERENCES Role(id) ON DELETE CASCADE ON UPDATE CASCADE
 
 --INSERT into User (login, password, email, firstName, lastName, birthday, id_role) VALUES ('yulya', '12345', 'yulya@mail.ru',  'yuliya', 'bondarenko', '1993-01-10', 1);
 --INSERT into User (login, password, email, firstName, lastName, birthday, id_role) VALUES ('ivan', '98765', 'ivan@mail.ru',  'ivan', 'grozniy', '1530-09-03', 2);
-
----<User login="yulya" password="12345" email="yulya@mail.ru" firstName="yuliya" lastName="bondarenko" birthday="1993-01-10" id_role="1"/>
---<User login="ivan" password="98765" email="ivan@mail.ru" firstName="ivan" lastName="grozniy" birthday="1530-09-03" id_role="2"/>

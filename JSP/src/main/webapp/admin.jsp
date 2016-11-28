@@ -1,7 +1,15 @@
+<%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.User" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ex" uri="UserLibrary" %>
 
+<%
+    List<User> userList = (List<User>) request.getAttribute("userList");
+    pageContext.setAttribute("userList", userList);
+%>
 
 <html>
 <head>
@@ -11,25 +19,10 @@
 <body>
 
 <div class="container">
-    <table>
-        <c:forEach items="${userList}" var="user">
-            <tr>
-                <td>${user.login}</td>
-                <td>${user.firstName}</td>
-                <td>${user.lastName}</td>
-                <td>${user.birthday}</td>
-            </tr>
-        </c:forEach>
-
-    </table>
-
-    <ex:UserLibrary count="${userList.size()}">
-        <td>${userList.iterator().next().login}</td>
-        <td>${userList.iterator().next().firstName}</td>
-        <td>${userList.iterator().next().lastName}</td>
-        <td>${userList.iterator().next().birthday}</td>
-    </ex:UserLibrary>
-
+    <ex:UserTable userList="${userList}"></ex:UserTable>
+    <a href=/admin/delete@id=3>Delete</a>
+    <a href=/admin/delete&id=3>Delete</a>
+    <a href=/admin/delete$id=3>Delete</a>
     <div>Click <a href="/logout">here</a> to logout</div>
 </div>
 </body>

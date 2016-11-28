@@ -13,10 +13,10 @@ public class User {
     private String firstName;
     private String lastName;
     private Date birthday;
-    private long idRole;
+    private Long idRole;
 
     public User(String login, String password, String email, String firstName,
-                String lastName, Date birthday, long idRole) {
+                String lastName, Date birthday, Long idRole) {
         this.login = login;
         this.password = password;
         this.email = email;
@@ -93,11 +93,11 @@ public class User {
         this.birthday = birthday;
     }
 
-    public long getIdRole() {
+    public Long getIdRole() {
         return idRole;
     }
 
-    public void setIdRole(long idRole) {
+    public void setIdRole(Long idRole) {
         this.idRole = idRole;
     }
 }
