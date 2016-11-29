@@ -23,21 +23,25 @@ public class UserTableTag extends TagSupport {
         Iterator<User> userIterator = userList.iterator();
         try {
             pageContext.getOut().write(
-                    "<TABLE WIDTH=\"100%\">");
-            pageContext.getOut().write("");
-            pageContext.getOut().write("<TR><TD>Login</TD>");
-            pageContext.getOut().write("<TD>First name</TD>");
-            pageContext.getOut().write("<TD>LastName</TD>");
-            pageContext.getOut().write("<TD>Age</TD>");
-            pageContext.getOut().write("<TD>Role</TD>");
-            pageContext.getOut().write("<TD>Actions</TD></TR>");
+                    "<TABLE class=\"table\">");
+            pageContext.getOut().write("<thead class=\"thead-inverse\">");
+            pageContext.getOut().write("<TR><TH>Login</TH>");
+            pageContext.getOut().write("<TH>First name</TH>");
+            pageContext.getOut().write("<TH>LastName</TH>");
+            pageContext.getOut().write("<TH>Age</TH>");
+            pageContext.getOut().write("<TH>Role</TH>");
+            pageContext.getOut().write("<TH>Actions</TH></TR>");
+            pageContext.getOut().write("</thead>");
+            pageContext.getOut().write("<tbody>");
 
             while (userIterator.hasNext()) {
                 User user = userIterator.next();
                 LocalDate birthDate = user.getBirthday().toLocalDate();
                 LocalDate currentDate = LocalDate.now();
                 int age = Period.between(birthDate, currentDate).getYears();
-                String deleteLink = "<a href=/admin?action=delete&login=" + user.getLogin() + ">Delete</a>";
+                String deleteLink = "<a href=/admin?action=delete&login=" + user.getLogin() + " " +
+                        "class=\"btn btn-large btn-primary\" data-toggle=\"confirmation\" data-placement=\"right\">" +
+                        "Delete</a>";
                 String editLink = "<a href=/admin?action=edit_use&?login=" + user.getLogin() + ">Edit</a>";
 
                 pageContext.getOut().write("<TR>");
@@ -49,6 +53,7 @@ public class UserTableTag extends TagSupport {
                 pageContext.getOut().write("<TD>" + deleteLink + " " + editLink + "</TD>");
                 pageContext.getOut().write("</TR>");
             }
+            pageContext.getOut().write("</tbody>");
             pageContext.getOut().write("</TABLE>");
 
         } catch (IOException e) {

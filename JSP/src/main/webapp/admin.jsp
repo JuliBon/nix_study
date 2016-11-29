@@ -10,17 +10,27 @@
     pageContext.setAttribute("userList", userList);
 %>
 
+<script>
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]'
+    });
+</script>
+
 <html>
 <head>
     <title>Admin home</title>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/shared.css" rel="stylesheet">
+
+    <script src="lib/bootstrap/js/jquery.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.js"></script>
+    <script src="lib/bootstrap/js/bootstrap-confirmation.js"></script>
 </head>
 <body>
 
 <div class="container">
     <a href="/admin?action=create_user">Add new user</a>
     <ex:UserTable userList="${userList}" ></ex:UserTable>
-
     <div>Click <a href="/logout">here</a> to logout</div>
 </div>
 </body>

@@ -9,8 +9,8 @@
     <title>Log in</title>
 
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/singin.css" rel="stylesheet">
     <link href="css/shared.css" rel="stylesheet">
+    <link href="css/singin.css" rel="stylesheet">
   </head>
 
   <body>

@@ -12,21 +12,33 @@ import java.util.List;
 
 public class RoleSelectTag extends TagSupport {
     private List<Role> roleList;
+    private Role selectedRole;
+    private String styleClass;
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
     }
 
-    private Role selectedRole;
+    public void setSelectedRole(Role selectedRole) {
+        this.selectedRole = selectedRole;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
 
     @Override
     public int doStartTag() throws JspTagException {
         Iterator<Role> roleIterator = roleList.iterator();
         try {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("<select name=\"role\">");
+            stringBuilder.append("<select ");
+            if (styleClass != null) {
+                stringBuilder.append("class=\"" + styleClass + "\"");
+            }
+            stringBuilder.append(" name=\"role\">");
 
-            if(selectedRole == null){
+            if (selectedRole == null) {
                 selectedRole = new Role(UserLibraryRole.USER.getName());
             }
 
