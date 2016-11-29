@@ -1,9 +1,6 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
-import com.nixsolutions.bondarenko.study.jsp.user.library.JdbcUserDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
-import com.nixsolutions.bondarenko.study.jsp.user.library.User;
+import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -33,7 +30,7 @@ public class JdbcUserDaoTest {
     private static String dataSetsDir = "src/test/resources/test_data/";
 
     private User testUser = new User("nata", "54321", "nata@mail.ru",
-            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), 2L);
+            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), new Role(2L));
 
     @Before
     public void init() throws Exception {
@@ -92,7 +89,7 @@ public class JdbcUserDaoTest {
     @Test
     public void testCreateUserUniqueLoginAndEmain() throws Exception {
         User user = new User("nata", "54321", "nata@mail.ru", "nataliya",
-                "bondarenko", Date.valueOf("1991-9-19"), 2L);
+                "bondarenko", Date.valueOf("1991-9-19"), new Role(2L));
         jdbcUserDao.create(user);
 
         checkActualEqualsToExpected("UserCreateExpectedDataSet");
@@ -114,7 +111,7 @@ public class JdbcUserDaoTest {
 
     @Test(expected = SQLException.class)
     public void testCreateUserNotExistingRole() throws Exception {
-        testUser.setIdRole(100L);
+        testUser.setRole(new Role(100L));
         jdbcUserDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }

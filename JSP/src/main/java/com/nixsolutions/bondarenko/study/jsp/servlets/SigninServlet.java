@@ -29,11 +29,11 @@ public class SigninServlet extends HttpServlet {
             User user = jdbcUserDao.findByLogin(login);
             if (user != null) {
                 if (user.getPassword().equals(password)) {
-                    if (user.getIdRole() == 2) {
+                    if (user.getRole().getId() == 2L) {
                         request.setAttribute("user", user);
                         RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
                         dispatcher.forward(request, response);
-                    } else if (user.getIdRole() == 1) {
+                    } else if (user.getRole().getId() == 1L) {
                         response.sendRedirect("/admin");
                     }
                 }

@@ -46,7 +46,7 @@ public class UserTableTag extends TagSupport {
                 pageContext.getOut().write("<TD>" + user.getFirstName() + "</TD>");
                 pageContext.getOut().write("<TD>" + user.getLastName() + "</TD>");
                 pageContext.getOut().write("<TD>" + age + "</TD>");
-                pageContext.getOut().write("<TD>" + user.getIdRole() + "</TD>");
+                pageContext.getOut().write("<TD>" + user.getRole().getName() + "</TD>");
                 pageContext.getOut().write("<TD>" + deleteLink + " " + editLink + "</TD>");
                 pageContext.getOut().write("</TR>");
             }

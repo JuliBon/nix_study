@@ -13,20 +13,20 @@ public class User {
     private String firstName;
     private String lastName;
     private Date birthday;
-    private Long idRole;
+    private Role role;
 
     public User(String login, String password, String email, String firstName,
-                String lastName, Date birthday, Long idRole) {
+                String lastName, Date birthday, Long idRole, String roleName) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
-        this.idRole = idRole;
+        this.role = new Role(idRole, roleName);
     }
     public User(long id, String login, String password, String email, String firstName,
-                String lastName, Date birthday, long idRole) {
+                String lastName, Date birthday, long idRole, String roleName) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -34,7 +34,19 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
-        this.idRole = idRole;
+        this.role = new Role(idRole, roleName);
+    }
+
+    public User(String login, String password, String email, String firstName,
+                String lastName, Date birthday, Role role) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.role = role;
     }
 
     public Long getId() {
@@ -93,11 +105,11 @@ public class User {
         this.birthday = birthday;
     }
 
-    public Long getIdRole() {
-        return idRole;
+    public Role getRole() {
+        return role;
     }
 
-    public void setIdRole(Long idRole) {
-        this.idRole = idRole;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

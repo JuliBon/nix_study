@@ -163,10 +163,10 @@
                 </dependencies>
 
                 <configuration>
-                    <driver>org.h2.Driver</driver>
-                    <url>jdbc:h2:mem:db_user_library</url>
-                    <username>sa</username>
-                    <password></password>
+                    <driver>${driver}</driver>
+                    <url>${db.url}</url>
+                    <username>${username}</username>
+                    <password>${password}</password>
                 </configuration>
 
                 <executions>

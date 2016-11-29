@@ -22,7 +22,7 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
                 preparedStatement.setString(4, user.getFirstName());
                 preparedStatement.setString(5, user.getLastName());
                 preparedStatement.setDate(6, user.getBirthday());
-                preparedStatement.setLong(7, user.getIdRole());
+                preparedStatement.setLong(7, user.getRole().getId());
                 preparedStatement.executeUpdate();
                 connection.commit();
             } catch (SQLException e) {
@@ -48,7 +48,7 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
                 preparedStatement.setString(4, user.getFirstName());
                 preparedStatement.setString(5, user.getLastName());
                 preparedStatement.setDate(6, user.getBirthday());
-                preparedStatement.setLong(7, user.getIdRole());
+                preparedStatement.setLong(7, user.getRole().getId());
                 preparedStatement.setLong(8, user.getId());
                 preparedStatement.executeUpdate();
                 connection.commit();
@@ -86,12 +86,12 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
     @Override
     public List<User> findAll() throws SQLException {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT u.id \"user_id\", u.login, u.password, u.email, u.firstName, u.lastName, u.birthday, r.id \"role_id\""
+        String sql = "SELECT u.id \"user_id\", u.login, u.password, u.email, u.firstName, u.lastName, u.birthday, r.id \"role_id\", r.name \"role_name\""
                 + "FROM User u, Role r WHERE u.id_role=r.id";
 
         try (Connection connection = createConnection();
-                PreparedStatement preparedStatement = connection
-                        .prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection
+                     .prepareStatement(sql)) {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -103,7 +103,8 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
                             resultSet.getString("firstName"),
                             resultSet.getString("lastName"),
                             resultSet.getDate("birthday"),
-                            resultSet.getLong("role_id")));
+                            resultSet.getLong("role_id"),
+                            resultSet.getString("role_name")));
                 }
                 return users;
             }
@@ -115,12 +116,12 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
 
     @Override
     public User findByLogin(String login) throws SQLException {
-        String sql = "SELECT u.id \"user_id\", u.login, u.password, u.email, u.firstName, u.lastName, u.birthday, r.id \"role_id\" "
+        String sql = "SELECT u.id \"user_id\", u.login, u.password, u.email, u.firstName, u.lastName, u.birthday, r.id \"role_id\", r.name \"role_name\""
                 + "FROM User u, Role r WHERE u.id_role=r.id AND u.login = ? ";
 
         try (Connection connection = createConnection();
-                PreparedStatement preparedStatement = connection
-                        .prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection
+                     .prepareStatement(sql)) {
 
             preparedStatement.setString(1, login);
 
@@ -133,7 +134,8 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
                             resultSet.getString("firstName"),
                             resultSet.getString("lastName"),
                             resultSet.getDate("birthday"),
-                            resultSet.getLong("role_id"));
+                            resultSet.getLong("role_id"),
+                            resultSet.getString("role_name"));
                 } else {
                     return null;
                 }
@@ -147,12 +149,12 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
 
     @Override
     public User findByEmail(String email) throws SQLException {
-        String sql = "SELECT u.id \"user_id\", u.login, u.password, u.email, u.firstName, u.lastName, u.birthday, r.id \"role_id\""
+        String sql = "SELECT u.id \"user_id\", u.login, u.password, u.email, u.firstName, u.lastName, u.birthday, r.id \"role_id\", r.name \"role_name\""
                 + "FROM User u, Role r WHERE u.id_role=r.id AND u.email = ? ";
 
         try (Connection connection = createConnection();
-                PreparedStatement preparedStatement = connection
-                        .prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection
+                     .prepareStatement(sql)) {
 
             preparedStatement.setString(1, email);
 
@@ -165,7 +167,8 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
                             resultSet.getString("firstName"),
                             resultSet.getString("lastName"),
                             resultSet.getDate("birthday"),
-                            resultSet.getLong("role_id"));
+                            resultSet.getLong("role_id"),
+                            resultSet.getString("role_name"));
                 } else {
                     return null;
                 }
