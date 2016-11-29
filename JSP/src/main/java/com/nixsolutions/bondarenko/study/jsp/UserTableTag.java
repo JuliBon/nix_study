@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class UserTableTag extends TagSupport {
-
     private List<User> userList;
 
     public void setUserList(List<User> userList) {
@@ -38,8 +37,8 @@ public class UserTableTag extends TagSupport {
                 LocalDate birthDate = user.getBirthday().toLocalDate();
                 LocalDate currentDate = LocalDate.now();
                 int age = Period.between(birthDate, currentDate).getYears();
-                String deleteLink = "<a href=/admin/delete?id=3>Delete</a>";
-                String editLink = "<a href=\"#\">Edit</a>";
+                String deleteLink = "<a href=/admin?action=delete&login=" + user.getLogin() + ">Delete</a>";
+                String editLink = "<a href=/admin?action=edit_use&?login=" + user.getLogin() + ">Edit</a>";
 
                 pageContext.getOut().write("<TR>");
                 pageContext.getOut().write("<TD>" + user.getLogin() + "</TD>");

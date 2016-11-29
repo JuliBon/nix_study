@@ -1,6 +1,5 @@
-<%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.User" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Iterator" %>
+<%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.User" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -19,10 +18,9 @@
 <body>
 
 <div class="container">
-    <ex:UserTable userList="${userList}"></ex:UserTable>
-    <a href=/admin/delete@id=3>Delete</a>
-    <a href=/admin/delete&id=3>Delete</a>
-    <a href=/admin/delete$id=3>Delete</a>
+    <a href="/admin?action=create_user">Add new user</a>
+    <ex:UserTable userList="${userList}" ></ex:UserTable>
+
     <div>Click <a href="/logout">here</a> to logout</div>
 </div>
 </body>

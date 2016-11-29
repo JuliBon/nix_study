@@ -12,4 +12,20 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+
+    <tag>
+        <name>RoleDropDownSelect</name>
+        <tag-class>com.nixsolutions.bondarenko.study.jsp.RoleSelectTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>roleList</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>selectedRole</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

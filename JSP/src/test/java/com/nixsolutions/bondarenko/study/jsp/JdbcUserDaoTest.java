@@ -30,7 +30,7 @@ public class JdbcUserDaoTest {
     private static String dataSetsDir = "src/test/resources/test_data/";
 
     private User testUser = new User("nata", "54321", "nata@mail.ru",
-            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), new Role(2L));
+            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), new Role(UserLibraryRole.USER.getId()));
 
     @Before
     public void init() throws Exception {
@@ -89,7 +89,7 @@ public class JdbcUserDaoTest {
     @Test
     public void testCreateUserUniqueLoginAndEmain() throws Exception {
         User user = new User("nata", "54321", "nata@mail.ru", "nataliya",
-                "bondarenko", Date.valueOf("1991-9-19"), new Role(2L));
+                "bondarenko", Date.valueOf("1991-9-19"), new Role(UserLibraryRole.USER.getId()));
         jdbcUserDao.create(user);
 
         checkActualEqualsToExpected("UserCreateExpectedDataSet");
