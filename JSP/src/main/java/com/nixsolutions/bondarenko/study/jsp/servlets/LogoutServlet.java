@@ -11,6 +11,7 @@ public class LogoutServlet  extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.getSession().setAttribute("currentUser", null);
         RequestDispatcher rd = request.getRequestDispatcher("signin.jsp");
         rd.forward(request, response);
     }

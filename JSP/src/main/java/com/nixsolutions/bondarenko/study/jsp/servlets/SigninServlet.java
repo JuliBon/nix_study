@@ -2,6 +2,7 @@ package com.nixsolutions.bondarenko.study.jsp.servlets;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.JdbcUserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
+import com.nixsolutions.bondarenko.study.jsp.user.library.UserLibraryRole;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,14 +30,16 @@ public class SigninServlet extends HttpServlet {
             User user = jdbcUserDao.findByLogin(login);
             if (user != null) {
                 if (user.getPassword().equals(password)) {
-                    if (user.getRole().getId() == 2L) {
+                    if (user.getRole().getName().equals(UserLibraryRole.USER.getName())) {
                         request.setAttribute("user", user);
                         RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
                         dispatcher.forward(request, response);
-                    } else if (user.getRole().getId() == 1L) {
+                    } else if (user.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
                         response.sendRedirect("/admin");
                     }
+                    request.getSession().setAttribute("currentUser", user);
                 }
+
             }
         } catch (SQLException e) {
             request.getRequestDispatcher("signin.jsp").forward(request, response);

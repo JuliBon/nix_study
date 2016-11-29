@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8"%>
 <%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.Role" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="ex" uri="UserLibrary" %>
@@ -11,6 +11,7 @@
 <html>
 <head>
     <title>Add new user</title>
+    <meta charset="utf-8">
 
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/shared.css" rel="stylesheet">
@@ -20,7 +21,8 @@
 
 <div class="container">
     <h3>Add user</h3>
-    <form action="create_user" class="form-user">
+    <form name="createUserForm" action="admin" class="form-user" method="post">
+        <input type="hidden" name="action" value="create_user">
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
@@ -37,7 +39,7 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
-                <input name="passwor_confirm" type="password" class="form-control" placeholder="confirm password">
+                <input type="password" class="form-control" placeholder="confirm password">
             </div>
         </div>
         <div class="form-group row">

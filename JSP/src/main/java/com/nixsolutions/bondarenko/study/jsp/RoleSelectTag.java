@@ -50,7 +50,7 @@ public class RoleSelectTag extends TagSupport {
                     stringBuilder.append(" selected=\"selected\"");
                 }
                 stringBuilder.append(" value=");
-                stringBuilder.append(role.getId());
+                stringBuilder.append(role.getName());
                 stringBuilder.append(">");
                 stringBuilder.append(role.getName());
                 stringBuilder.append("</option>");

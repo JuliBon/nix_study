@@ -7,7 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,26 @@ public class AdminServlet extends HttpServlet {
     private JdbcUserDao jdbcUserDao;
     private JdbcRoleDao jdbcRoleDao;
 
+    private boolean checkCurrentUserIsAdmin(HttpSession session) throws ServletException, IOException {
+        try {
+            User currentUser = (User) session.getAttribute("currentUser");
+            if (currentUser != null) {
+                User userByLogin = jdbcUserDao.findByLogin(currentUser.getLogin());
+                if (userByLogin != null) {
+                    if (userByLogin.getPassword().equals(currentUser.getPassword())) {
+                        if (userByLogin.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            //TODO log
+        }
+        return false;
+    }
+
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -28,21 +50,35 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        if (!checkCurrentUserIsAdmin(request.getSession())) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            processRequest(request, response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        super.doPost(request, response);
-        String action = request.getParameter("action");
-        if (action != null) {
-            switch (action) {
-                case EDIT:
-                    editUser(request, response);
-                    break;
-                default:
-                    createUser(request, response);
-                    break;
+        if (!checkCurrentUserIsAdmin(request.getSession())) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+
+            String action = request.getParameter("action");
+            if (action != null) {
+                switch (action) {
+                    case EDIT:
+                        editUser(request, response);
+                        break;
+                    case CREATE:
+                        try {
+                            createUser(request);
+                            response.sendRedirect("/admin");
+                        } catch (SQLException e) {
+                            request.setAttribute("error", e.getMessage());
+                            request.getRequestDispatcher("error.jsp").forward(request, response);
+                        }
+                        break;
+                }
             }
         }
     }
@@ -72,8 +108,7 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("userList", userList);
             request.getRequestDispatcher("admin.jsp").forward(request, response);
         } catch (SQLException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -85,7 +120,7 @@ public class AdminServlet extends HttpServlet {
             if (roleAdmin != null) roleList.add(roleAdmin);
             if (roleUser != null) roleList.add(roleUser);
         } catch (SQLException e) {
-            //TODO log exception;
+            //TODO log
         }
         return roleList;
     }
@@ -98,19 +133,36 @@ public class AdminServlet extends HttpServlet {
                 jdbcUserDao.remove(user);
                 response.sendRedirect("/admin");
             } catch (SQLException e) {
-
-                request.setAttribute("error", e.getMessage());
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         }
     }
 
-    private void editUser(HttpServletRequest request, HttpServletResponse response) {
-        //TODO update user
+    private void editUser(HttpServletRequest request, HttpServletResponse response)  {
+
     }
 
-    private void createUser(HttpServletRequest request, HttpServletResponse response) {
+    private void createUser(HttpServletRequest request) throws SQLException {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String first_name = request.getParameter("first_name");
+        String last_name = request.getParameter("last_name");
+        String birthday = request.getParameter("birthday");
+        String roleName = request.getParameter("role");
+        Date birthdayDate = Date.valueOf(birthday);
 
-        //TODO create user
+
+        Role role = jdbcRoleDao.findByName(roleName);
+        if (jdbcUserDao.findByLogin(login) != null) {
+            //TODO error not unique login
+            return;
+        }
+        if (jdbcUserDao.findByLogin(login) != null) {
+            //TODO error not unique email
+            return;
+        }
+        User user = new User(login, password, email, first_name, last_name, birthdayDate, role);
+        jdbcUserDao.create(user);
     }
 }
