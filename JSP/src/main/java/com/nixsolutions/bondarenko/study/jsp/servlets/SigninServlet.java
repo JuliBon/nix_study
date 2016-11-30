@@ -52,8 +52,8 @@ public class SigninServlet extends HttpServlet {
                 request.getRequestDispatcher("signin.jsp").forward(request, response);
             }
         } catch (SQLException e) {
-            //TODO show error page
-            request.getRequestDispatcher("signin.jsp").forward(request, response);
+            request.setAttribute("error", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 }

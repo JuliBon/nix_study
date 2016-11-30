@@ -40,9 +40,8 @@ public class UserTableTag extends TagSupport {
                 LocalDate birthDate = user.getBirthday().toLocalDate();
                 LocalDate currentDate = LocalDate.now();
                 int age = Period.between(birthDate, currentDate).getYears();
-                String deleteLink = "<a href=/admin?action=delete&login=" + user.getLogin() + " " +
-                        "class=\"btn btn-large btn-primary\" data-toggle=\"confirmation\" data-placement=\"right\">" +
-                        "Delete</a>";
+                String deleteLink = "<a href=/admin?action=delete&login=" + user.getLogin()
+                        + " onclick=\"return confirm('Delete user " + user.getLogin() + "?')\">Delete</a>";
                 String editLink = "<a href=/admin?action=edit_user&login=" + user.getLogin() + ">Edit</a>";
 
                 pageContext.getOut().write("<TR>");

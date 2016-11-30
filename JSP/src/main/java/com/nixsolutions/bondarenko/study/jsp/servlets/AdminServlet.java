@@ -28,20 +28,21 @@ public class AdminServlet extends HttpServlet {
     private JdbcRoleDao jdbcRoleDao;
 
     private boolean checkCurrentUserIsAdmin(HttpSession session) throws ServletException, IOException {
-        try {
-            User currentUser = (User) session.getAttribute("currentUser");
-            if (currentUser != null) {
-                User userByLogin = jdbcUserDao.findByLogin(currentUser.getLogin());
-                if (userByLogin != null) {
-                    if (userByLogin.getPassword().equals(currentUser.getPassword())) {
-                        if (userByLogin.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
-                            return true;
-                        }
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser != null) {
+            User userByLogin;
+            try {
+                userByLogin = jdbcUserDao.findByLogin(currentUser.getLogin());
+            } catch (SQLException e) {
+                return false;
+            }
+            if (userByLogin != null) {
+                if (userByLogin.getPassword().equals(currentUser.getPassword())) {
+                    if (userByLogin.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
+                        return true;
                     }
                 }
             }
-        } catch (SQLException e) {
-            //TODO log
         }
         return false;
     }
@@ -81,10 +82,14 @@ public class AdminServlet extends HttpServlet {
 
     private void showCreateUserPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("action", ACTION_CREATE_USER);
-
-        List<Role> roleList = findAllRoles();
-        request.setAttribute("roleList", roleList);
-        request.getRequestDispatcher("user_form.jsp").forward(request, response);
+        try {
+            List<Role> roleList = findAllRoles();
+            request.setAttribute("roleList", roleList);
+            request.getRequestDispatcher("user_form.jsp").forward(request, response);
+        } catch (SQLException e) {
+            request.setAttribute("error", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
 
     private void showEditUserPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -99,7 +104,8 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("roleList", roleList);
             request.getRequestDispatcher("user_form.jsp").forward(request, response);
         } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            request.setAttribute("error", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
@@ -129,7 +135,6 @@ public class AdminServlet extends HttpServlet {
                         request.getRequestDispatcher("admin.jsp").forward(request, response);
 
                     } else {
-                        //request.setAttribute("action", action);
                         request.setAttribute("user", user);
 
                         List<Role> roleList = findAllRoles();
@@ -137,7 +142,8 @@ public class AdminServlet extends HttpServlet {
                         request.getRequestDispatcher("user_form.jsp").forward(request, response);
                     }
                 } catch (SQLException e) {
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute("error", e);
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
             }
         }
@@ -150,32 +156,33 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("userList", userList);
             request.getRequestDispatcher("admin.jsp").forward(request, response);
         } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            request.setAttribute("error", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
-    private List<Role> findAllRoles() {
+    private List<Role> findAllRoles() throws SQLException {
         List<Role> roleList = new ArrayList<>();
-        try {
-            Role roleAdmin = jdbcRoleDao.findByName(UserLibraryRole.ADMIN.getName());
-            Role roleUser = jdbcRoleDao.findByName(UserLibraryRole.USER.getName());
-            if (roleAdmin != null) roleList.add(roleAdmin);
-            if (roleUser != null) roleList.add(roleUser);
-        } catch (SQLException e) {
-            //TODO log
-        }
+
+        Role roleAdmin = jdbcRoleDao.findByName(UserLibraryRole.ADMIN.getName());
+        Role roleUser = jdbcRoleDao.findByName(UserLibraryRole.USER.getName());
+        if (roleAdmin != null) roleList.add(roleAdmin);
+        if (roleUser != null) roleList.add(roleUser);
+
         return roleList;
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         if (login != null) {
+            User user;
             try {
-                User user = jdbcUserDao.findByLogin(login);
+                user = jdbcUserDao.findByLogin(login);
                 jdbcUserDao.remove(user);
                 response.sendRedirect("/admin");
             } catch (SQLException e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                request.setAttribute("error", e);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         }
     }
@@ -210,7 +217,8 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("message", MESSAGE_USER_UPDATED);
             }
         } catch (SQLException e) {
-            //TODO log - can not create user;
+            request.setAttribute("error", e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
             return false;
         }
         return true;

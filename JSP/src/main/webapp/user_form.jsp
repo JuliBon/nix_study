@@ -5,6 +5,11 @@
 <%@ taglib prefix="ex" uri="UserLibrary" %>
 
 <%
+    User currentUser = (User) request.getSession().getAttribute("currentUser");
+    if (currentUser != null) {
+        pageContext.setAttribute("currentUserLogin", currentUser.getLogin());
+    }
+
     String action = (String) request.getAttribute("action");
     boolean isCreate = false;
     if (action.equals(AdminServlet.ACTION_CREATE_USER)) {
@@ -14,7 +19,6 @@
 
     User user = (User) request.getAttribute("user");
     pageContext.setAttribute("user", user);
-
 %>
 
 <html>
@@ -29,7 +33,7 @@
 <body>
 
 <div class="container">
-
+    <div class="adminLogout">Admin ${currentUserLogin} <a href="logout">(logout)</a></div>
     <h3>
         <c:choose>
             <c:when test="${isCreate}">
@@ -113,7 +117,7 @@
         <div class="form-group row">
             <div class="btns-center">
                 <button class="btn btn-primary" type="submit">Ok</button>
-                <button onclick="window.location.reload();" class="btn btn-primary ">Cancel</button>
+                <button onclick="location.href = '/admin';" class="btn btn-primary ">Cancel</button>
             </div>
         </div>
     </form>

@@ -5,6 +5,16 @@
     margin-right: auto;
     margin-left: auto;
 }
+.helloContainer {
+    width: 250px;
+    margin-top: 50px;
+ }
+
+.errorContainer{
+    margin-top: 50px;
+    text-align: center;
+
+}
 
 .message {
     color: blue;
@@ -14,4 +24,10 @@
 
 .errorMessage {
     color: red !important;
+}
+
+.adminLogout {
+    padding: 10px 0;
+    width: 100%;
+    TEXT-ALIGN: RIGHT;
 }
