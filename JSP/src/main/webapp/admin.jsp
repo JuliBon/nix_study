@@ -29,9 +29,9 @@
 <body>
 
 <div class="container">
-    <a href="/admin?action=create_user">Add new user</a>
-    <ex:UserTable userList="${userList}" ></ex:UserTable>
-    <div>Click <a href="/logout">here</a> to logout</div>
+    <a href="admin?action=create_user">Add new user</a>
+    <ex:UserTable userList="${userList}"/>
+    <div>Click <a href="logout">here</a> to logout</div>
 </div>
 </body>
 </html>

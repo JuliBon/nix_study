@@ -18,6 +18,11 @@ public class AdminServlet extends HttpServlet {
     private static final String DELETE = "delete";
     private static final String CREATE = "create_user";
     private static final String EDIT = "edit_user";
+
+    private static final String MESSAGE_NOT_UNIQUE_LOGIN = "Error! User with this login already exists!";
+    private static final String MESSAGE_NOT_UNIQUE_EMAIL = "Error! This email is already attached to another user";
+    private static final String MESSAGE_USER_CREATED = "New user has been created";
+
     private JdbcUserDao jdbcUserDao;
     private JdbcRoleDao jdbcRoleDao;
 
@@ -70,13 +75,7 @@ public class AdminServlet extends HttpServlet {
                         editUser(request, response);
                         break;
                     case CREATE:
-                        try {
-                            createUser(request);
-                            response.sendRedirect("/admin");
-                        } catch (SQLException e) {
-                            request.setAttribute("error", e.getMessage());
-                            request.getRequestDispatcher("error.jsp").forward(request, response);
-                        }
+                        createUser(request, response);
                         break;
                 }
             }
@@ -138,31 +137,50 @@ public class AdminServlet extends HttpServlet {
         }
     }
 
-    private void editUser(HttpServletRequest request, HttpServletResponse response)  {
+    private void editUser(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
-    private void createUser(HttpServletRequest request) throws SQLException {
+    private void createUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         String first_name = request.getParameter("first_name");
         String last_name = request.getParameter("last_name");
         String birthday = request.getParameter("birthday");
-        String roleName = request.getParameter("role");
+        String roleName = request.getParameter("roleName");
         Date birthdayDate = Date.valueOf(birthday);
 
-
-        Role role = jdbcRoleDao.findByName(roleName);
-        if (jdbcUserDao.findByLogin(login) != null) {
-            //TODO error not unique login
-            return;
+        boolean userParamsBad = false;
+        try {
+            Role role = jdbcRoleDao.findByName(roleName);
+            if (jdbcUserDao.findByLogin(login) != null) {
+                request.setAttribute("error_message", MESSAGE_NOT_UNIQUE_LOGIN);
+                userParamsBad = true;
+                return;
+            }
+            if (jdbcUserDao.findByEmail(email) != null) {
+                request.setAttribute("error_message", MESSAGE_NOT_UNIQUE_EMAIL);
+                userParamsBad = true;
+                return;
+            }
+            User user = new User(login, password, email, first_name, last_name, birthdayDate, role);
+            jdbcUserDao.create(user);
+            request.setAttribute("message", MESSAGE_USER_CREATED);
+        } catch (SQLException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            if (userParamsBad) {
+                request.setAttribute("login", login);
+                request.setAttribute("email", email);
+                request.setAttribute("first_name", first_name);
+                request.setAttribute("last_name", last_name);
+                request.setAttribute("birthday", birthday);
+                request.setAttribute("roleName", roleName);
+            }
+            List<Role> roleList = findAllRoles();
+            request.setAttribute("roleList", roleList);
+            request.getRequestDispatcher("create_user.jsp").forward(request, response);
         }
-        if (jdbcUserDao.findByLogin(login) != null) {
-            //TODO error not unique email
-            return;
-        }
-        User user = new User(login, password, email, first_name, last_name, birthdayDate, role);
-        jdbcUserDao.create(user);
     }
 }

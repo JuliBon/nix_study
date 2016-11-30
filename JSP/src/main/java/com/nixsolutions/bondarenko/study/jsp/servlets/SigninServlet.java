@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class SigninServlet extends HttpServlet {
+    private static String SIGNIN_ERROR_MESSAGE = "Incorrect login or password!";
+
     private JdbcUserDao jdbcUserDao = new JdbcUserDao();
 
     @Override
@@ -27,21 +29,30 @@ public class SigninServlet extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         try {
+            boolean incorrectLoginOrPassword = false;
             User user = jdbcUserDao.findByLogin(login);
             if (user != null) {
                 if (user.getPassword().equals(password)) {
+                    request.getSession().setAttribute("currentUser", user);
                     if (user.getRole().getName().equals(UserLibraryRole.USER.getName())) {
                         request.setAttribute("user", user);
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
-                        dispatcher.forward(request, response);
+                        response.sendRedirect("/home.jsp");
                     } else if (user.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
                         response.sendRedirect("/admin");
                     }
-                    request.getSession().setAttribute("currentUser", user);
+                } else {
+                    incorrectLoginOrPassword = true;
                 }
-
+            } else {
+                incorrectLoginOrPassword = true;
+            }
+            if (incorrectLoginOrPassword) {
+                request.setAttribute("login", login);
+                request.setAttribute("errorMessage", SIGNIN_ERROR_MESSAGE);
+                request.getRequestDispatcher("signin.jsp").forward(request, response);
             }
         } catch (SQLException e) {
+            //TODO show error page
             request.getRequestDispatcher("signin.jsp").forward(request, response);
         }
     }

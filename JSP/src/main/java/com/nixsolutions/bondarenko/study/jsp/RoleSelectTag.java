@@ -12,15 +12,15 @@ import java.util.List;
 
 public class RoleSelectTag extends TagSupport {
     private List<Role> roleList;
-    private Role selectedRole;
+    private String selectedRoleName;
     private String styleClass;
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
     }
 
-    public void setSelectedRole(Role selectedRole) {
-        this.selectedRole = selectedRole;
+    public void setSelectedRoleName(String selectedRoleName) {
+        this.selectedRoleName = selectedRoleName;
     }
 
     public void setStyleClass(String styleClass) {
@@ -32,21 +32,21 @@ public class RoleSelectTag extends TagSupport {
         Iterator<Role> roleIterator = roleList.iterator();
         try {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("<select ");
+            stringBuilder.append("<select required ");
             if (styleClass != null) {
                 stringBuilder.append("class=\"" + styleClass + "\"");
             }
-            stringBuilder.append(" name=\"role\">");
+            stringBuilder.append(" name=\"roleName\">");
 
-            if (selectedRole == null) {
-                selectedRole = new Role(UserLibraryRole.USER.getName());
+            if (selectedRoleName == null || selectedRoleName.isEmpty()) {
+                selectedRoleName = UserLibraryRole.USER.getName();
             }
 
             while (roleIterator.hasNext()) {
                 Role role = roleIterator.next();
                 stringBuilder.append("<option");
 
-                if (role.getName().equals(selectedRole.getName())) {
+                if (role.getName().equals(selectedRoleName)) {
                     stringBuilder.append(" selected=\"selected\"");
                 }
                 stringBuilder.append(" value=");

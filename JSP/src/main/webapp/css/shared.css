@@ -5,3 +5,13 @@
     margin-right: auto;
     margin-left: auto;
 }
+
+.message {
+    color: blue;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.errorMessage {
+    color: red !important;
+}
