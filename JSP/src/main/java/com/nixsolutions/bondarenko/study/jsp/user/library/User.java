@@ -15,6 +15,10 @@ public class User {
     private Date birthday;
     private Role role;
 
+    public User(){
+
+    }
+
     public User(String login, String password, String email, String firstName,
                 String lastName, Date birthday, Long idRole, String roleName) {
         this.login = login;

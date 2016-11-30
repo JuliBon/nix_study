@@ -15,13 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminServlet extends HttpServlet {
-    private static final String DELETE = "delete";
-    private static final String CREATE = "create_user";
-    private static final String EDIT = "edit_user";
-
-    private static final String MESSAGE_NOT_UNIQUE_LOGIN = "Error! User with this login already exists!";
-    private static final String MESSAGE_NOT_UNIQUE_EMAIL = "Error! This email is already attached to another user";
+    private static final String ERROR_NOT_UNIQUE_LOGIN = "Error! User with this login already exists!";
+    private static final String ERROR_NOT_UNIQUE_EMAIL = "Error! This email is already attached to another user";
     private static final String MESSAGE_USER_CREATED = "New user has been created";
+    private static final String MESSAGE_USER_UPDATED = "User has been updated";
+
+    public static final String ACTION_DELETE_USER = "delete";
+    public static final String ACTION_CREATE_USER = "create_user";
+    public static final String ACTION_EDIT_USER = "edit_user";
 
     private JdbcUserDao jdbcUserDao;
     private JdbcRoleDao jdbcRoleDao;
@@ -58,7 +59,47 @@ public class AdminServlet extends HttpServlet {
         if (!checkCurrentUserIsAdmin(request.getSession())) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
-            processRequest(request, response);
+            String action = request.getParameter("action");
+            if (action != null) {
+                switch (action) {
+                    case ACTION_DELETE_USER:
+                        deleteUser(request, response);
+                        break;
+                    case ACTION_CREATE_USER:
+                        showCreateUserPage(request, response);
+                        break;
+                    case ACTION_EDIT_USER:
+                        showEditUserPage(request, response);
+                        break;
+
+                }
+            } else {
+                findAllUsers(request, response);
+            }
+        }
+    }
+
+    private void showCreateUserPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("action", ACTION_CREATE_USER);
+
+        List<Role> roleList = findAllRoles();
+        request.setAttribute("roleList", roleList);
+        request.getRequestDispatcher("user_form.jsp").forward(request, response);
+    }
+
+    private void showEditUserPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("action", ACTION_EDIT_USER);
+
+        String login = request.getParameter("login");
+        try {
+            User user = jdbcUserDao.findByLogin(login);
+            request.setAttribute("user", user);
+
+            List<Role> roleList = findAllRoles();
+            request.setAttribute("roleList", roleList);
+            request.getRequestDispatcher("user_form.jsp").forward(request, response);
+        } catch (SQLException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -70,36 +111,38 @@ public class AdminServlet extends HttpServlet {
 
             String action = request.getParameter("action");
             if (action != null) {
-                switch (action) {
-                    case EDIT:
-                        editUser(request, response);
-                        break;
-                    case CREATE:
-                        createUser(request, response);
-                        break;
+                request.setAttribute("action", action);
+                try {
+                    User user = new User();
+                    user.setLogin(request.getParameter("login"));
+                    user.setEmail(request.getParameter("email"));
+                    user.setPassword(request.getParameter("password"));
+                    user.setFirstName(request.getParameter("first_name"));
+                    user.setLastName(request.getParameter("last_name"));
+                    user.setBirthday(Date.valueOf(request.getParameter("birthday")));
+                    Role role = jdbcRoleDao.findByName(request.getParameter("roleName"));
+                    user.setRole(role);
+
+                    if (processUser(user, action, request, response)) {
+                        List<User> userList = jdbcUserDao.findAll();
+                        request.setAttribute("userList", userList);
+                        request.getRequestDispatcher("admin.jsp").forward(request, response);
+
+                    } else {
+                        //request.setAttribute("action", action);
+                        request.setAttribute("user", user);
+
+                        List<Role> roleList = findAllRoles();
+                        request.setAttribute("roleList", roleList);
+                        request.getRequestDispatcher("user_form.jsp").forward(request, response);
+                    }
+                } catch (SQLException e) {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }
     }
 
-
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action != null) {
-            switch (action) {
-                case DELETE:
-                    deleteUser(request, response);
-                    break;
-                case CREATE:
-                    List<Role> roleList = findAllRoles();
-                    request.setAttribute("roleList", roleList);
-                    request.getRequestDispatcher("create_user.jsp").forward(request, response);
-                    break;
-            }
-        } else {
-            findAllUsers(request, response);
-        }
-    }
 
     private void findAllUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -137,50 +180,39 @@ public class AdminServlet extends HttpServlet {
         }
     }
 
-    private void editUser(HttpServletRequest request, HttpServletResponse response) {
 
-    }
-
-    private void createUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String email = request.getParameter("email");
-        String first_name = request.getParameter("first_name");
-        String last_name = request.getParameter("last_name");
-        String birthday = request.getParameter("birthday");
-        String roleName = request.getParameter("roleName");
-        Date birthdayDate = Date.valueOf(birthday);
-
-        boolean userParamsBad = false;
+    private boolean processUser(User user, String action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Role role = jdbcRoleDao.findByName(roleName);
-            if (jdbcUserDao.findByLogin(login) != null) {
-                request.setAttribute("error_message", MESSAGE_NOT_UNIQUE_LOGIN);
-                userParamsBad = true;
-                return;
+            User userByEmail = jdbcUserDao.findByEmail(user.getEmail());
+            if (action.equals(ACTION_CREATE_USER)) {
+                //если логин не уникален
+                if (jdbcUserDao.findByLogin(user.getLogin()) != null) {
+                    request.setAttribute("error_message", ERROR_NOT_UNIQUE_LOGIN);
+                    return false;
+                }
+                // если нашелся юзер с таким емейлом
+                if (userByEmail != null) {
+                    request.setAttribute("error_message", ERROR_NOT_UNIQUE_EMAIL);
+                    return false;
+                }
+
+                jdbcUserDao.create(user);
+                request.setAttribute("message", MESSAGE_USER_CREATED);
+            } else if (action.equals(ACTION_EDIT_USER)) {
+                //если нашелся юзер с таким емейлом и это не текущий юзер
+                if (userByEmail != null) {
+                    if (!userByEmail.getLogin().equals(user.getLogin())) {
+                        request.setAttribute("error_message", ERROR_NOT_UNIQUE_EMAIL);
+                        return false;
+                    }
+                }
+                jdbcUserDao.update(user);
+                request.setAttribute("message", MESSAGE_USER_UPDATED);
             }
-            if (jdbcUserDao.findByEmail(email) != null) {
-                request.setAttribute("error_message", MESSAGE_NOT_UNIQUE_EMAIL);
-                userParamsBad = true;
-                return;
-            }
-            User user = new User(login, password, email, first_name, last_name, birthdayDate, role);
-            jdbcUserDao.create(user);
-            request.setAttribute("message", MESSAGE_USER_CREATED);
         } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } finally {
-            if (userParamsBad) {
-                request.setAttribute("login", login);
-                request.setAttribute("email", email);
-                request.setAttribute("first_name", first_name);
-                request.setAttribute("last_name", last_name);
-                request.setAttribute("birthday", birthday);
-                request.setAttribute("roleName", roleName);
-            }
-            List<Role> roleList = findAllRoles();
-            request.setAttribute("roleList", roleList);
-            request.getRequestDispatcher("create_user.jsp").forward(request, response);
+            //TODO log - can not create user;
+            return false;
         }
+        return true;
     }
 }

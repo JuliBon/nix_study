@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%
-    String errorMessage = (String) request.getAttribute("errorMessage");
-    pageContext.setAttribute("errorMessage", errorMessage);
-%>
 
 <html lang="en">
 <head>
@@ -26,7 +22,7 @@
         </c:if>
         <label for="inputLogin" class="sr-only">Login: </label>
         <input name="login" id="inputLogin" class="form-control" placeholder="Login" required autofocus
-               value="<c:if test="${login != null}">${login}</c:if>">
+               value="${login}">
         <label for="inputPassword" class="sr-only">Password: </label>
         <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>

@@ -26,6 +26,7 @@ public class UserTableTag extends TagSupport {
                     "<TABLE class=\"table\">");
             pageContext.getOut().write("<thead class=\"thead-inverse\">");
             pageContext.getOut().write("<TR><TH>Login</TH>");
+            pageContext.getOut().write("<TH>Email</TH>");
             pageContext.getOut().write("<TH>First name</TH>");
             pageContext.getOut().write("<TH>LastName</TH>");
             pageContext.getOut().write("<TH>Age</TH>");
@@ -42,10 +43,11 @@ public class UserTableTag extends TagSupport {
                 String deleteLink = "<a href=/admin?action=delete&login=" + user.getLogin() + " " +
                         "class=\"btn btn-large btn-primary\" data-toggle=\"confirmation\" data-placement=\"right\">" +
                         "Delete</a>";
-                String editLink = "<a href=/admin?action=edit_use&?login=" + user.getLogin() + ">Edit</a>";
+                String editLink = "<a href=/admin?action=edit_user&login=" + user.getLogin() + ">Edit</a>";
 
                 pageContext.getOut().write("<TR>");
                 pageContext.getOut().write("<TD>" + user.getLogin() + "</TD>");
+                pageContext.getOut().write("<TD>" + user.getEmail() + "</TD>");
                 pageContext.getOut().write("<TD>" + user.getFirstName() + "</TD>");
                 pageContext.getOut().write("<TD>" + user.getLastName() + "</TD>");
                 pageContext.getOut().write("<TD>" + age + "</TD>");

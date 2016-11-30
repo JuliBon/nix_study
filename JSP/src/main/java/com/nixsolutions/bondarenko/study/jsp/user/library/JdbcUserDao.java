@@ -36,20 +36,19 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
 
     @Override
     public void update(User user) throws SQLException {
-        String sql = "UPDATE User SET login = ?, password = ?, email = ?, firstName = ?, lastName = ?, birthday = ?, id_role = ? where id = ?";
+        String sql = "UPDATE User SET password = ?, email = ?, firstName = ?, lastName = ?, birthday = ?, id_role = ? where login = ?";
 
         try (Connection connection = createConnection()) {
             try (PreparedStatement preparedStatement = connection
                     .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-                preparedStatement.setString(1, user.getLogin());
-                preparedStatement.setString(2, user.getPassword());
-                preparedStatement.setString(3, user.getEmail());
-                preparedStatement.setString(4, user.getFirstName());
-                preparedStatement.setString(5, user.getLastName());
-                preparedStatement.setDate(6, user.getBirthday());
-                preparedStatement.setLong(7, user.getRole().getId());
-                preparedStatement.setLong(8, user.getId());
+                preparedStatement.setString(1, user.getPassword());
+                preparedStatement.setString(2, user.getEmail());
+                preparedStatement.setString(3, user.getFirstName());
+                preparedStatement.setString(4, user.getLastName());
+                preparedStatement.setDate(5, user.getBirthday());
+                preparedStatement.setLong(6, user.getRole().getId());
+                preparedStatement.setString(7, user.getLogin());
                 preparedStatement.executeUpdate();
                 connection.commit();
             } catch (SQLException e) {
