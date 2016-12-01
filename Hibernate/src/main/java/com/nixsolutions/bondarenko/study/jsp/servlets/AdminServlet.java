@@ -2,6 +2,8 @@ package com.nixsolutions.bondarenko.study.jsp.servlets;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
+import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcUserDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

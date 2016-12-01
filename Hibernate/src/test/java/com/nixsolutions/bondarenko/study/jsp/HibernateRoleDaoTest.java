@@ -1,7 +1,8 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
-import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.hibernate.HibernateRoleDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import org.dbunit.Assertion;
@@ -12,6 +13,9 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +30,8 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Yulya Bondarenko
  */
-public class JdbcRoleDaoTest {
-    private JdbcRoleDao jdbcRoleDao = new JdbcRoleDao();
+public class HibernateRoleDaoTest {
+    private RoleDao roleDao = new HibernateRoleDao();
     private static String dataSetsDir = "src/test/resources/test_data/";
 
     @Before
@@ -58,7 +62,7 @@ public class JdbcRoleDaoTest {
     }
 
     private IDataSet getDataSet() throws Exception {
-        return new FlatXmlDataSet( new File(dataSetsDir + "InitialDataSet" + ".xml"),
+        return new FlatXmlDataSet(new File(dataSetsDir + "InitialDataSet" + ".xml"),
                 false);
     }
 
@@ -100,42 +104,47 @@ public class JdbcRoleDaoTest {
         Assertion.assertEquals(expectedTableUser, filteredActualTableUser);
     }
 
-    @Test(expected = SQLException.class)
+    @Test
     public void testCreateRole() throws Exception {
-        jdbcRoleDao.create(new Role(3L, "guest"));
+        roleDao.create(new Role(3L, "guest"));
         checkRoleActualEqualsToExpected("RoleCreateExpectedDataSet");
-
-        // try to create role with not unique name
-        jdbcRoleDao.create(new Role(4L, "guest"));
     }
 
     @Test
+    public void testCreateRoleBad() throws Exception {
+        // try to create role with not unique name
+        roleDao.create(new Role(4L, "admin"));
+        checkRoleActualEqualsToExpected("InitialDataSet");
+    }
+
+
+    @Test
     public void testUpdateRole() throws Exception {
-        jdbcRoleDao.update(new Role(1L, "system-admin"));
+        roleDao.update(new Role(1L, "system-admin"));
         checkUserAndRoleActualEqualsToExpected("RoleUpdateExpectedDataSet");
     }
 
     @Test
     public void testUpdateRoleNotExisting() throws Exception {
-        jdbcRoleDao.update(new Role(100L, "system-admin"));
+        roleDao.update(new Role(100L, "system-admin"));
         checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
     @Test
     public void testRemoveRole() throws Exception {
-        jdbcRoleDao.remove(new Role(2L, "user"));
+        roleDao.remove(new Role(2L, "user"));
         checkUserAndRoleActualEqualsToExpected("RoleRemoveExpectedDataSet");
     }
 
     @Test
     public void testRemoveRoleNotExisting() throws Exception {
-        jdbcRoleDao.remove(new Role(100L, "guest"));
+        roleDao.remove(new Role(100L, "guest"));
         checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
     @Test
     public void testFindExistingRole() throws Exception {
-        assertNotNull(jdbcRoleDao.findByName("admin"));
+        assertNotNull(roleDao.findByName("admin"));
         ITable actualTable = getConnection().createQueryTable("FindRoleResult",
                 "SELECT id, name FROM Role WHERE name = 'admin'");
         checkRoleActualEqualsToExpected("RoleFindExpectedDataSet", actualTable);
@@ -143,7 +152,7 @@ public class JdbcRoleDaoTest {
 
     @Test
     public void testFindNotExistingRole() throws Exception {
-        assertEquals(jdbcRoleDao.findByName("guest"), null);
+        assertEquals(roleDao.findByName("guest"), null);
 
         ITable actualTable = getConnection().createQueryTable("FindRoleResult",
                 "SELECT id, name FROM Role WHERE name = 'guest'");

@@ -7,15 +7,15 @@ import java.util.List;
  * @author Yuliya Bondarenko
  */
 public interface UserDao {
-    void create(User user) throws SQLException;
+    void create(User user) throws Exception;
 
-    void update(User user) throws SQLException;
+    void update(User user) throws Exception;
 
-    void remove(User user) throws SQLException;
+    void remove(User user) throws Exception;
 
-    List<User> findAll() throws SQLException;
+    List<User> findAll() throws Exception;
 
-    User findByLogin(String login) throws SQLException;
+    User findByLogin(String login) throws Exception;
 
-    User findByEmail(String email) throws SQLException;
+    User findByEmail(String email) throws Exception;
 }

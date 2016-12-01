@@ -6,11 +6,11 @@ import java.sql.SQLException;
  * @author Yuliya Bondarenko
  */
 public interface RoleDao {
-    void create(Role role) throws SQLException;
+    void create(Role role) throws Exception;
 
-    void update(Role role) throws SQLException;
+    void update(Role role) throws Exception;
 
-    void remove(Role role) throws SQLException;
+    void remove(Role role) throws Exception;
 
     /**
      * Search role by name in the database
@@ -19,5 +19,5 @@ public interface RoleDao {
      * null if there is no role with specified name
      * @throws SQLException if SQLException occurred while executing search
      */
-    Role findByName(String name) throws SQLException;
+    Role findByName(String name) throws Exception;
 }

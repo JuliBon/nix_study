@@ -1,4 +1,7 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library;
+package com.nixsolutions.bondarenko.study.jsp.user.library.jdbc;
+
+import com.nixsolutions.bondarenko.study.jsp.user.library.User;
+import com.nixsolutions.bondarenko.study.jsp.user.library.UserDao;
 
 import java.sql.*;
 import java.util.ArrayList;

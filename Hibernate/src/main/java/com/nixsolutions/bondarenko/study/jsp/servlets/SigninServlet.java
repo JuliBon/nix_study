@@ -1,6 +1,6 @@
 package com.nixsolutions.bondarenko.study.jsp.servlets;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcUserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import com.nixsolutions.bondarenko.study.jsp.user.library.UserLibraryRole;
 
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 public class SigninServlet extends HttpServlet {
     private static String SIGNIN_ERROR_MESSAGE = "Incorrect login or password!";

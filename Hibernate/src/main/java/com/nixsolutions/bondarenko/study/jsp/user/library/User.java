@@ -1,21 +1,47 @@
 package com.nixsolutions.bondarenko.study.jsp.user.library;
 
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Date;
 
 /**
  * @author Yuliya Bondarenko
  */
+
+@Entity
+@Table(name = "User")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "login", unique = true, nullable = false)
     private String login;
+
+    @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @Column(name = "firstName", nullable = false)
     private String firstName;
+
+    @Column(name = "lastName", nullable = false)
     private String lastName;
+
+    @Column(name = "birthday", nullable = false)
     private Date birthday;
+
+    @ManyToOne()
+    @JoinColumn(name = "id_role", nullable = false)
     private Role role;
 
-    public User(){
+    public User() {
 
     }
 
@@ -29,6 +55,7 @@ public class User {
         this.birthday = birthday;
         this.role = new Role(idRole, roleName);
     }
+
     public User(long id, String login, String password, String email, String firstName,
                 String lastName, Date birthday, long idRole, String roleName) {
         this.id = id;
