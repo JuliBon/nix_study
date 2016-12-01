@@ -1,6 +1,7 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.JdbcUserDao;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class JdbcUserDaoTest {
 
-    private JdbcUserDao jdbcUserDao = new JdbcUserDao();
+    private UserDao userDao = new JdbcUserDao();
     private static String dataSetsDir = "src/test/resources/test_data/";
 
     private User testUser = new User("nata", "54321", "nata@mail.ru",
@@ -90,7 +91,7 @@ public class JdbcUserDaoTest {
     public void testCreateUserUniqueLoginAndEmain() throws Exception {
         User user = new User("nata", "54321", "nata@mail.ru", "nataliya",
                 "bondarenko", Date.valueOf("1991-9-19"), new Role(UserLibraryRole.USER.getId()));
-        jdbcUserDao.create(user);
+        userDao.create(user);
 
         checkActualEqualsToExpected("UserCreateExpectedDataSet");
     }
@@ -98,49 +99,49 @@ public class JdbcUserDaoTest {
     @Test(expected = SQLException.class)
     public void testCreateUserNotUniqueLogin() throws Exception {
         testUser.setLogin("yulya");
-        jdbcUserDao.create(testUser);
+        userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
     @Test(expected = SQLException.class)
     public void testCreateUserNotUniqueEmail() throws Exception {
         testUser.setEmail("yulya@mail.ru");
-        jdbcUserDao.create(testUser);
+        userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
     @Test(expected = SQLException.class)
     public void testCreateUserNotExistingRole() throws Exception {
         testUser.setRole(new Role(100L));
-        jdbcUserDao.create(testUser);
+        userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
     @Test
     public void testFindUserByLogin() throws Exception {
-        assertNotNull(jdbcUserDao.findByLogin("yulya"));
+        assertNotNull(userDao.findByLogin("yulya"));
         ITable actualTable = getConnection().createQueryTable("FindUserResult",
                 "SELECT login, password, email, firstName, lastName, birthday, id_role FROM User WHERE login = 'yulya'");
         checkActualEqualsToExpected("UserFindExpectedDataSet", actualTable);
 
-        assertEquals(jdbcUserDao.findByLogin("nata"), null);
+        assertEquals(userDao.findByLogin("nata"), null);
     }
 
     @Test
     public void testFindUserByEmail() throws Exception {
-        assertNotNull(jdbcUserDao.findByEmail("yulya@mail.ru"));
+        assertNotNull(userDao.findByEmail("yulya@mail.ru"));
 
         ITable actualTable = getConnection().createQueryTable("FindUserResult",
                 "SELECT login, password, email, firstName, lastName, birthday, id_role FROM User WHERE email = 'yulya@mail.ru'");
         checkActualEqualsToExpected("UserFindExpectedDataSet", actualTable);
 
-        assertEquals(jdbcUserDao.findByEmail("nata@mail.ru"), null);
+        assertEquals(userDao.findByEmail("nata@mail.ru"), null);
     }
 
     @Test
     public void testRemoveUser() throws Exception {
-        User user = jdbcUserDao.findByLogin("yulya");
-        jdbcUserDao.remove(user);
+        User user = userDao.findByLogin("yulya");
+        userDao.remove(user);
 
         checkActualEqualsToExpected("UserRemoveExpectedDataSet");
     }
@@ -148,25 +149,25 @@ public class JdbcUserDaoTest {
     @Test
     public void testRemoveUserNotExisting() throws Exception {
         testUser.setId(100L);
-        jdbcUserDao.remove(testUser);
+        userDao.remove(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
     @Test(expected = SQLException.class)
     public void testUpdateUser() throws Exception {
-        User user = jdbcUserDao.findByLogin("yulya");
+        User user = userDao.findByLogin("yulya");
         user.setPassword("9999");
-        jdbcUserDao.update(user);
+        userDao.update(user);
 
         checkActualEqualsToExpected("UserUpdateExpectedDataSet");
 
         user.setLogin("ivan");
-        jdbcUserDao.update(user);
+        userDao.update(user);
     }
 
     @Test
     public void testFindAllUsers() throws Exception {
-        assertNotNull(jdbcUserDao.findAll());
+        assertNotNull(userDao.findAll());
 
         ITable actualTable = getConnection().createQueryTable("FindUserResult",
                 "SELECT login, password, email, firstName, lastName, birthday, id_role FROM User");
@@ -177,28 +178,28 @@ public class JdbcUserDaoTest {
     @Test(expected = SQLException.class)
     public void testCreateUserLoginNull() throws Exception {
         testUser.setLogin(null);
-        jdbcUserDao.create(testUser);
+        userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
     @Test(expected = SQLException.class)
     public void testCreateUsetPasswordNull() throws Exception {
         testUser.setPassword(null);
-        jdbcUserDao.create(testUser);
+        userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
     @Test(expected = SQLException.class)
     public void testCreateUserEmailNull() throws Exception {
         testUser.setEmail(null);
-        jdbcUserDao.create(testUser);
+        userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
     @Test(expected = SQLException.class)
     public void testCreateUserRoleNull() throws Exception {
         testUser.setBirthday(null);
-        jdbcUserDao.create(testUser);
+        userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 }

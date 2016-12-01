@@ -3,7 +3,6 @@ package com.nixsolutions.bondarenko.study.jsp;
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateUserDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcUserDao;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;

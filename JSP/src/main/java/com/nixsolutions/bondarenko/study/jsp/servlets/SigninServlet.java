@@ -1,6 +1,7 @@
 package com.nixsolutions.bondarenko.study.jsp.servlets;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.JdbcUserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import com.nixsolutions.bondarenko.study.jsp.user.library.UserLibraryRole;
 
@@ -10,13 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
 
 public class SigninServlet extends HttpServlet {
     private static String SIGNIN_ERROR_MESSAGE = "Incorrect login or password!";
 
-    private JdbcUserDao jdbcUserDao = new JdbcUserDao();
+    private UserDao userDao = new JdbcUserDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,13 +29,13 @@ public class SigninServlet extends HttpServlet {
         String password = request.getParameter("password");
         try {
             boolean incorrectLoginOrPassword = false;
-            User user = jdbcUserDao.findByLogin(login);
+            User user = userDao.findByLogin(login);
             if (user != null) {
                 if (user.getPassword().equals(password)) {
                     request.getSession().setAttribute("currentUser", user);
+
                     if (user.getRole().getName().equals(UserLibraryRole.USER.getName())) {
-                        request.setAttribute("user", user);
-                        response.sendRedirect("/home.jsp");
+                        request.getRequestDispatcher("home.jsp").forward(request, response);
                     } else if (user.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
                         response.sendRedirect("/admin");
                     }
@@ -51,7 +50,7 @@ public class SigninServlet extends HttpServlet {
                 request.setAttribute("errorMessage", SIGNIN_ERROR_MESSAGE);
                 request.getRequestDispatcher("signin.jsp").forward(request, response);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             request.setAttribute("error", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }

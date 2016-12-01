@@ -4,22 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ex" uri="UserLibrary" %>
 
-<%
-    User currentUser = (User) request.getSession().getAttribute("currentUser");
-    if (currentUser != null) {
-        pageContext.setAttribute("currentUserLogin", currentUser.getLogin());
-    }
-
-    String action = (String) request.getAttribute("action");
-    boolean isCreate = false;
-    if (action.equals(AdminServlet.ACTION_CREATE_USER)) {
-        isCreate = true;
-    }
-    pageContext.setAttribute("isCreate", isCreate);
-
-    User user = (User) request.getAttribute("user");
-    pageContext.setAttribute("user", user);
-%>
 
 <html>
 <head>
@@ -33,10 +17,11 @@
 <body>
 
 <div class="container">
-    <div class="adminLogout">Admin ${currentUserLogin} <a href="logout">(logout)</a></div>
+    <div class="adminLogout">Admin ${currentUser.login}
+        <a href="logout">(logout)</a></div>
     <h3>
         <c:choose>
-            <c:when test="${isCreate}">
+            <c:when test="${action.equals(AdminServlet.ACTION_CREATE_USER)}">
                 Add user
             </c:when>
             <c:otherwise>
@@ -59,7 +44,7 @@
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
                 <input name="login" type="text" class="form-control" placeholder="Login" value="${user.login}" required
-                       <c:if test="${!isCreate}">readonly="readonly"</c:if>  />
+                       <c:if test="${!action.equals(AdminServlet.ACTION_CREATE_USER)}">readonly="readonly"</c:if>  />
             </div>
         </div>
         <div class="form-group row">

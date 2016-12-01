@@ -1,4 +1,7 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library;
+package com.nixsolutions.bondarenko.study.jsp.user.library.dao;
+
+import com.nixsolutions.bondarenko.study.jsp.user.library.User;
+import com.nixsolutions.bondarenko.study.jsp.user.library.UserDao;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -114,6 +117,39 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
     }
 
     @Override
+    public User findById(Long id) throws Exception {
+        String sql = "SELECT u.id \"user_id\", u.login, u.password, u.email, u.firstName, u.lastName, u.birthday, r.id \"role_id\", r.name \"role_name\""
+                + "FROM User u, Role r WHERE u.id_role=r.id AND u.id = ? ";
+
+        try (Connection connection = createConnection();
+             PreparedStatement preparedStatement = connection
+                     .prepareStatement(sql)) {
+
+            preparedStatement.setLong(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new User(resultSet.getLong("user_id"),
+                            resultSet.getString("login"),
+                            resultSet.getString("password"),
+                            resultSet.getString("email"),
+                            resultSet.getString("firstName"),
+                            resultSet.getString("lastName"),
+                            resultSet.getDate("birthday"),
+                            resultSet.getLong("role_id"),
+                            resultSet.getString("role_name"));
+                } else {
+                    return null;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException(
+                    "Error while searching user with id = " + id, e);
+        }
+    }
+
+    @Override
     public User findByLogin(String login) throws SQLException {
         String sql = "SELECT u.id \"user_id\", u.login, u.password, u.email, u.firstName, u.lastName, u.birthday, r.id \"role_id\", r.name \"role_name\""
                 + "FROM User u, Role r WHERE u.id_role=r.id AND u.login = ? ";
@@ -177,9 +213,5 @@ public class JdbcUserDao extends AbstractJdbcDao implements UserDao {
             throw new SQLException(
                     "Error while searching user with email = " + email, e);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        new JdbcUserDao().findAll();
     }
 }
