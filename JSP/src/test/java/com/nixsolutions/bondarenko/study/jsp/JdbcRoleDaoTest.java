@@ -27,7 +27,6 @@ import static org.junit.Assert.assertNotNull;
  * @author Yulya Bondarenko
  */
 public class JdbcRoleDaoTest {
-
     private JdbcRoleDao jdbcRoleDao = new JdbcRoleDao();
     private static String dataSetsDir = "src/test/resources/test_data/";
 

@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.jsp;
+package com.nixsolutions.bondarenko.study.jsp.tag;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 
