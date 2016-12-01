@@ -1,8 +1,9 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
-import com.nixsolutions.bondarenko.study.jsp.user.library.hibernate.HibernateUserDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcUserDao;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -17,7 +18,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.Properties;
 
 import static junit.framework.Assert.assertEquals;

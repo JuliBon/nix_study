@@ -1,8 +1,7 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library.hibernate;
+package com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
-import com.nixsolutions.bondarenko.study.jsp.user.library.User;
-import com.nixsolutions.bondarenko.study.jsp.user.library.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,14 +10,10 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.criterion.Restrictions;
 
-import java.sql.SQLException;
-import java.util.List;
-
-
-public class HibernateUserDao implements UserDao {
+public class HibernateRoleDao implements RoleDao {
     private SessionFactory sessionFactory;
 
-    public HibernateUserDao() {
+    public HibernateRoleDao() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure()
                 .build();
@@ -30,75 +25,54 @@ public class HibernateUserDao implements UserDao {
     }
 
     @Override
-    public void create(User user) throws Exception {
+    public void create(Role role) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.save(user);
+            session.save(role);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new Exception("Error while creating user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public void update(User user) throws Exception {
+    public void update(Role role) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.update(user);
+            session.update(role);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new Exception("Error while updating user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public void remove(User user) throws Exception {
+    public void remove(Role role) {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.delete(user);
+            session.delete(role);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new Exception("Error while removing user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public List<User> findAll() {
+    public Role findByName(String name) {
         Session session = sessionFactory.openSession();
-        List<User> list = session.createCriteria(User.class).list();
-        session.close();
-        return list;
-    }
-
-    @Override
-    public User findByLogin(String login) {
-        Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(User.class);
-        User user = (User) criteria.add(Restrictions.eq("login", login))
+        Criteria criteria = session.createCriteria(Role.class);
+        Role role = (Role) criteria.add(Restrictions.eq("name", name))
                 .uniqueResult();
         session.close();
-        return user;
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(User.class);
-        User user = (User) criteria.add(Restrictions.eq("email", email))
-                .uniqueResult();
-        session.close();
-        return user;
+        return role;
     }
 }

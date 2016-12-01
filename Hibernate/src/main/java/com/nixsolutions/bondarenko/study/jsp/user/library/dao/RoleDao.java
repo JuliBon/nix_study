@@ -1,4 +1,6 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library;
+package com.nixsolutions.bondarenko.study.jsp.user.library.dao;
+
+import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 
 import java.sql.SQLException;
 

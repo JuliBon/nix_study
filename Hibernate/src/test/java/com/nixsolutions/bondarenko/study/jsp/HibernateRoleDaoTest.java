@@ -1,8 +1,8 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
-import com.nixsolutions.bondarenko.study.jsp.user.library.RoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.hibernate.HibernateRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateRoleDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import org.dbunit.Assertion;
@@ -13,15 +13,11 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.Properties;
 
 import static junit.framework.Assert.assertEquals;

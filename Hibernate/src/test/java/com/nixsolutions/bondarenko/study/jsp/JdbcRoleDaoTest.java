@@ -1,7 +1,8 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
-import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcRoleDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import org.dbunit.Assertion;
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
  * @author Yulya Bondarenko
  */
 public class JdbcRoleDaoTest {
-    private JdbcRoleDao jdbcRoleDao = new JdbcRoleDao();
+    private RoleDao roleDao = new JdbcRoleDao();
     private static String dataSetsDir = "src/test/resources/test_data/";
 
     @Before
@@ -102,40 +103,40 @@ public class JdbcRoleDaoTest {
 
     @Test(expected = SQLException.class)
     public void testCreateRole() throws Exception {
-        jdbcRoleDao.create(new Role(3L, "guest"));
+        roleDao.create(new Role(3L, "guest"));
         checkRoleActualEqualsToExpected("RoleCreateExpectedDataSet");
 
         // try to create role with not unique name
-        jdbcRoleDao.create(new Role(4L, "guest"));
+        roleDao.create(new Role(4L, "guest"));
     }
 
     @Test
     public void testUpdateRole() throws Exception {
-        jdbcRoleDao.update(new Role(1L, "system-admin"));
+        roleDao.update(new Role(1L, "system-admin"));
         checkUserAndRoleActualEqualsToExpected("RoleUpdateExpectedDataSet");
     }
 
     @Test
     public void testUpdateRoleNotExisting() throws Exception {
-        jdbcRoleDao.update(new Role(100L, "system-admin"));
+        roleDao.update(new Role(100L, "system-admin"));
         checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
     @Test
     public void testRemoveRole() throws Exception {
-        jdbcRoleDao.remove(new Role(2L, "user"));
+        roleDao.remove(new Role(2L, "user"));
         checkUserAndRoleActualEqualsToExpected("RoleRemoveExpectedDataSet");
     }
 
     @Test
     public void testRemoveRoleNotExisting() throws Exception {
-        jdbcRoleDao.remove(new Role(100L, "guest"));
+        roleDao.remove(new Role(100L, "guest"));
         checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
     @Test
     public void testFindExistingRole() throws Exception {
-        assertNotNull(jdbcRoleDao.findByName("admin"));
+        assertNotNull(roleDao.findByName("admin"));
         ITable actualTable = getConnection().createQueryTable("FindRoleResult",
                 "SELECT id, name FROM Role WHERE name = 'admin'");
         checkRoleActualEqualsToExpected("RoleFindExpectedDataSet", actualTable);
@@ -143,7 +144,7 @@ public class JdbcRoleDaoTest {
 
     @Test
     public void testFindNotExistingRole() throws Exception {
-        assertEquals(jdbcRoleDao.findByName("guest"), null);
+        assertEquals(roleDao.findByName("guest"), null);
 
         ITable actualTable = getConnection().createQueryTable("FindRoleResult",
                 "SELECT id, name FROM Role WHERE name = 'guest'");

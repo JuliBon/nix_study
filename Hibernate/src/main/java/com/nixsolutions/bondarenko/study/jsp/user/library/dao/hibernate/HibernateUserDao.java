@@ -1,28 +1,22 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library.hibernate;
+package com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
-import com.nixsolutions.bondarenko.study.jsp.user.library.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.User;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
-public class HibernateRoleDao implements RoleDao {
+
+public class HibernateUserDao implements UserDao {
     private SessionFactory sessionFactory;
 
-    public HibernateRoleDao() {
+    public HibernateUserDao() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure()
                 .build();
@@ -34,54 +28,75 @@ public class HibernateRoleDao implements RoleDao {
     }
 
     @Override
-    public void create(Role role) {
+    public void create(User user) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.save(role);
+            session.save(user);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+            throw new Exception("Error while creating user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public void update(Role role) {
+    public void update(User user) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.update(role);
+            session.update(user);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+            throw new Exception("Error while updating user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public void remove(Role role) {
+    public void remove(User user) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
-            session.delete(role);
+            session.delete(user);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+            throw new Exception("Error while removing user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public Role findByName(String name) {
+    public List<User> findAll() {
         Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(Role.class);
-        Role role = (Role) criteria.add(Restrictions.eq("name", name))
+        List<User> list = session.createCriteria(User.class).list();
+        session.close();
+        return list;
+    }
+
+    @Override
+    public User findByLogin(String login) {
+        Session session = sessionFactory.openSession();
+        Criteria criteria = session.createCriteria(User.class);
+        User user = (User) criteria.add(Restrictions.eq("login", login))
                 .uniqueResult();
         session.close();
-        return role;
+        return user;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        Session session = sessionFactory.openSession();
+        Criteria criteria = session.createCriteria(User.class);
+        User user = (User) criteria.add(Restrictions.eq("email", email))
+                .uniqueResult();
+        session.close();
+        return user;
     }
 }

@@ -1,6 +1,8 @@
 package com.nixsolutions.bondarenko.study.jsp.servlets;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcUserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import com.nixsolutions.bondarenko.study.jsp.user.library.UserLibraryRole;
 
@@ -15,7 +17,7 @@ import java.sql.SQLException;
 public class SigninServlet extends HttpServlet {
     private static String SIGNIN_ERROR_MESSAGE = "Incorrect login or password!";
 
-    private JdbcUserDao jdbcUserDao = new JdbcUserDao();
+    private UserDao userDao = new HibernateUserDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,7 +31,7 @@ public class SigninServlet extends HttpServlet {
         String password = request.getParameter("password");
         try {
             boolean incorrectLoginOrPassword = false;
-            User user = jdbcUserDao.findByLogin(login);
+            User user = userDao.findByLogin(login);
             if (user != null) {
                 if (user.getPassword().equals(password)) {
                     request.getSession().setAttribute("currentUser", user);
@@ -50,7 +52,7 @@ public class SigninServlet extends HttpServlet {
                 request.setAttribute("errorMessage", SIGNIN_ERROR_MESSAGE);
                 request.getRequestDispatcher("signin.jsp").forward(request, response);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             request.setAttribute("error", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }

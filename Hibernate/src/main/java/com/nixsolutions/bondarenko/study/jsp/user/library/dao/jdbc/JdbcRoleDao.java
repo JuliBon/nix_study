@@ -1,14 +1,14 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library.jdbc;
+package com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
-import com.nixsolutions.bondarenko.study.jsp.user.library.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
 
 import java.sql.*;
 
 /**
  * @author Yuliya Bondarenko
  */
-public class JdbcRoleDao extends AbstractJdbcDao implements com.nixsolutions.bondarenko.study.jsp.user.library.RoleDao {
+public class JdbcRoleDao extends AbstractJdbcDao implements RoleDao {
     @Override
     public void create(Role role) throws SQLException {
         String sql = "INSERT into Role (id, name) VALUES (?, ?)";

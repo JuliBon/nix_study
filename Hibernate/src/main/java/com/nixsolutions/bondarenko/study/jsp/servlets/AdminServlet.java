@@ -2,8 +2,10 @@ package com.nixsolutions.bondarenko.study.jsp.servlets;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
-import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcRoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.jdbc.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateUserDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +27,16 @@ public class AdminServlet extends HttpServlet {
     public static final String ACTION_CREATE_USER = "create_user";
     public static final String ACTION_EDIT_USER = "edit_user";
 
-    private JdbcUserDao jdbcUserDao;
-    private JdbcRoleDao jdbcRoleDao;
+    private UserDao userDao;
+    private RoleDao roleDao;
 
     private boolean checkCurrentUserIsAdmin(HttpSession session) throws ServletException, IOException {
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser != null) {
             User userByLogin;
             try {
-                userByLogin = jdbcUserDao.findByLogin(currentUser.getLogin());
-            } catch (SQLException e) {
+                userByLogin = userDao.findByLogin(currentUser.getLogin());
+            } catch (Exception e) {
                 return false;
             }
             if (userByLogin != null) {
@@ -53,8 +54,8 @@ public class AdminServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        jdbcUserDao = new JdbcUserDao();
-        jdbcRoleDao = new JdbcRoleDao();
+        userDao = new HibernateUserDao();
+        roleDao = new HibernateRoleDao();
     }
 
     @Override
@@ -88,7 +89,7 @@ public class AdminServlet extends HttpServlet {
             List<Role> roleList = findAllRoles();
             request.setAttribute("roleList", roleList);
             request.getRequestDispatcher("user_form.jsp").forward(request, response);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             request.setAttribute("error", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
@@ -99,13 +100,13 @@ public class AdminServlet extends HttpServlet {
 
         String login = request.getParameter("login");
         try {
-            User user = jdbcUserDao.findByLogin(login);
+            User user = userDao.findByLogin(login);
             request.setAttribute("user", user);
 
             List<Role> roleList = findAllRoles();
             request.setAttribute("roleList", roleList);
             request.getRequestDispatcher("user_form.jsp").forward(request, response);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             request.setAttribute("error", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
@@ -128,11 +129,11 @@ public class AdminServlet extends HttpServlet {
                     user.setFirstName(request.getParameter("first_name"));
                     user.setLastName(request.getParameter("last_name"));
                     user.setBirthday(Date.valueOf(request.getParameter("birthday")));
-                    Role role = jdbcRoleDao.findByName(request.getParameter("roleName"));
+                    Role role = roleDao.findByName(request.getParameter("roleName"));
                     user.setRole(role);
 
                     if (processUser(user, action, request, response)) {
-                        List<User> userList = jdbcUserDao.findAll();
+                        List<User> userList = userDao.findAll();
                         request.setAttribute("userList", userList);
                         request.getRequestDispatcher("admin.jsp").forward(request, response);
 
@@ -143,7 +144,7 @@ public class AdminServlet extends HttpServlet {
                         request.setAttribute("roleList", roleList);
                         request.getRequestDispatcher("user_form.jsp").forward(request, response);
                     }
-                } catch (SQLException e) {
+                } catch (Exception e) {
                     request.setAttribute("error", e);
                     request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
@@ -154,20 +155,20 @@ public class AdminServlet extends HttpServlet {
 
     private void findAllUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<User> userList = jdbcUserDao.findAll();
+            List<User> userList = userDao.findAll();
             request.setAttribute("userList", userList);
             request.getRequestDispatcher("admin.jsp").forward(request, response);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             request.setAttribute("error", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
-    private List<Role> findAllRoles() throws SQLException {
+    private List<Role> findAllRoles() throws Exception {
         List<Role> roleList = new ArrayList<>();
 
-        Role roleAdmin = jdbcRoleDao.findByName(UserLibraryRole.ADMIN.getName());
-        Role roleUser = jdbcRoleDao.findByName(UserLibraryRole.USER.getName());
+        Role roleAdmin = roleDao.findByName(UserLibraryRole.ADMIN.getName());
+        Role roleUser = roleDao.findByName(UserLibraryRole.USER.getName());
         if (roleAdmin != null) roleList.add(roleAdmin);
         if (roleUser != null) roleList.add(roleUser);
 
@@ -179,10 +180,10 @@ public class AdminServlet extends HttpServlet {
         if (login != null) {
             User user;
             try {
-                user = jdbcUserDao.findByLogin(login);
-                jdbcUserDao.remove(user);
+                user = userDao.findByLogin(login);
+                userDao.remove(user);
                 response.sendRedirect("/admin");
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 request.setAttribute("error", e);
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
@@ -192,10 +193,10 @@ public class AdminServlet extends HttpServlet {
 
     private boolean processUser(User user, String action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            User userByEmail = jdbcUserDao.findByEmail(user.getEmail());
+            User userByEmail = userDao.findByEmail(user.getEmail());
             if (action.equals(ACTION_CREATE_USER)) {
                 //если логин не уникален
-                if (jdbcUserDao.findByLogin(user.getLogin()) != null) {
+                if (userDao.findByLogin(user.getLogin()) != null) {
                     request.setAttribute("error_message", ERROR_NOT_UNIQUE_LOGIN);
                     return false;
                 }
@@ -205,7 +206,7 @@ public class AdminServlet extends HttpServlet {
                     return false;
                 }
 
-                jdbcUserDao.create(user);
+                userDao.create(user);
                 request.setAttribute("message", MESSAGE_USER_CREATED);
             } else if (action.equals(ACTION_EDIT_USER)) {
                 //если нашелся юзер с таким емейлом и это не текущий юзер
@@ -215,10 +216,10 @@ public class AdminServlet extends HttpServlet {
                         return false;
                     }
                 }
-                jdbcUserDao.update(user);
+                userDao.update(user);
                 request.setAttribute("message", MESSAGE_USER_UPDATED);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             request.setAttribute("error", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return false;
