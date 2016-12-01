@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ex" uri="UserLibrary" %>
 
-
 <html>
 <head>
     <title>Add new user</title>
@@ -21,10 +20,12 @@
         <a href="logout">(logout)</a></div>
     <h3>
         <c:choose>
-            <c:when test="${action.equals(AdminServlet.ACTION_CREATE_USER)}">
+            <c:when test="${action.equals(\"create_user\")}">
+                <c:set var="isCreate" value="true" scope="page"/>
                 Add user
             </c:when>
             <c:otherwise>
+                <c:set var="isCreate" value="false" scope="page"/>
                 Edit user
             </c:otherwise>
         </c:choose>
@@ -43,36 +44,38 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
-                <input name="login" type="text" class="form-control" placeholder="Login" value="${user.login}" required
-                       <c:if test="${!action.equals(AdminServlet.ACTION_CREATE_USER)}">readonly="readonly"</c:if>  />
+                <input name="login" id="login" type="text" class="form-control" placeholder="Login"
+                       value="${user.login}" required
+                       <c:if test="${!isCreate}">readonly="readonly"</c:if>  />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Password</label>
             <div class="col-xs-10">
-                <input name="password" type="password" class="form-control" placeholder="password" required
-                       id="password"/>
+                <input name="password" id="password" type="password" class="form-control" placeholder="password"
+                       required/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
-                <input type="password" class="form-control" placeholder="confirm password" required
-                       id="confirmPassword">
+                <input id="confirmPassword" type="password" class="form-control" placeholder="confirm password"
+                       required>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Email</label>
             <div class="col-xs-10">
-                <input name="email" type="email" class="form-control" placeholder="email" value="${user.email}"
+                <input name="email" id="email" type="email" class="form-control" placeholder="email"
+                       value="${user.email}"
                        required/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">First name</label>
             <div class="col-xs-10">
-                <input name="first_name" type="text" class="form-control" placeholder="first name"
+                <input name="firstName" id="firstName" type="text" class="form-control" placeholder="first name"
                        value="${user.firstName}"
                        required/>
             </div>
@@ -80,7 +83,7 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Last name</label>
             <div class="col-xs-10">
-                <input name="last_name" type="text" class="form-control" placeholder="last name"
+                <input name="lastName" id="lastName" type="text" class="form-control" placeholder="last name"
                        value="${user.lastName}"
                        required/>
             </div>
@@ -88,7 +91,8 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Birhday</label>
             <div class="col-xs-10">
-                <input name="birthday" type="date" class="form-control" placeholder="birthday" value="${user.birthday}"
+                <input name="birthday" id="birthday" type="date" class="form-control" placeholder="birthday"
+                       value="${user.birthday}"
                        required/>
             </div>
         </div>
@@ -111,6 +115,29 @@
 </html>
 
 <script>
+    function validateForm(form) {
+        var login1 = document.getElementById("login").value;
+        var password1 = document.getElementById("password").value;
+        var confirmPassword1 = document.getElementById("confirmPassword").value;
+        var email1 = document.getElementById("email").value;
+        var firstName1 = document.getElementById("firstName").value;
+        var lastName1 = document.getElementById("lastName").value;
+        var birthday1 = document.getElementById("birthday").value;
+        var roleName1 = document.getElementById("roleName").value;
+
+        var login = form.getElementsByName("login").value;
+        var password = form.getElementsByName("password").value;
+        var confirmPassword = form.getElementsByName("confirmPassword").value;
+        var email = form.getElementsByName("email").value;
+        var firstName = form.getElementsByName("firstName").value;
+        var lastName = form.getElementsByName("lastName").value;
+        var birthday = form.getElementsByName("birthday").value;
+        var roleName = form.getElementsByName("roleName").value;
+
+        if (checkPasswordConfirm()) {
+            return true;
+        }
+    }
 
     function checkPasswordConfirm() {
         var password = document.getElementById("password").value;

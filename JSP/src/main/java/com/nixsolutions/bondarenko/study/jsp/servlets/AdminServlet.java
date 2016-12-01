@@ -129,8 +129,8 @@ public class AdminServlet extends HttpServlet {
                     user.setLogin(request.getParameter("login"));
                     user.setEmail(request.getParameter("email"));
                     user.setPassword(request.getParameter("password"));
-                    user.setFirstName(request.getParameter("first_name"));
-                    user.setLastName(request.getParameter("last_name"));
+                    user.setFirstName(request.getParameter("firstName"));
+                    user.setLastName(request.getParameter("lastName"));
                     user.setBirthday(Date.valueOf(request.getParameter("birthday")));
                     Role role = roleDao.findByName(request.getParameter("roleName"));
                     user.setRole(role);

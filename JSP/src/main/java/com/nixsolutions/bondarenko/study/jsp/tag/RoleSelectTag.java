@@ -32,7 +32,7 @@ public class RoleSelectTag extends TagSupport {
         Iterator<Role> roleIterator = roleList.iterator();
         try {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("<select required ");
+            stringBuilder.append("<select id=\"roleName\" required ");
             if (styleClass != null) {
                 stringBuilder.append("class=\"" + styleClass + "\"");
             }
