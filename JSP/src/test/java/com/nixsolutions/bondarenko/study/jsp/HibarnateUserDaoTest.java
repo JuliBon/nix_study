@@ -2,7 +2,7 @@ package com.nixsolutions.bondarenko.study.jsp;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateUserDao;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.Properties;
 
 import static junit.framework.Assert.assertEquals;
@@ -26,9 +25,8 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Yulya Bondarenko
  */
-public class JdbcUserDaoTest {
-
-    private UserDao userDao = new JdbcUserDao();
+public class HibarnateUserDaoTest {
+    private UserDao userDao = new HibernateUserDao();
     private static String dataSetsDir = "src/test/resources/test_data/";
 
     private User testUser = new User("nata", "54321", "nata@mail.ru",
@@ -97,21 +95,21 @@ public class JdbcUserDaoTest {
         checkActualEqualsToExpected("UserCreateExpectedDataSet");
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     public void testCreateUserNotUniqueLogin() throws Exception {
         testUser.setLogin("yulya");
         userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     public void testCreateUserNotUniqueEmail() throws Exception {
         testUser.setEmail("yulya@mail.ru");
         userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     public void testCreateUserNotExistingRole() throws Exception {
         testUser.setRole(new Role(100L));
         userDao.create(testUser);
@@ -147,14 +145,14 @@ public class JdbcUserDaoTest {
         checkActualEqualsToExpected("UserRemoveExpectedDataSet");
     }
 
-    @Test
+    @Test(expected = Exception.class)
     public void testRemoveUserNotExisting() throws Exception {
         testUser.setId(100L);
         userDao.remove(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     public void testUpdateUser() throws Exception {
         User user = userDao.findByLogin("yulya");
         user.setPassword("9999");
@@ -176,28 +174,28 @@ public class JdbcUserDaoTest {
         checkActualEqualsToExpected("InitialDataSet", actualTable);
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     public void testCreateUserLoginNull() throws Exception {
         testUser.setLogin(null);
         userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     public void testCreateUsetPasswordNull() throws Exception {
         testUser.setPassword(null);
         userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     public void testCreateUserEmailNull() throws Exception {
         testUser.setEmail(null);
         userDao.create(testUser);
         checkActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     public void testCreateUserRoleNull() throws Exception {
         testUser.setBirthday(null);
         userDao.create(testUser);

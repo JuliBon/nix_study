@@ -1,7 +1,7 @@
 package com.nixsolutions.bondarenko.study.jsp.servlets;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.UserDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcUserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import com.nixsolutions.bondarenko.study.jsp.user.library.UserLibraryRole;
 

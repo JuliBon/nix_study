@@ -1,8 +1,10 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.*;
+import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
+import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -16,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.Properties;
 
 import static junit.framework.Assert.assertEquals;
@@ -25,8 +26,8 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Yulya Bondarenko
  */
-public class JdbcRoleDaoTest {
-    private RoleDao roleDao = new JdbcRoleDao();
+public class HibernateRoleDaoTest {
+    private RoleDao roleDao = new HibernateRoleDao();
     private static String dataSetsDir = "src/test/resources/test_data/";
 
     @Before
@@ -57,7 +58,7 @@ public class JdbcRoleDaoTest {
     }
 
     private IDataSet getDataSet() throws Exception {
-        return new FlatXmlDataSet( new File(dataSetsDir + "InitialDataSet" + ".xml"),
+        return new FlatXmlDataSet(new File(dataSetsDir + "InitialDataSet" + ".xml"),
                 false);
     }
 
@@ -99,14 +100,19 @@ public class JdbcRoleDaoTest {
         Assertion.assertEquals(expectedTableUser, filteredActualTableUser);
     }
 
-    @Test(expected = SQLException.class)
+    @Test
     public void testCreateRole() throws Exception {
         roleDao.create(new Role(3L, "guest"));
         checkRoleActualEqualsToExpected("RoleCreateExpectedDataSet");
-
-        // try to create role with not unique name
-        roleDao.create(new Role(4L, "guest"));
     }
+
+    @Test
+    public void testCreateRoleBad() throws Exception {
+        // try to create role with not unique name
+        roleDao.create(new Role(4L, "admin"));
+        checkRoleActualEqualsToExpected("InitialDataSet");
+    }
+
 
     @Test
     public void testUpdateRole() throws Exception {
@@ -120,7 +126,7 @@ public class JdbcRoleDaoTest {
         checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void testRemoveRole() throws Exception {
         roleDao.remove(new Role(2L, "user"));
         checkUserAndRoleActualEqualsToExpected("InitialDataSet");

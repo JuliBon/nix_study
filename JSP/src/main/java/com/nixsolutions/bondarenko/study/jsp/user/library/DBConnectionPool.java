@@ -22,7 +22,7 @@ public class DBConnectionPool {
             basicDataSource.setPassword(dbProperties.getProperty("password"));
             basicDataSource.setUrl(dbProperties.getProperty("db.url"));
 
-            basicDataSource.setMaxTotal(20);
+            basicDataSource.setMaxTotal(-1);
             basicDataSource.setMaxOpenPreparedStatements(180);
         } catch (Exception e) {
             throw new RuntimeException(e);

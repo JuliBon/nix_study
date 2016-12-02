@@ -1,11 +1,24 @@
 package com.nixsolutions.bondarenko.study.jsp.user.library;
 
+import javax.persistence.*;
+
 /**
  * @author Yuliya Bondarenko
  */
+@Entity
+@Table( name = "Role")
 public class Role {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name="name", unique = true, nullable = false)
     private String name;
+
+    public Role(){
+
+    }
 
     public Role(Long id) {
         this.id = id;
