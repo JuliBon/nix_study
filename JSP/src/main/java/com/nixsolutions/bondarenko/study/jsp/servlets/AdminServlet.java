@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminServlet extends HttpServlet {
     private static final String ERROR_NOT_UNIQUE_LOGIN = "Error! User with this login already exists!";
@@ -84,11 +86,24 @@ public class AdminServlet extends HttpServlet {
         }
     }
 
+    private Map<String, UserFieldPattern> getUserFieldPatternMap() {
+        Map<String, UserFieldPattern> userFieldPatternMap = new HashMap<>();
+        userFieldPatternMap.put("login", UserFieldPattern.LOGIN_PATTERN);
+        userFieldPatternMap.put("password", UserFieldPattern.PASSWORD_PATTERN);
+        userFieldPatternMap.put("email", UserFieldPattern.EMAIL_PATTERN);
+        userFieldPatternMap.put("firstName", UserFieldPattern.FIRST_NAME_PATTERN);
+        userFieldPatternMap.put("lastName", UserFieldPattern.LAST_NAME_PATTERN);
+        userFieldPatternMap.put("birthday", UserFieldPattern.BIRTHDAY_PATTERN);
+        return userFieldPatternMap;
+    }
+
     private void showCreateUserPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("action", ACTION_CREATE_USER);
+        request.setAttribute("userFieldPatternMap", getUserFieldPatternMap());
         try {
             List<Role> roleList = findAllRoles();
             request.setAttribute("roleList", roleList);
+
             request.getRequestDispatcher("user_form.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("error", e);
@@ -98,6 +113,7 @@ public class AdminServlet extends HttpServlet {
 
     private void showEditUserPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("action", ACTION_EDIT_USER);
+        request.setAttribute("userFieldPatternMap", getUserFieldPatternMap());
 
         Long id = new Long(request.getParameter("id"));
         try {
@@ -142,7 +158,7 @@ public class AdminServlet extends HttpServlet {
                         Role role = roleDao.findByName(request.getParameter("roleName"));
                         user.setRole(role);
                         if (processUser(user, action, request, response)) {
-                            backToForm =false;
+                            backToForm = false;
 
                             List<User> userList = userDao.findAll();
                             request.setAttribute("userList", userList);
@@ -155,6 +171,7 @@ public class AdminServlet extends HttpServlet {
                         request.setAttribute("user", user);
                         List<Role> roleList = findAllRoles();
                         request.setAttribute("roleList", roleList);
+                        request.setAttribute("userFieldPatternMap", getUserFieldPatternMap());
                         request.getRequestDispatcher("user_form.jsp").forward(request, response);
                     }
                 } catch (Exception e) {

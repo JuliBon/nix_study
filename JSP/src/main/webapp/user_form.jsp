@@ -1,10 +1,10 @@
 <%@ page import="com.nixsolutions.bondarenko.study.jsp.servlets.AdminServlet" %>
 <%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.User" %>
 <%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.UserFieldPattern" %>
+<%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ex" uri="UserLibrary" %>
-
 
 <html>
 <head>
@@ -63,8 +63,8 @@
             <div class="col-xs-10">
                 <input name="login" type="text" class="form-control" placeholder="Login"
                        value="${user.login}" required
-                       pattern="^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$"
-                       title="3-15 characters, beginning with letter. \n Can include letters, numbers, dashes, and underscores."
+                       pattern="${userFieldPatternMap.get("login").getPattern()}"
+                       title="${userFieldPatternMap.get("login").getValidateTitle()}"
 
                        <c:if test="${!isCreate}">readonly="readonly"</c:if>  />
             </div>
@@ -74,8 +74,8 @@
             <div class="col-xs-10">
                 <input name="password" type="password" class="form-control" placeholder="password"
                        required
-                       pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
-                       title="at least one number and one uppercase and lowercase letter"
+                       pattern="${userFieldPatternMap.get("password").getPattern()}"
+                       title="${userFieldPatternMap.get("password").getValidateTitle()}"
                 />
             </div>
         </div>
@@ -84,8 +84,8 @@
             <div class="col-xs-10">
                 <input name="passwordConfirm" type="password" class="form-control" placeholder="confirm password"
                        required
-                       pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
-                       title="at least one number and one uppercase and lowercase letter"
+                       pattern="${userFieldPatternMap.get("password").getPattern()}"
+                       title="${userFieldPatternMap.get("password").getValidateTitle()}r"
                 />
             </div>
         </div>
@@ -94,7 +94,7 @@
             <div class="col-xs-10">
                 <input name="email" type="email" class="form-control" placeholder="email"
                        value="${user.email}" required
-                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                       pattern="${userFieldPatternMap.get("email").getPattern()}"
                 />
             </div>
         </div>
@@ -103,7 +103,8 @@
             <div class="col-xs-10">
                 <input name="firstName" type="text" class="form-control" placeholder="first name"
                        value="${user.firstName}" required
-                       pattern="[A-Za-z]+" title="one or more letters"
+                       pattern="${userFieldPatternMap.get("firstName").getPattern()}"
+                       title="${userFieldPatternMap.get("firstName").getValidateTitle()}"
                 />
             </div>
         </div>
@@ -112,7 +113,8 @@
             <div class="col-xs-10">
                 <input name="lastName" type="text" class="form-control" placeholder="last name"
                        value="${user.lastName}" required
-                       pattern="[A-Za-z]+" title="one or more letters"
+                       pattern="${userFieldPatternMap.get("lastName").getPattern()}"
+                       title="${userFieldPatternMap.get("lastName").getValidateTitle()}"
                 />
             </div>
         </div>
@@ -121,7 +123,8 @@
             <div class="col-xs-10">
                 <input name="birthday" type="date" class="form-control" placeholder="birthday"
                        value="${user.birthday}" required
-                       pattern="^\d{4}-(0\d|10|11|12)-([012]\d|30|31)$" title="YYYY-DD-MM"
+                       pattern="${userFieldPatternMap.get("birthday").getPattern()}"
+                       title="${userFieldPatternMap.get("birthday").getValidateTitle()}"
                 />
             </div>
         </div>
