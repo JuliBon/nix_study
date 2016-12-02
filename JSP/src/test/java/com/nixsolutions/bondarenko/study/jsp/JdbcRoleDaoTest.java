@@ -120,7 +120,7 @@ public class JdbcRoleDaoTest {
         checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = SQLException.class)
     public void testRemoveRole() throws Exception {
         roleDao.remove(new Role(2L, "user"));
         checkUserAndRoleActualEqualsToExpected("InitialDataSet");

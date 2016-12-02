@@ -13,6 +13,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.HibernateException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -106,11 +107,10 @@ public class HibernateRoleDaoTest {
         checkRoleActualEqualsToExpected("RoleCreateExpectedDataSet");
     }
 
-    @Test
+    @Test  (expected = HibernateException.class)
     public void testCreateRoleBad() throws Exception {
         // try to create role with not unique name
         roleDao.create(new Role(4L, "admin"));
-        checkRoleActualEqualsToExpected("InitialDataSet");
     }
 
 
@@ -120,22 +120,19 @@ public class HibernateRoleDaoTest {
         checkUserAndRoleActualEqualsToExpected("RoleUpdateExpectedDataSet");
     }
 
-    @Test
+    @Test (expected = HibernateException.class)
     public void testUpdateRoleNotExisting() throws Exception {
         roleDao.update(new Role(100L, "system-admin"));
-        checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test
+    @Test  (expected = HibernateException.class)
     public void testRemoveRole() throws Exception {
         roleDao.remove(new Role(2L, "user"));
-        checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test
+    @Test  (expected = HibernateException.class)
     public void testRemoveRoleNotExisting() throws Exception {
         roleDao.remove(new Role(100L, "guest"));
-        checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
     @Test

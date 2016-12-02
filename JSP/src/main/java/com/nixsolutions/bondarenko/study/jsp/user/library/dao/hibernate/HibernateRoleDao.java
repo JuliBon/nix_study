@@ -3,6 +3,7 @@ package com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -33,6 +34,7 @@ public class HibernateRoleDao implements RoleDao {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+            throw new HibernateException("Error while creating role", e);
         } finally {
             session.close();
         }
@@ -47,6 +49,7 @@ public class HibernateRoleDao implements RoleDao {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+            throw new HibernateException("Error while updating role", e);
         } finally {
             session.close();
         }
@@ -61,6 +64,7 @@ public class HibernateRoleDao implements RoleDao {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+            throw new HibernateException("Error while removing role", e);
         } finally {
             session.close();
         }
@@ -69,10 +73,17 @@ public class HibernateRoleDao implements RoleDao {
     @Override
     public Role findByName(String name) {
         Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(Role.class);
-        Role role = (Role) criteria.add(Restrictions.eq("name", name))
-                .uniqueResult();
-        session.close();
-        return role;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Role.class);
+            Role role = (Role) criteria.add(Restrictions.eq("name", name))
+                    .uniqueResult();
+            return role;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw new HibernateException("Error while searching role", e);
+        } finally {
+            session.close();
+        }
     }
 }

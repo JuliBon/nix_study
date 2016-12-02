@@ -38,8 +38,8 @@ public class AdminServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        userDao = new JdbcUserDao();
-        roleDao = new JdbcRoleDao();
+        userDao = new HibernateUserDao();
+        roleDao = new HibernateRoleDao();
     }
 
     @Override
@@ -146,6 +146,11 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("action", action);
                 try {
                     User user = new User();
+                    String idStr = request.getParameter("id");
+                    if (!idStr.isEmpty()) {
+                        user.setId(new Long(idStr));
+                    }
+
                     user.setLogin(request.getParameter("login"));
                     user.setEmail(request.getParameter("email"));
                     user.setPassword(request.getParameter("password"));

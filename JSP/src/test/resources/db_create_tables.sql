@@ -11,8 +11,8 @@ email VARCHAR(255) UNIQUE NOT NULL,
 firstName VARCHAR(255) NOT NULL,
 lastName VARCHAR(255) NOT NULL,
 birthday DATE NOT NULL,
-id_role INT NOT NULL,
-FOREIGN KEY (id_role) REFERENCES Role(id) ON DELETE NO ACTION
+id_role LONG NOT NULL,
+FOREIGN KEY (id_role) REFERENCES Role(id)
 );
 
 --INSERT into Role (id, name) VALUES (1, 'Admin');

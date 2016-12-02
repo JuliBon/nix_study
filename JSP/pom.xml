@@ -130,7 +130,7 @@
                         </goals>
                         <configuration>
                             <srcFiles>
-                                <srcFile>src/main/resources/db_create_tables.sql</srcFile>
+                                <srcFile>src/test/resources/db_create_tables.sql</srcFile>
                             </srcFiles>
                         </configuration>
                     </execution>
@@ -162,7 +162,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>log</directory>
+                            <directory>db</directory>
                         </fileset>
                     </filesets>
                 </configuration>

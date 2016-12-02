@@ -58,6 +58,7 @@
           onsubmit="return validateForm()">
         <input type="hidden" name="action"
                value="${action}">
+        <input type="hidden" name="id" value="${user.id}">
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
