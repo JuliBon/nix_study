@@ -19,8 +19,9 @@
         function validateForm() {
             var form = document.forms["userForm"];
             var password = form["password"].value;
-            var confirmPassword = form["confirmPassword"].value;
-            if (password != confirmPassword) {
+            var passwordConfirm = form["passwordConfirm"].value;
+            if (password != passwordConfirm) {
+                var errorMessageLabel = document.getElementById("errorMessageLabel");
                 errorMessageLabel.innerHTML = "Error! Passwords do not match!";
                 form["password"].focus();
                 return false;
@@ -60,58 +61,68 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
-                <input name="login" id="login" type="text" class="form-control" placeholder="Login"
+                <input name="login" type="text" class="form-control" placeholder="Login"
                        value="${user.login}" required
-                       pattern="^[a-z0-9_-]{3,15}$" title="3-15 letter word"
+                       pattern="^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$"
+                       title="3-15 characters, beginning with letter. \n Can include letters, numbers, dashes, and underscores."
+
                        <c:if test="${!isCreate}">readonly="readonly"</c:if>  />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Password</label>
             <div class="col-xs-10">
-                <input name="password" id="password" type="password" class="form-control" placeholder="password"
-                       required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
-                       title="at least one number and one uppercase and lowercase letter"/>
+                <input name="password" type="password" class="form-control" placeholder="password"
+                       required
+                       pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+                       title="at least one number and one uppercase and lowercase letter"
+                />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
-                <input id="confirmPassword" type="password" class="form-control" placeholder="confirm password"
-                       required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
-                       title="at least one number and one uppercase and lowercase letter"/>
+                <input name="passwordConfirm" type="password" class="form-control" placeholder="confirm password"
+                       required
+                       pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+                       title="at least one number and one uppercase and lowercase letter"
+                />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Email</label>
             <div class="col-xs-10">
-                <input name="email" id="email" type="email" class="form-control" placeholder="email"
+                <input name="email" type="email" class="form-control" placeholder="email"
                        value="${user.email}" required
-                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">First name</label>
             <div class="col-xs-10">
-                <input name="firstName" id="firstName" type="text" class="form-control" placeholder="first name"
+                <input name="firstName" type="text" class="form-control" placeholder="first name"
                        value="${user.firstName}" required
-                       pattern="[A-Za-z]+" title="one or more letters"/>
+                       pattern="[A-Za-z]+" title="one or more letters"
+                />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Last name</label>
             <div class="col-xs-10">
-                <input name="lastName" id="lastName" type="text" class="form-control" placeholder="last name"
+                <input name="lastName" type="text" class="form-control" placeholder="last name"
                        value="${user.lastName}" required
-                       pattern="[A-Za-z]+" title="one or more letters"/>
+                       pattern="[A-Za-z]+" title="one or more letters"
+                />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Birhday</label>
             <div class="col-xs-10">
-                <input name="birthday" id="birthday" type="date" class="form-control" placeholder="birthday"
+                <input name="birthday" type="date" class="form-control" placeholder="birthday"
                        value="${user.birthday}" required
-                       pattern="^\d{4}-(0\d|10|11|12)-([012]\d|30|31)$" title="YYYY-DD-MM"/>
+                       pattern="^\d{4}-(0\d|10|11|12)-([012]\d|30|31)$" title="YYYY-DD-MM"
+                />
             </div>
         </div>
         <div class="form-group row">
