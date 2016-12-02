@@ -4,6 +4,8 @@ import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateUserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcRoleDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcUserDao;
 
@@ -31,26 +33,6 @@ public class AdminServlet extends HttpServlet {
 
     private UserDao userDao;
     private RoleDao roleDao;
-
-    private boolean checkCurrentUserIsAdmin(HttpSession session) throws ServletException, IOException {
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser != null) {
-            User userByLogin;
-            try {
-                userByLogin = userDao.findByLogin(currentUser.getLogin());
-            } catch (Exception e) {
-                return false;
-            }
-            if (userByLogin != null) {
-                if (userByLogin.getPassword().equals(currentUser.getPassword())) {
-                    if (userByLogin.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
 
     @Override
@@ -85,6 +67,27 @@ public class AdminServlet extends HttpServlet {
                 findAllUsers(request, response);
             }
         }
+    }
+
+
+    private boolean checkCurrentUserIsAdmin(HttpSession session) throws ServletException, IOException {
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser != null) {
+            User userByLogin;
+            try {
+                userByLogin = userDao.findByLogin(currentUser.getLogin());
+            } catch (Exception e) {
+                return false;
+            }
+            if (userByLogin != null) {
+                if (userByLogin.getPassword().equals(currentUser.getPassword())) {
+                    if (userByLogin.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private Map<String, UserFieldPattern> getUserFieldPatternMap() {
