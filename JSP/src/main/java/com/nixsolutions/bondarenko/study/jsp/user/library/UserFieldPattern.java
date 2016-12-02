@@ -5,7 +5,7 @@ public enum UserFieldPattern {
             "3-15 characters, beginning with letter. Can include letters, numbers, dashes, and underscores."),
     PASSWORD_PATTERN("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$",
             "at least one number and one uppercase and lowercase letter"),
-    EMAIL_PATTERN("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$",
+    EMAIL_PATTERN("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$",
             ""),
     FIRST_NAME_PATTERN("[A-Za-z]+",
             "one or more letters"),
