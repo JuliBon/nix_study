@@ -1,8 +1,10 @@
 <%@ page import="com.nixsolutions.bondarenko.study.jsp.servlets.AdminServlet" %>
 <%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.User" %>
+<%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.UserFieldPattern" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="ex" uri="UserLibrary" %>
+
 
 <html>
 <head>
@@ -12,6 +14,19 @@
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/shared.css" rel="stylesheet">
     <link href="css/user.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        function validateForm() {
+            var form = document.forms["userForm"];
+            var password = form["password"].value;
+            var confirmPassword = form["confirmPassword"].value;
+            if (password != confirmPassword) {
+                errorMessageLabel.innerHTML = "Error! Passwords do not match!";
+                form["password"].focus();
+                return false;
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -37,8 +52,9 @@
     <c:if test="${message != null}">
         <div class="message">${message}</div>
     </c:if>
-    <form action="admin" class="form-user" method="post" id="createUserForm"
-          onsubmit="return checkPasswordConfirm()">
+
+    <form action="admin" class="form-user" method="post" id="userForm"
+          onsubmit="return validateForm()">
         <input type="hidden" name="action"
                value="${action}">
         <div class="form-group row">
@@ -46,6 +62,7 @@
             <div class="col-xs-10">
                 <input name="login" id="login" type="text" class="form-control" placeholder="Login"
                        value="${user.login}" required
+                       pattern="^[a-z0-9_-]{3,15}$" title="3-15 letter word"
                        <c:if test="${!isCreate}">readonly="readonly"</c:if>  />
             </div>
         </div>
@@ -53,47 +70,48 @@
             <label class="col-xs-2 col-form-label">Password</label>
             <div class="col-xs-10">
                 <input name="password" id="password" type="password" class="form-control" placeholder="password"
-                       required/>
+                       required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+                       title="at least one number and one uppercase and lowercase letter"/>
             </div>
         </div>
-
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
                 <input id="confirmPassword" type="password" class="form-control" placeholder="confirm password"
-                       required>
+                       required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+                       title="at least one number and one uppercase and lowercase letter"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Email</label>
             <div class="col-xs-10">
                 <input name="email" id="email" type="email" class="form-control" placeholder="email"
-                       value="${user.email}"
-                       required/>
+                       value="${user.email}" required
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">First name</label>
             <div class="col-xs-10">
                 <input name="firstName" id="firstName" type="text" class="form-control" placeholder="first name"
-                       value="${user.firstName}"
-                       required/>
+                       value="${user.firstName}" required
+                       pattern="[A-Za-z]+" title="one or more letters"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Last name</label>
             <div class="col-xs-10">
                 <input name="lastName" id="lastName" type="text" class="form-control" placeholder="last name"
-                       value="${user.lastName}"
-                       required/>
+                       value="${user.lastName}" required
+                       pattern="[A-Za-z]+" title="one or more letters"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Birhday</label>
             <div class="col-xs-10">
                 <input name="birthday" id="birthday" type="date" class="form-control" placeholder="birthday"
-                       value="${user.birthday}"
-                       required/>
+                       value="${user.birthday}" required
+                       pattern="^\d{4}-(0\d|10|11|12)-([012]\d|30|31)$" title="YYYY-DD-MM"/>
             </div>
         </div>
         <div class="form-group row">
@@ -113,41 +131,3 @@
 </div>
 </body>
 </html>
-
-<script>
-    function validateForm(form) {
-        var login1 = document.getElementById("login").value;
-        var password1 = document.getElementById("password").value;
-        var confirmPassword1 = document.getElementById("confirmPassword").value;
-        var email1 = document.getElementById("email").value;
-        var firstName1 = document.getElementById("firstName").value;
-        var lastName1 = document.getElementById("lastName").value;
-        var birthday1 = document.getElementById("birthday").value;
-        var roleName1 = document.getElementById("roleName").value;
-
-        var login = form.getElementsByName("login").value;
-        var password = form.getElementsByName("password").value;
-        var confirmPassword = form.getElementsByName("confirmPassword").value;
-        var email = form.getElementsByName("email").value;
-        var firstName = form.getElementsByName("firstName").value;
-        var lastName = form.getElementsByName("lastName").value;
-        var birthday = form.getElementsByName("birthday").value;
-        var roleName = form.getElementsByName("roleName").value;
-
-        if (checkPasswordConfirm()) {
-            return true;
-        }
-    }
-
-    function checkPasswordConfirm() {
-        var password = document.getElementById("password").value;
-        var confirmPassword = document.getElementById("confirmPassword").value;
-        var errorMessageLabel = document.getElementById("errorMessageLabel");
-        if (password != confirmPassword) {
-            errorMessageLabel.innerHTML = "Error! Passwords do not match!";
-            return false;
-        } else {
-            return true;
-        }
-    }
-</script>
