@@ -28,7 +28,7 @@ public abstract class UserAbstractValidator implements UserValidator {
 
     protected void validateEmail(String email, Map<String, String> errorMap) throws Exception{
         if (!email.matches(UserFieldPattern.EMAIL_PATTERN.getPattern())) {
-            errorMap.put("email", "Email does not matches request format: "
+            errorMap.put("email", "Wrong email format"
                     + UserFieldPattern.EMAIL_PATTERN.getValidateTitle());
         }
     }

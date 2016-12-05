@@ -1,14 +1,14 @@
 package com.nixsolutions.bondarenko.study.jsp.servlets;
 
 import com.nixsolutions.bondarenko.study.jsp.UserFieldPattern;
+import com.nixsolutions.bondarenko.study.jsp.dao.hibernate.HibernateRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.hibernate.HibernateUserDao;
 import com.nixsolutions.bondarenko.study.jsp.dto.DtoConvert;
 import com.nixsolutions.bondarenko.study.jsp.dto.UserDto;
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import com.nixsolutions.bondarenko.study.jsp.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.jsp.dao.UserDao;
-import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcRoleDao;
-import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcUserDao;
 import com.nixsolutions.bondarenko.study.jsp.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.jsp.validate.UserUpdateValidator;
 import com.nixsolutions.bondarenko.study.jsp.validate.UserValidator;
@@ -39,8 +39,8 @@ public class AdminServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        userDao = new JdbcUserDao();
-        roleDao = new JdbcRoleDao();
+        userDao = new HibernateUserDao();
+        roleDao = new HibernateRoleDao();
     }
 
     @Override
@@ -166,8 +166,6 @@ public class AdminServlet extends HttpServlet {
                 );
 
                 try {
-                    boolean backToForm = true;
-
                     UserValidator userValidator;
                     Map<String, String> errorMap = new HashMap<>();
                     if (action.equals(ACTION_CREATE_USER)) {
@@ -179,18 +177,15 @@ public class AdminServlet extends HttpServlet {
                     }
 
                     if (errorMap.isEmpty()) {
-                        if (processUser(userDto, action, request, response)) {
-                            backToForm = false;
+                        processUser(userDto, action, request, response);
 
-                            List<User> userList = userDao.findAll();
-                            request.setAttribute("userList", userList);
-                            request.getRequestDispatcher("admin.jsp").forward(request, response);
-                        } else {
-                            backToForm = true;
-                        }
-                    }
-                    if (backToForm) {
+                        List<User> userList = userDao.findAll();
+                        request.setAttribute("userList", userList);
+                        request.getRequestDispatcher("admin.jsp").forward(request, response);
+
+                    } else {
                         request.setAttribute("userDto", userDto);
+                        request.setAttribute("errorMap", errorMap);
                         List<Role> roleList = findAllRoles();
                         request.setAttribute("roleList", roleList);
                         request.setAttribute("userFieldPatternMap", getUserFieldPatternMap());
@@ -201,6 +196,18 @@ public class AdminServlet extends HttpServlet {
                     request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
             }
+        }
+    }
+
+    private void processUser(UserDto userDto, String action, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        User user = DtoConvert.convertToUser(userDto, roleDao);
+
+        if (action.equals(ACTION_CREATE_USER)) {
+            userDao.create(user);
+            request.setAttribute("message", MESSAGE_USER_CREATED);
+        } else if (action.equals(ACTION_EDIT_USER)) {
+            userDao.update(user);
+            request.setAttribute("message", MESSAGE_USER_UPDATED);
         }
     }
 
@@ -239,24 +246,5 @@ public class AdminServlet extends HttpServlet {
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         }
-    }
-
-    private boolean processUser(UserDto userDto, String action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            User user = DtoConvert.convertToUser(userDto, roleDao);
-
-            if (action.equals(ACTION_CREATE_USER)) {
-                userDao.create(user);
-                request.setAttribute("message", MESSAGE_USER_CREATED);
-            } else if (action.equals(ACTION_EDIT_USER)) {
-                userDao.update(user);
-                request.setAttribute("message", MESSAGE_USER_UPDATED);
-            }
-        } catch (Exception e) {
-            request.setAttribute("error", e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return false;
-        }
-        return true;
     }
 }

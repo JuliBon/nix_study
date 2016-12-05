@@ -5,12 +5,13 @@
     margin-right: auto;
     margin-left: auto;
 }
+
 .helloContainer {
     width: 250px;
     margin-top: 50px;
- }
+}
 
-.errorContainer{
+.errorContainer {
     margin-top: 50px;
     text-align: center;
 
@@ -30,4 +31,14 @@
     padding: 10px 0;
     width: 100%;
     TEXT-ALIGN: RIGHT;
+}
+
+.fieldError {
+    font-size: 9pt;
+    color: red;
+    text-align: center;
+}
+
+.form-control{
+    margin-bottom: 0 !important;
 }

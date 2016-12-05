@@ -68,6 +68,7 @@
                        title="${userFieldPatternMap.get("login").getValidateTitle()}"
 
                        <c:if test="${!isCreate}">readonly="readonly"</c:if>  />
+                <div class="fieldError">${errorMap.get("login")}</div>
             </div>
         </div>
         <div class="form-group row">
@@ -78,6 +79,7 @@
                        pattern="${userFieldPatternMap.get("password").getPattern()}"
                        title="${userFieldPatternMap.get("password").getValidateTitle()}"
                 />
+                <div class="fieldError">${errorMap.get("password")}</div>
             </div>
         </div>
         <div class="form-group row">
@@ -97,6 +99,7 @@
                        value="${userDto.email}" required
                        pattern="${userFieldPatternMap.get("email").getPattern()}"
                 />
+                <div class="fieldError">${errorMap.get("email")}</div>
             </div>
         </div>
         <div class="form-group row">
@@ -107,6 +110,7 @@
                        pattern="${userFieldPatternMap.get("firstName").getPattern()}"
                        title="${userFieldPatternMap.get("firstName").getValidateTitle()}"
                 />
+                <div class="fieldError">${errorMap.get("firstName")}</div>
             </div>
         </div>
         <div class="form-group row">
@@ -117,6 +121,7 @@
                        pattern="${userFieldPatternMap.get("lastName").getPattern()}"
                        title="${userFieldPatternMap.get("lastName").getValidateTitle()}"
                 />
+                <div class="fieldError">${errorMap.get("lastName")}</div>
             </div>
         </div>
         <div class="form-group row">
@@ -124,9 +129,10 @@
             <div class="col-xs-10">
                 <input name="birthday" type="date" class="form-control" placeholder="birthday"
                        value="${userDto.birthday}" required
-                       pattern="${userFieldPatternMap.get("birthday").getPattern()}"
-                       title="${userFieldPatternMap.get("birthday").getValidateTitle()}"
+                       <%--pattern="${userFieldPatternMap.get("birthday").getPattern()}"
+                       title="${userFieldPatternMap.get("birthday").getValidateTitle()}"--%>
                 />
+                <div class="fieldError">${errorMap.get("birthday")}</div>
             </div>
         </div>
         <div class="form-group row">
