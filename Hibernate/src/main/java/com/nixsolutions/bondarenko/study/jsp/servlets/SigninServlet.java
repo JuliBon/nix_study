@@ -4,7 +4,6 @@ import com.nixsolutions.bondarenko.study.jsp.dao.UserDao;
 import com.nixsolutions.bondarenko.study.jsp.dao.hibernate.HibernateUserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import com.nixsolutions.bondarenko.study.jsp.user.library.UserLibraryRole;
-import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcUserDao;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

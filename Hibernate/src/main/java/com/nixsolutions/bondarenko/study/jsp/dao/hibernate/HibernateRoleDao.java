@@ -4,7 +4,6 @@ import com.nixsolutions.bondarenko.study.jsp.HibernateUtil;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import com.nixsolutions.bondarenko.study.jsp.dao.RoleDao;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -13,7 +12,7 @@ public class HibernateRoleDao implements RoleDao {
     private SessionFactory sessionFactory;
 
     public HibernateRoleDao() {
-        sessionFactory = HibernateUtil.getSessioFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     @Override

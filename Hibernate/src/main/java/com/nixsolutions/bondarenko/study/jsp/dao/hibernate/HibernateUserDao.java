@@ -4,7 +4,6 @@ import com.nixsolutions.bondarenko.study.jsp.HibernateUtil;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import com.nixsolutions.bondarenko.study.jsp.dao.UserDao;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -16,7 +15,7 @@ public class HibernateUserDao implements UserDao {
     private SessionFactory sessionFactory;
 
     public HibernateUserDao() {
-        sessionFactory = HibernateUtil.getSessioFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     @Override
