@@ -58,12 +58,12 @@
           onsubmit="return validateForm()">
         <input type="hidden" name="action"
                value="${action}">
-        <input type="hidden" name="id" value="${user.id}">
+        <input type="hidden" name="id" value="${userDto.id}">
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
                 <input name="login" type="text" class="form-control" placeholder="Login"
-                       value="${user.login}" required
+                       value="${userDto.login}" required
                        pattern="${userFieldPatternMap.get("login").getPattern()}"
                        title="${userFieldPatternMap.get("login").getValidateTitle()}"
 
@@ -94,7 +94,7 @@
             <label class="col-xs-2 col-form-label">Email</label>
             <div class="col-xs-10">
                 <input name="email" type="email" class="form-control" placeholder="email"
-                       value="${user.email}" required
+                       value="${userDto.email}" required
                        pattern="${userFieldPatternMap.get("email").getPattern()}"
                 />
             </div>
@@ -103,7 +103,7 @@
             <label class="col-xs-2 col-form-label">First name</label>
             <div class="col-xs-10">
                 <input name="firstName" type="text" class="form-control" placeholder="first name"
-                       value="${user.firstName}" required
+                       value="${userDto.firstName}" required
                        pattern="${userFieldPatternMap.get("firstName").getPattern()}"
                        title="${userFieldPatternMap.get("firstName").getValidateTitle()}"
                 />
@@ -113,7 +113,7 @@
             <label class="col-xs-2 col-form-label">Last name</label>
             <div class="col-xs-10">
                 <input name="lastName" type="text" class="form-control" placeholder="last name"
-                       value="${user.lastName}" required
+                       value="${userDto.lastName}" required
                        pattern="${userFieldPatternMap.get("lastName").getPattern()}"
                        title="${userFieldPatternMap.get("lastName").getValidateTitle()}"
                 />
@@ -123,7 +123,7 @@
             <label class="col-xs-2 col-form-label">Birhday</label>
             <div class="col-xs-10">
                 <input name="birthday" type="date" class="form-control" placeholder="birthday"
-                       value="${user.birthday}" required
+                       value="${userDto.birthday}" required
                        pattern="${userFieldPatternMap.get("birthday").getPattern()}"
                        title="${userFieldPatternMap.get("birthday").getValidateTitle()}"
                 />
@@ -133,7 +133,7 @@
             <label class="col-xs-2 col-form-label">Role</label>
             <div class="col-xs-10">
                 <ex:RoleDropDownSelect roleList="${roleList}" styleClass="form-control"
-                                       selectedRoleName="${user.role.name}"/>
+                                       selectedRoleName="${userDto.roleName}"/>
             </div>
         </div>
         <div class="form-group row">

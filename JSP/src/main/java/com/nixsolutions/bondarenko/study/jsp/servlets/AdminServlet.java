@@ -1,12 +1,17 @@
 package com.nixsolutions.bondarenko.study.jsp.servlets;
 
 import com.nixsolutions.bondarenko.study.jsp.UserFieldPattern;
+import com.nixsolutions.bondarenko.study.jsp.dto.DtoConvert;
+import com.nixsolutions.bondarenko.study.jsp.dto.UserDto;
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import com.nixsolutions.bondarenko.study.jsp.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.jsp.dao.UserDao;
 import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcRoleDao;
 import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.validate.UserCreateValidator;
+import com.nixsolutions.bondarenko.study.jsp.validate.UserUpdateValidator;
+import com.nixsolutions.bondarenko.study.jsp.validate.UserValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,18 +26,15 @@ import java.util.List;
 import java.util.Map;
 
 public class AdminServlet extends HttpServlet {
-    private static final String ERROR_NOT_UNIQUE_LOGIN = "Error! User with this login already exists!";
-    private static final String ERROR_NOT_UNIQUE_EMAIL = "Error! This email is already attached to another user";
     private static final String MESSAGE_USER_CREATED = "New user has been created";
     private static final String MESSAGE_USER_UPDATED = "User has been updated";
 
-    public static final String ACTION_DELETE_USER = "delete";
-    public static final String ACTION_CREATE_USER = "create_user";
-    public static final String ACTION_EDIT_USER = "edit_user";
+    private static final String ACTION_DELETE_USER = "delete";
+    private static final String ACTION_CREATE_USER = "create_user";
+    private static final String ACTION_EDIT_USER = "edit_user";
 
     private UserDao userDao;
     private RoleDao roleDao;
-
 
     @Override
     public void init() throws ServletException {
@@ -120,9 +122,16 @@ public class AdminServlet extends HttpServlet {
 
         Long id = new Long(request.getParameter("id"));
         try {
-
             User user = userDao.findById(id);
-            request.setAttribute("user", user);
+            UserDto userDto = new UserDto(user.getId().toString(),
+                    user.getLogin(), "", "",
+                    user.getEmail(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getBirthday().toString(),
+                    user.getRole().getName());
+
+            request.setAttribute("userDto", userDto);
 
             List<Role> roleList = findAllRoles();
             request.setAttribute("roleList", roleList);
@@ -133,39 +142,44 @@ public class AdminServlet extends HttpServlet {
         }
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!checkCurrentUserIsAdmin(request.getSession())) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
             request.getSession().setAttribute("currentUser", request.getSession().getAttribute("currentUser"));
-
             String action = request.getParameter("action");
             if (action != null) {
                 request.setAttribute("action", action);
+
+                UserDto userDto = new UserDto(
+                        request.getParameter("id"),
+                        request.getParameter("login"),
+                        request.getParameter("password"),
+                        request.getParameter("passwordConfirm"),
+                        request.getParameter("email"),
+                        request.getParameter("firstName"),
+                        request.getParameter("lastName"),
+                        request.getParameter("birthday"),
+                        request.getParameter("roleName")
+                );
+
                 try {
-                    User user = new User();
-                    String idStr = request.getParameter("id");
-                    if (!idStr.isEmpty()) {
-                        user.setId(new Long(idStr));
+                    boolean backToForm = true;
+
+                    UserValidator userValidator;
+                    Map<String, String> errorMap = new HashMap<>();
+                    if (action.equals(ACTION_CREATE_USER)) {
+                        userValidator = new UserCreateValidator(userDao);
+                        errorMap = userValidator.validate(userDto);
+                    } else if (action.equals(ACTION_EDIT_USER)) {
+                        userValidator = new UserUpdateValidator(userDao);
+                        errorMap = userValidator.validate(userDto);
                     }
 
-                    user.setLogin(request.getParameter("login"));
-                    user.setEmail(request.getParameter("email"));
-                    user.setPassword(request.getParameter("password"));
-                    user.setFirstName(request.getParameter("firstName"));
-                    user.setLastName(request.getParameter("lastName"));
-                    String birthday = request.getParameter("birthday");
-                    String passwordConfirm = request.getParameter("passwordConfirm");
-
-                    request.setAttribute("birthday", birthday); //set now because of further reset if form is not correct
-
-                    boolean backToForm = true;
-                    if (validateUser(user, passwordConfirm, birthday, action, request)) {
-                        user.setBirthday(Date.valueOf(birthday));
-                        Role role = roleDao.findByName(request.getParameter("roleName"));
-                        user.setRole(role);
-                        if (processUser(user, action, request, response)) {
+                    if (errorMap.isEmpty()) {
+                        if (processUser(userDto, action, request, response)) {
                             backToForm = false;
 
                             List<User> userList = userDao.findAll();
@@ -176,7 +190,7 @@ public class AdminServlet extends HttpServlet {
                         }
                     }
                     if (backToForm) {
-                        request.setAttribute("user", user);
+                        request.setAttribute("userDto", userDto);
                         List<Role> roleList = findAllRoles();
                         request.setAttribute("roleList", roleList);
                         request.setAttribute("userFieldPatternMap", getUserFieldPatternMap());
@@ -227,8 +241,10 @@ public class AdminServlet extends HttpServlet {
         }
     }
 
-    private boolean processUser(User user, String action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private boolean processUser(UserDto userDto, String action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            User user = DtoConvert.convertToUser(userDto, roleDao);
+
             if (action.equals(ACTION_CREATE_USER)) {
                 userDao.create(user);
                 request.setAttribute("message", MESSAGE_USER_CREATED);
@@ -239,72 +255,6 @@ public class AdminServlet extends HttpServlet {
         } catch (Exception e) {
             request.setAttribute("error", e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateUser(User user, String passwordConfirm, String birthday, String action, HttpServletRequest request) throws Exception {
-        User userByEmail = userDao.findByEmail(user.getEmail());
-
-        if (action.equals(ACTION_CREATE_USER)) {
-            //validate login format
-            if (!user.getLogin().matches(UserFieldPattern.LOGIN_PATTERN.getPattern())) {
-                request.setAttribute("error_message", "Login does not matches request format: "
-                        + UserFieldPattern.LOGIN_PATTERN.getValidateTitle());
-                return false;
-            }
-            //whether login is not unique
-            if (userDao.findByLogin(user.getLogin()) != null) {
-                request.setAttribute("error_message", ERROR_NOT_UNIQUE_LOGIN);
-                return false;
-            }
-            //whether email is not unique
-            if (userByEmail != null) {  //if there is already a user with this email
-                request.setAttribute("error_message", ERROR_NOT_UNIQUE_EMAIL);
-                return false;
-            }
-        } else if (action.equals(ACTION_EDIT_USER)) {
-            //if user with this email was found and he is not this user
-            if (userByEmail != null) {  //
-                if (!userByEmail.getLogin().equals(user.getLogin())) {
-                    request.setAttribute("error_message", ERROR_NOT_UNIQUE_EMAIL);
-                    return false;
-                }
-            }
-        }
-        //validate email format
-        if (!user.getEmail().matches(UserFieldPattern.EMAIL_PATTERN.getPattern())) {
-            request.setAttribute("error_message", "Email does not matches request format: "
-                    + UserFieldPattern.EMAIL_PATTERN.getValidateTitle());
-            return false;
-        }
-        //validate passwords
-        if (!user.getPassword().matches(UserFieldPattern.PASSWORD_PATTERN.getPattern())) {
-            request.setAttribute("error_message", "Password does not matches request format: "
-                    + UserFieldPattern.PASSWORD_PATTERN.getValidateTitle());
-            return false;
-        }
-        if (!user.getPassword().equals(passwordConfirm)) {
-            request.setAttribute("error_message", "Passwords do not match!");
-            return false;
-        }
-        //validate first name format
-        if (!user.getFirstName().matches(UserFieldPattern.FIRST_NAME_PATTERN.getPattern())) {
-            request.setAttribute("error_message", "First name does not matches request format: "
-                    + UserFieldPattern.FIRST_NAME_PATTERN.getValidateTitle());
-            return false;
-        }
-        //validate last name format
-        if (!user.getLastName().matches(UserFieldPattern.LAST_NAME_PATTERN.getPattern())) {
-            request.setAttribute("error_message", "Last name does not matches request format: "
-                    + UserFieldPattern.LAST_NAME_PATTERN.getValidateTitle());
-            return false;
-        }
-        //validate birthday format
-        if (!birthday.matches(UserFieldPattern.BIRTHDAY_PATTERN.getPattern())) {
-            request.setAttribute("error_message", "Birthday does not matches request format: "
-                    + UserFieldPattern.BIRTHDAY_PATTERN.getValidateTitle());
             return false;
         }
         return true;
