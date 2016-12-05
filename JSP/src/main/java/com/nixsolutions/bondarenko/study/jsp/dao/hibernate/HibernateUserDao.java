@@ -1,14 +1,12 @@
 package com.nixsolutions.bondarenko.study.jsp.dao.hibernate;
 
+import com.nixsolutions.bondarenko.study.jsp.HibernateUtil;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import com.nixsolutions.bondarenko.study.jsp.dao.UserDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
@@ -18,11 +16,11 @@ public class HibernateUserDao implements UserDao {
     private SessionFactory sessionFactory;
 
     public HibernateUserDao() {
-        sessionFactory = SessionFactoryManager.getInstance().getSessioFactory();
+        sessionFactory = HibernateUtil.getSessioFactory();
     }
 
     @Override
-    public void create(User user) {
+    public void create(User user) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
@@ -30,14 +28,14 @@ public class HibernateUserDao implements UserDao {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new HibernateException("Error while creating user", e);
+            throw new Exception("Error while creating user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public void update(User user){
+    public void update(User user) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
@@ -45,14 +43,14 @@ public class HibernateUserDao implements UserDao {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new HibernateException("Error while updating user", e);
+            throw new Exception("Error while updating user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public void remove(User user) throws HibernateException {
+    public void remove(User user) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
@@ -60,30 +58,30 @@ public class HibernateUserDao implements UserDao {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new HibernateException("Error while removing user", e);
+            throw new Exception("Error while removing user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll() throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
             List<User> list = session.createCriteria(User.class).list();
             session.getTransaction().commit();
             return list;
-        } catch (HibernateException e){
+        } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new HibernateException("Error while searching user user", e);
+            throw new Exception("Error while searching user user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(Long id) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
@@ -94,14 +92,14 @@ public class HibernateUserDao implements UserDao {
             return user;
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new HibernateException("Error while searching user user", e);
+            throw new Exception("Error while searching user user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public User findByLogin(String login) {
+    public User findByLogin(String login) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
@@ -112,14 +110,14 @@ public class HibernateUserDao implements UserDao {
             return user;
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new HibernateException("Error while searching user user", e);
+            throw new Exception("Error while searching user user", e);
         } finally {
             session.close();
         }
     }
 
     @Override
-    public User findByEmail(String email) {
+    public User findByEmail(String email) throws Exception {
         Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
@@ -130,7 +128,7 @@ public class HibernateUserDao implements UserDao {
             return user;
         } catch (Exception e) {
             session.getTransaction().rollback();
-            throw new HibernateException("Error while searching user user", e);
+            throw new Exception("Error while searching user user", e);
         } finally {
             session.close();
         }
