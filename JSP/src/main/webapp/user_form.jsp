@@ -21,9 +21,9 @@
             var password = form["password"].value;
             var passwordConfirm = form["passwordConfirm"].value;
             if (password != passwordConfirm) {
-                var errorMessageLabel = document.getElementById("errorMessageLabel");
-                errorMessageLabel.innerHTML = "Error! Passwords do not match!";
-                form["password"].focus();
+                var confPassMassage = document.getElementById("confirmPasswordErrorMessage");
+                confPassMassage.innerHTML = "Passwords do not match!";
+                form["passwordConfirm"].focus();
                 return false;
             }
         }
@@ -47,9 +47,6 @@
         </c:choose>
     </h3>
 
-    <c:if test="${error_message != null}">
-        <div class="message errorMessage" id="errorMessageLabel">${error_message}</div>
-    </c:if>
     <c:if test="${message != null}">
         <div class="message">${message}</div>
     </c:if>
@@ -90,6 +87,7 @@
                        pattern="${userFieldPatternMap.get("password").getPattern()}"
                        title="${userFieldPatternMap.get("password").getValidateTitle()}r"
                 />
+                <div class="fieldError" id="confirmPasswordErrorMessage"></div>
             </div>
         </div>
         <div class="form-group row">
@@ -129,8 +127,8 @@
             <div class="col-xs-10">
                 <input name="birthday" type="date" class="form-control" placeholder="birthday"
                        value="${userDto.birthday}" required
-                       <%--pattern="${userFieldPatternMap.get("birthday").getPattern()}"
-                       title="${userFieldPatternMap.get("birthday").getValidateTitle()}"--%>
+                pattern="${userFieldPatternMap.get("birthday").getPattern()}"
+                title="${userFieldPatternMap.get("birthday").getValidateTitle()}"
                 />
                 <div class="fieldError">${errorMap.get("birthday")}</div>
             </div>

@@ -15,14 +15,7 @@ public class HibernateRoleDao implements RoleDao {
     private SessionFactory sessionFactory;
 
     public HibernateRoleDao() {
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure()
-                .build();
-        try {
-            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        } catch (Exception e) {
-            StandardServiceRegistryBuilder.destroy(registry);
-        }
+        sessionFactory = SessionFactoryManager.getInstance().getSessioFactory();
     }
 
     @Override
