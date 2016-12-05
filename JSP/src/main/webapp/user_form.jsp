@@ -1,6 +1,6 @@
 <%@ page import="com.nixsolutions.bondarenko.study.jsp.servlets.AdminServlet" %>
 <%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.User" %>
-<%@ page import="com.nixsolutions.bondarenko.study.jsp.user.library.UserFieldPattern" %>
+<%@ page import="com.nixsolutions.bondarenko.study.jsp.UserFieldPattern" %>
 <%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

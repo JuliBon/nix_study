@@ -1,13 +1,12 @@
 package com.nixsolutions.bondarenko.study.jsp.servlets;
 
+import com.nixsolutions.bondarenko.study.jsp.UserFieldPattern;
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateRoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateUserDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcRoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcUserDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcUserDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,8 +37,8 @@ public class AdminServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        userDao = new HibernateUserDao();
-        roleDao = new HibernateRoleDao();
+        userDao = new JdbcUserDao();
+        roleDao = new JdbcRoleDao();
     }
 
     @Override

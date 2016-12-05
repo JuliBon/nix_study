@@ -1,9 +1,9 @@
 package com.nixsolutions.bondarenko.study.jsp.servlets;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateUserDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.UserDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
 import com.nixsolutions.bondarenko.study.jsp.user.library.UserLibraryRole;
+import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcUserDao;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SigninServlet extends HttpServlet {
     private static String SIGNIN_ERROR_MESSAGE = "Incorrect login or password!";
 
-    private UserDao userDao = new HibernateUserDao();
+    private UserDao userDao = new JdbcUserDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

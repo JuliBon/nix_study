@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library;
+package com.nixsolutions.bondarenko.study.jsp;
 
 import java.io.IOException;
 import java.io.InputStream;

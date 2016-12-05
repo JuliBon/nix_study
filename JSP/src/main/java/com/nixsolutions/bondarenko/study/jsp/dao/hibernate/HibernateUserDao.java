@@ -1,7 +1,7 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate;
+package com.nixsolutions.bondarenko.study.jsp.dao.hibernate;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.User;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.UserDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.UserDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

@@ -1,7 +1,7 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc;
+package com.nixsolutions.bondarenko.study.jsp.dao.jdbc;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
-import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
+import com.nixsolutions.bondarenko.study.jsp.DBConnectionPool;
+import com.nixsolutions.bondarenko.study.jsp.PropertySource;
 
 import java.sql.Connection;
 import java.sql.SQLException;

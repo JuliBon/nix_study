@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library;
+package com.nixsolutions.bondarenko.study.jsp;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 

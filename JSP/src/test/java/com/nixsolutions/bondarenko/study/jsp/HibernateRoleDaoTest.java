@@ -1,9 +1,7 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
-import com.nixsolutions.bondarenko.study.jsp.user.library.DBConnectionPool;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.hibernate.HibernateRoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.PropertySource;
+import com.nixsolutions.bondarenko.study.jsp.dao.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.hibernate.HibernateRoleDao;
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;

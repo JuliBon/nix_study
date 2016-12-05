@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library;
+package com.nixsolutions.bondarenko.study.jsp;
 
 public enum UserFieldPattern {
     LOGIN_PATTERN("^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$",

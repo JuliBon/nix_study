@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.jsp.user.library.dao;
+package com.nixsolutions.bondarenko.study.jsp.dao;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.Role;
 

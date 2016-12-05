@@ -1,8 +1,8 @@
 package com.nixsolutions.bondarenko.study.jsp;
 
 import com.nixsolutions.bondarenko.study.jsp.user.library.*;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.RoleDao;
-import com.nixsolutions.bondarenko.study.jsp.user.library.dao.jdbc.JdbcRoleDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.RoleDao;
+import com.nixsolutions.bondarenko.study.jsp.dao.jdbc.JdbcRoleDao;
 import org.dbunit.Assertion;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
