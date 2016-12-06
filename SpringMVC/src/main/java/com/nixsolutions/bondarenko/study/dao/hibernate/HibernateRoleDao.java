@@ -11,9 +11,16 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class HibernateRoleDao implements RoleDao {
+
     private SessionFactory sessionFactory;
     private final Logger logger;
+
+    public HibernateRoleDao() {
+        logger = LoggerFactory.getLogger(this.getClass());
+        sessionFactory = HibernateUtil.getSessionFactory();
+    }
 
     public HibernateRoleDao(SessionFactory sessionFactory) {
         logger = LoggerFactory.getLogger(this.getClass());

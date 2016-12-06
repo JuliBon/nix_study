@@ -20,7 +20,7 @@
     <form:form action="/signin" method="post" class="form-signin" modelAttribute="user">
         <h2 class="form-signin-heading">Please sing in</h2>
         <c:if test="${errorMessage != null}">
-            <div class="errorMessage">${errorMessage}</div>
+            <div class="fieldError">${errorMessage}</div>
         </c:if>
         <label for="inputLogin" class="sr-only">Login: </label>
         <input name="login" id="inputLogin" class="form-control" placeholder="Login" required autofocus

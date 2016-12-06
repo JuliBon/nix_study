@@ -1,5 +1,8 @@
 package com.nixsolutions.bondarenko.study.user.library;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -8,7 +11,6 @@ import java.sql.Date;
 /**
  * @author Yuliya Bondarenko
  */
-
 @Entity
 @org.hibernate.annotations.Entity(dynamicUpdate = true)
 @Table(name = "User")
