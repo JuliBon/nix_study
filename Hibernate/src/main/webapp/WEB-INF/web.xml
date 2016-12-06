@@ -8,15 +8,15 @@
 
     <servlet>
         <servlet-name>Signin</servlet-name>
-        <servlet-class>com.nixsolutions.bondarenko.study.jsp.servlets.SigninServlet</servlet-class>
+        <servlet-class>com.nixsolutions.bondarenko.study.servlets.SigninServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Logout</servlet-name>
-        <servlet-class>com.nixsolutions.bondarenko.study.jsp.servlets.LogoutServlet</servlet-class>
+        <servlet-class>com.nixsolutions.bondarenko.study.servlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Admin</servlet-name>
-        <servlet-class>com.nixsolutions.bondarenko.study.jsp.servlets.AdminServlet</servlet-class>
+        <servlet-class>com.nixsolutions.bondarenko.study.servlets.AdminServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

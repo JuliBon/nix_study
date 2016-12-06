@@ -18,7 +18,7 @@
         <property name="show_sql">false</property>
         <property name="hbm2ddl.auto">create</property>
 
-        <mapping class="com.nixsolutions.bondarenko.study.jsp.user.library.Role"/>
-        <mapping class="com.nixsolutions.bondarenko.study.jsp.user.library.User"/>
+        <mapping class="com.nixsolutions.bondarenko.study.user.library.Role"/>
+        <mapping class="com.nixsolutions.bondarenko.study.user.library.User"/>
     </session-factory>
 </hibernate-configuration>

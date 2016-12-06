@@ -4,7 +4,7 @@
     <short-name>User Library TLD</short-name>
     <tag>
         <name>UserTable</name>
-        <tag-class>com.nixsolutions.bondarenko.study.jsp.tag.UserTableTag</tag-class>
+        <tag-class>com.nixsolutions.bondarenko.study.tag.UserTableTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>userList</name>
@@ -15,7 +15,7 @@
 
     <tag>
         <name>RoleDropDownSelect</name>
-        <tag-class>com.nixsolutions.bondarenko.study.jsp.tag.RoleSelectTag</tag-class>
+        <tag-class>com.nixsolutions.bondarenko.study.tag.RoleSelectTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>roleList</name>
