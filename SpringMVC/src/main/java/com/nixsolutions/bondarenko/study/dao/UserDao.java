@@ -1,6 +1,6 @@
 package com.nixsolutions.bondarenko.study.dao;
 
-import com.nixsolutions.bondarenko.study.user.library.User;
+import com.nixsolutions.bondarenko.study.entity.User;
 
 import java.util.List;
 

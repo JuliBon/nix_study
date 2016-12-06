@@ -1,8 +1,8 @@
 package com.nixsolutions.bondarenko.study.dao.hibernate;
 
-import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.HibernateUtil;
-import com.nixsolutions.bondarenko.study.user.library.Role;
+import com.nixsolutions.bondarenko.study.dao.RoleDao;
+import com.nixsolutions.bondarenko.study.entity.Role;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

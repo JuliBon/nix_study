@@ -1,7 +1,4 @@
-package com.nixsolutions.bondarenko.study.user.library;
-
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+package com.nixsolutions.bondarenko.study.entity;
 
 import javax.persistence.*;
 import javax.persistence.Entity;

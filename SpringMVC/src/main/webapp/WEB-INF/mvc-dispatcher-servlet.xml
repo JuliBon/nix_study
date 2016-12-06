@@ -22,7 +22,7 @@
         </property>
     </bean>
 
-    <bean id="currentUser" class="com.nixsolutions.bondarenko.study.user.library.User" scope="session">
+    <bean id="currentUser" class="com.nixsolutions.bondarenko.study.entity.User" scope="session">
         <aop:scoped-proxy/>
     </bean>
 

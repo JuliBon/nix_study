@@ -1,7 +1,7 @@
 package com.nixsolutions.bondarenko.study.tag;
 
-import com.nixsolutions.bondarenko.study.user.library.Role;
-import com.nixsolutions.bondarenko.study.user.library.UserLibraryRole;
+import com.nixsolutions.bondarenko.study.entity.Role;
+import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;

@@ -1,6 +1,6 @@
 package com.nixsolutions.bondarenko.study.dao;
 
-import com.nixsolutions.bondarenko.study.user.library.Role;
+import com.nixsolutions.bondarenko.study.entity.Role;
 
 import java.sql.SQLException;
 

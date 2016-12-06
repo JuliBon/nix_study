@@ -1,7 +1,7 @@
 package com.nixsolutions.bondarenko.study.model;
 
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
-import com.nixsolutions.bondarenko.study.user.library.User;
+import com.nixsolutions.bondarenko.study.entity.User;
 
 import java.sql.Date;
 

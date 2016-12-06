@@ -1,6 +1,6 @@
 package com.nixsolutions.bondarenko.study.dao.hibernate;
 
-import com.nixsolutions.bondarenko.study.user.library.User;
+import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -9,7 +9,6 @@ import org.hibernate.TransactionException;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

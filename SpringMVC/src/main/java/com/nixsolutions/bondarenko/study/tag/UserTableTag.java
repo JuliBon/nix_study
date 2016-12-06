@@ -1,6 +1,6 @@
 package com.nixsolutions.bondarenko.study.tag;
 
-import com.nixsolutions.bondarenko.study.user.library.User;
+import com.nixsolutions.bondarenko.study.entity.User;
 
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;

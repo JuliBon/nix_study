@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.user.library;
+package com.nixsolutions.bondarenko.study.entity;
 
 public enum UserLibraryRole {
     USER(2L, "User"),

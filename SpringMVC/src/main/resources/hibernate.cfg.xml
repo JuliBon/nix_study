@@ -18,7 +18,7 @@
 
         <property name="show_sql">false</property>
 
-        <mapping class="com.nixsolutions.bondarenko.study.user.library.Role"/>
-        <mapping class="com.nixsolutions.bondarenko.study.user.library.User"/>
+        <mapping class="com.nixsolutions.bondarenko.study.entity.Role"/>
+        <mapping class="com.nixsolutions.bondarenko.study.entity.User"/>
     </session-factory>
 </hibernate-configuration>
