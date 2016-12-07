@@ -17,7 +17,7 @@
 
 <body>
 <div class="container">
-    <form:form action="/signin" method="post" class="form-signin" modelAttribute="user">
+    <form:form action="/login" method="post" class="form-signin" modelAttribute="user">
         <div class="centerLabel"><h2 class="form-signin-heading">Please sing in</h2></div>
         <c:if test="${errorMessage != null}">
             <div class="fieldError">${errorMessage}</div>

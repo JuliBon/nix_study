@@ -14,29 +14,28 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 
-public class SigninController {
+public class LoginController {
     @Autowired
     private UserDao userDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap model) {
-        return "redirect: signin";
+        return "redirect: login";
     }
 
-    @RequestMapping(value = "/signin", method = RequestMethod.GET)
-    public String signin(ModelMap model) {
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(ModelMap model) {
         model.addAttribute("user", new User());
-        return "signin";
+        return "login";
     }
 
-    @RequestMapping(value = "/signin", method = RequestMethod.POST)
-    public ModelAndView signin(@ModelAttribute("user") User user, Model model) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ModelAndView login(@ModelAttribute("user") User user, Model model) {
         try {
             boolean incorrectLoginOrPassword = false;
             User userByLogin = userDao.findByLogin(user.getLogin());
             if (userByLogin != null) {
                 if (userByLogin.getPassword().equals(user.getPassword())) {
-                    model.addAttribute("currentUser", userByLogin);
                     if (userByLogin.getRole().getName().equals(UserLibraryRole.USER.getName())) {
                         return new ModelAndView("home", model.asMap());
                     } else if (userByLogin.getRole().getName().equals(UserLibraryRole.ADMIN.getName())) {
@@ -56,14 +55,12 @@ public class SigninController {
             model.addAttribute("error", e);
             return new ModelAndView("error", model.asMap());
         }
-        return new ModelAndView("signin", model.asMap());
+        return new ModelAndView("login", model.asMap());
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(ModelMap model) {
-
-        model.addAttribute("currentUser", new User());
-        return "signin";
+        return "login";
     }
 }
 
