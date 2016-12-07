@@ -1,0 +1,1052 @@
+Index: SpringMVC/src/main/webapp/WEB-INF/web.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- SpringMVC/src/main/webapp/WEB-INF/web.xml	(revision Local version)
++++ SpringMVC/src/main/webapp/WEB-INF/web.xml	(revision Shelved version)
+@@ -16,6 +16,15 @@
+         <url-pattern>/</url-pattern>
+     </servlet-mapping>
+ 
++    <servlet>
++        <servlet-name>BotDetect Captcha</servlet-name>
++        <servlet-class>com.captcha.botdetect.web.servlet.CaptchaServlet</servlet-class>
++    </servlet>
++    <servlet-mapping>
++        <servlet-name>BotDetect Captcha</servlet-name>
++        <url-pattern>/botdetectcaptcha</url-pattern>
++    </servlet-mapping>
++
+     <context-param>
+         <param-name>contextConfigLocation</param-name>
+         <param-value>/WEB-INF/mvc-dispatcher-servlet.xml</param-value>
+Index: SpringMVC/src/main/webapp/WEB-INF/pages/user_form.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- SpringMVC/src/main/webapp/WEB-INF/pages/user_form.jsp	(revision Local version)
++++ SpringMVC/src/main/webapp/WEB-INF/pages/user_form.jsp	(revision Shelved version)
+@@ -3,6 +3,8 @@
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib prefix="ex" uri="UserLibrary" %>
+ <%@ taglib prefix="forms" uri="http://www.springframework.org/tags/form" %>
++<%@taglib prefix="botDetect" uri="https://captcha.com/java/jsp"%>
++<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+ 
+ <html>
+ <head>
+@@ -46,6 +48,7 @@
+             </c:when>
+             <c:when test="${action.equals(\"edit_user\")}">
+                 <c:set var="isEdit" value="true" scope="page"/>
++                <c:set var="readonly" value="true" scope="page"/>
+                 <c:set var="formAction" value="/admin/edit" scope="page"/>
+                 Edit user
+             </c:when>
+@@ -66,81 +69,53 @@
+         <div class="form-group row">
+             <label class="col-xs-2 col-form-label">Login</label>
+             <div class="col-xs-10">
+-                <input name="login" type="text" class="form-control" placeholder="Login"
+-                       value="${user.login}" required
+-                       pattern="${userFieldPatternMap.get("login").getPattern()}"
+-                       title="${userFieldPatternMap.get("login").getValidateTitle()}"
+-
+-                       <c:if test="${isEdit}">readonly="readonly"</c:if> />
+-                <div class="fieldError">${errorMap.get("login")}</div>
++                <forms:input path="login" cssClass="form-control" title="Login" readonly="${readonly}" value="${user.login}"/>
++                <form:errors path="name" cssClass="incorrect"/>
++                <%--<div class="fieldError">${errorMap.get("login")}</div>--%>
+             </div>
+         </div>
+ 
+         <div class="form-group row">
+             <label class="col-xs-2 col-form-label">Password</label>
+             <div class="col-xs-10">
+-                <input name="password" type="password" id="password" class="form-control"
+-                       placeholder="password"
+-                       required
+-                       pattern="${userFieldPatternMap.get("password").getPattern()}"
+-                       title="${userFieldPatternMap.get("password").getValidateTitle()}"
+-                />
+-                <div class="fieldError">${errorMap.get("password")}</div>
++                <forms:input path="password" cssClass="form-control" title="password" value="${user.password}"/>
++                <form:errors path="password" cssClass="incorrect"/>
+             </div>
+         </div>
+         <div class="form-group row">
+             <label class="col-xs-2 col-form-label">Confirm password</label>
+             <div class="col-xs-10">
+-                <input name="passwordConfirm" type="password" id="passwordConfirm" class="form-control"
+-                       placeholder="confirm password"
+-                       required
+-                       pattern="${userFieldPatternMap.get("password").getPattern()}"
+-                       title="${userFieldPatternMap.get("password").getValidateTitle()}r"
+-                />
+-                <div class="fieldError" id="confirmPasswordErrorMessage"></div>
++                <forms:input path="passwordConfirm" cssClass="form-control" title="confirm password" value="${user.passwordConfirm}"/>
++                <form:errors path="passwordConfirm" cssClass="incorrect"/>
+             </div>
+         </div>
+         <div class="form-group row">
+             <label class="col-xs-2 col-form-label">Email</label>
+             <div class="col-xs-10">
+-                <input name="email" type="email" class="form-control" placeholder="email"
+-                       value="${user.email}" required
+-                       pattern="${userFieldPatternMap.get("email").getPattern()}"
+-                />
+-                <div class="fieldError">${errorMap.get("email")}</div>
++                <forms:input path="email" cssClass="form-control" title="email" value="${user.email}"/>
++                <form:errors path="email" cssClass="incorrect"/>
+             </div>
+         </div>
+         <div class="form-group row">
+             <label class="col-xs-2 col-form-label">First name</label>
+             <div class="col-xs-10">
+-                <input name="firstName" type="text" class="form-control" placeholder="first name"
+-                       value="${user.firstName}" required
+-                       pattern="${userFieldPatternMap.get("firstName").getPattern()}"
+-                       title="${userFieldPatternMap.get("firstName").getValidateTitle()}"
+-                />
+-                <div class="fieldError">${errorMap.get("firstName")}</div>
++                <forms:input path="firstName" cssClass="form-control" title="first name" value="${user.firstName}"/>
++                <form:errors path="firstName" cssClass="incorrect"/>
+             </div>
+         </div>
+         <div class="form-group row">
+             <label class="col-xs-2 col-form-label">Last name</label>
+             <div class="col-xs-10">
+-                <input name="lastName" type="text" class="form-control" placeholder="last name"
+-                       value="${user.lastName}" required
+-                       pattern="${userFieldPatternMap.get("lastName").getPattern()}"
+-                       title="${userFieldPatternMap.get("lastName").getValidateTitle()}"
+-                />
+-                <div class="fieldError">${errorMap.get("lastName")}</div>
++                <forms:input path="lastName" cssClass="form-control" title="last name" value="${user.lastName}"/>
++                <form:errors path="lastName" cssClass="incorrect"/>
+             </div>
+         </div>
+         <div class="form-group row">
+             <label class="col-xs-2 col-form-label">Birhday</label>
+             <div class="col-xs-10">
+-                <input name="birthday" type="date" class="form-control" placeholder="birthday"
+-                       value="${user.birthday}" required
+-                       pattern="${userFieldPatternMap.get("birthday").getPattern()}"
+-                       title="${userFieldPatternMap.get("birthday").getValidateTitle()}"
+-                />
+-                <div class="fieldError">${errorMap.get("birthday")}</div>
++
++                <forms:input type="date" path="birthday" cssClass="form-control" title="birthday" value="${user.birthday}"/>
++                <form:errors path="birthday" cssClass="incorrect"/>
+             </div>
+         </div>
+ 
+@@ -148,11 +123,30 @@
+             <div class="form-group row">
+                 <label class="col-xs-2 col-form-label">Role</label>
+                 <div class="col-xs-10">
+-                    <ex:RoleDropDownSelect roleNameList="${roleNameList}" styleClass="form-control"
+-                                           selectedRoleName="${user.roleName}"/>
++<%--                    <form:select path="roleName">
++                        <forms:options>
++                            <forms:option value="User" selected="selected"/>
++                            <forms:option value="Admin"/>
++                        </forms:options>
++                    </form:select>--%>
++<%--                    <ex:RoleDropDownSelect roleNameList="${roleNameList}" styleClass="form-control"
++                                           selectedRoleName="${user.roleName}"/>--%>
+                 </div>
+             </div>
+         </c:if>
++
++        <c:if test="${!user_form.captchaVerified}">
++            <label for="captchaCode" class="prompt">Retype the characters from the picture:</label>
++            <botDetect:captcha id="springFormCaptcha"
++                               userInputID="captchaCode"
++                               codeLength="3"
++                               imageWidth="150"
++                               imageStyle="GRAFFITI2" />
++            <div class="validationDiv">
++                <input id="captchaCode" type="text" name="captchaCode" value="${message.captchaCode}"/><br>
++                <form:errors path="captchaCode" cssClass="incorrect"/>
++            </div>
++        </c:if>
+ 
+         <div class="form-group row">
+             <div class="btns-center">
+Index: SpringMVC/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- SpringMVC/pom.xml	(revision Local version)
++++ SpringMVC/pom.xml	(revision Shelved version)
+@@ -6,12 +6,33 @@
+     <packaging>war</packaging>
+     <version>1.0-SNAPSHOT</version>
+ 
++
++    <repositories>
++        <repository>
++            <id>captcha</id>
++            <name>BotDetect Captcha Repository</name>
++            <url>https://git.captcha.com/maven.git/blob_plain/HEAD:/</url>
++        </repository>
++    </repositories>
++
+     <properties>
+         <spring.version>4.3.4.RELEASE</spring.version>
+         <spring.securiry>3.1.4.RELEASE</spring.securiry>
+     </properties>
+ 
+     <dependencies>
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>org.springframework.web.servlet</artifactId>
++            <version>3.2.1.RELEASE</version>
++        </dependency>
++
++        <dependency>
++            <groupId>com.captcha</groupId>
++            <artifactId>botdetect-jsf20</artifactId>
++            <version>4.0.beta1</version>
++        </dependency>
++
+         <dependency>
+             <groupId>org.springframework</groupId>
+             <artifactId>spring-core</artifactId>
+Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserUpdateValidator.java
+===================================================================
+--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserUpdateValidator.java	(revision Shelved version)
++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserUpdateValidator.java	(revision Shelved version)
+@@ -0,0 +1,56 @@
++package com.nixsolutions.bondarenko.study.spring_validator;
++
++import com.nixsolutions.bondarenko.study.UserFieldPattern;
++import com.nixsolutions.bondarenko.study.dao.UserDao;
++import com.nixsolutions.bondarenko.study.entity.User;
++import com.nixsolutions.bondarenko.study.model.UserModel;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.validation.Errors;
++import org.springframework.validation.Validator;
++
++public class UserUpdateValidator extends UserAbstractValidator implements Validator {
++    @Autowired
++    private UserDao userDao;
++
++    @Override
++    public boolean supports(Class<?> aClass) {
++        return UserModel.class.isAssignableFrom(aClass);
++    }
++
++    @Override
++    public void validate(Object object, Errors errors) {
++        UserModel userModel = (UserModel) object;
++        validateEmail(userModel.getEmail(), errors);
++        validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
++        validateFirstName(userModel.getFirstName(), errors);
++        validateLastName(userModel.getLastName(), errors);
++        validateBirthday(userModel.getBirthday(), errors);
++    }
++
++    private void validatePassword(String password, String passwordConfirm, Errors errors) {
++        if (!password.matches(UserFieldPattern.PASSWORD_PATTERN.getPattern())) {
++            errors.rejectValue("password", "Password does not matches request format: "
++                    + UserFieldPattern.PASSWORD_PATTERN.getValidateTitle());
++            return;
++        }
++        if (!password.equals(passwordConfirm)) {
++            errors.rejectValue("password", "Passwords do not match!");
++        }
++    }
++
++    protected void validateEmail(String email, String login, Errors errors) {
++        super.validateEmail(email, errors);
++
++        try {
++            User userByEmail = userDao.findByEmail(email);
++            if (userByEmail != null) {  //if user with this email was found and he is not this user
++                if (!userByEmail.getLogin().equals(login)) {
++                    errors.rejectValue("password", ERROR_NOT_UNIQUE_EMAIL);
++                }
++            }
++        } catch (Exception e) {
++            throw new RuntimeException(e);
++        }
++    }
++
++}
+\ No newline at end of file
+Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/controller/RegisterController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/controller/RegisterController.java	(revision Local version)
++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/controller/RegisterController.java	(revision Shelved version)
+@@ -3,7 +3,6 @@
+ import com.nixsolutions.bondarenko.study.UserFieldPattern;
+ import com.nixsolutions.bondarenko.study.dao.RoleDao;
+ import com.nixsolutions.bondarenko.study.dao.UserDao;
+-import com.nixsolutions.bondarenko.study.entity.Role;
+ import com.nixsolutions.bondarenko.study.entity.User;
+ import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
+ import com.nixsolutions.bondarenko.study.model.ModelConvert;
+@@ -18,8 +17,6 @@
+ import org.springframework.web.bind.annotation.RequestMethod;
+ import org.springframework.web.servlet.ModelAndView;
+ 
+-import java.util.ArrayList;
+-import java.util.List;
+ import java.util.Map;
+ 
+ @Controller
+@@ -38,6 +35,7 @@
+         modelMap.put("action", ACTION_REGISTER_USER);
+         modelMap.put("userFieldPatternMap", userFieldPatternMap);
+         try {
++            modelMap.addAttribute("user", new UserModel());
+             return new ModelAndView("user_form", modelMap);
+         } catch (Exception e) {
+             modelMap.addAttribute("error", e);
+Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserAbstractValidator.java
+===================================================================
+--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserAbstractValidator.java	(revision Shelved version)
++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserAbstractValidator.java	(revision Shelved version)
+@@ -0,0 +1,59 @@
++package com.nixsolutions.bondarenko.study.spring_validator;
++
++import com.captcha.botdetect.web.servlet.Captcha;
++import com.nixsolutions.bondarenko.study.UserFieldPattern;
++import org.springframework.validation.Errors;
++
++import javax.servlet.http.HttpServletRequest;
++import javax.servlet.http.HttpSession;
++
++public abstract class UserAbstractValidator {
++    String ERROR_NOT_UNIQUE_LOGIN = "User with this login already exists";
++    String ERROR_NOT_UNIQUE_EMAIL = "This email is already attached to another user";
++
++    protected void validateFirstName(String firstName, Errors errors) {
++        if (!firstName.matches(UserFieldPattern.FIRST_NAME_PATTERN.getPattern())) {
++            errors.rejectValue("firstName", "First name does not matches request format: "
++                    + UserFieldPattern.FIRST_NAME_PATTERN.getValidateTitle());
++        }
++    }
++
++    protected void validateLastName(String lastName, Errors errors) {
++        if (!lastName.matches(UserFieldPattern.LAST_NAME_PATTERN.getPattern())) {
++            errors.rejectValue("lastName", "Last name does not matches request format: "
++                    + UserFieldPattern.LAST_NAME_PATTERN.getValidateTitle());
++        }
++    }
++
++    protected void validateBirthday(String birthday, Errors errors) {
++        if (!birthday.matches(UserFieldPattern.BIRTHDAY_PATTERN.getPattern())) {
++            errors.rejectValue("birthday", "Birthday does not matches request format: "
++                    + UserFieldPattern.BIRTHDAY_PATTERN.getValidateTitle());
++        }
++    }
++
++    protected void validateEmail(String email, Errors errors) {
++        if (!email.matches(UserFieldPattern.EMAIL_PATTERN.getPattern())) {
++            errors.rejectValue("email", "Wrong email format"
++                    + UserFieldPattern.EMAIL_PATTERN.getValidateTitle());
++        }
++    }
++
++    protected boolean isCaptchaValid(HttpServletRequest request, String captchaCode) {
++        HttpSession session = request.getSession();
++        if ((session != null) && (session.getAttribute("captchaVerified") != null)) {
++            return true;
++        }
++        Captcha captcha = Captcha.load(request, "springFormCaptcha");
++        boolean isHuman = captcha.validate(captchaCode);
++        if (isHuman) {
++            if (session == null) {
++                session = request.getSession(true);
++            }
++            session.setAttribute("captchaVerified", true);
++            return true;
++        } else {
++            return false;
++        }
++    }
++}
+Index: SpringMVC/captcha1.patch
+===================================================================
+--- SpringMVC/captcha1.patch	(revision Shelved version)
++++ SpringMVC/captcha1.patch	(revision Shelved version)
+@@ -0,0 +1,528 @@
++Index: SpringMVC/src/main/webapp/WEB-INF/web.xml
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- SpringMVC/src/main/webapp/WEB-INF/web.xml	(revision 18a4a3fc25e24aad0e24c8208bf25f56238519f6)
+++++ SpringMVC/src/main/webapp/WEB-INF/web.xml	(revision )
++@@ -16,6 +16,15 @@
++         <url-pattern>/</url-pattern>
++     </servlet-mapping>
++ 
+++    <servlet>
+++        <servlet-name>BotDetect Captcha</servlet-name>
+++        <servlet-class>com.captcha.botdetect.web.servlet.CaptchaServlet</servlet-class>
+++    </servlet>
+++    <servlet-mapping>
+++        <servlet-name>BotDetect Captcha</servlet-name>
+++        <url-pattern>/botdetectcaptcha</url-pattern>
+++    </servlet-mapping>
+++
++     <context-param>
++         <param-name>contextConfigLocation</param-name>
++         <param-value>/WEB-INF/mvc-dispatcher-servlet.xml</param-value>
++Index: SpringMVC/src/main/webapp/WEB-INF/pages/user_form.jsp
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- SpringMVC/src/main/webapp/WEB-INF/pages/user_form.jsp	(revision 18a4a3fc25e24aad0e24c8208bf25f56238519f6)
+++++ SpringMVC/src/main/webapp/WEB-INF/pages/user_form.jsp	(revision )
++@@ -3,6 +3,8 @@
++ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
++ <%@ taglib prefix="ex" uri="UserLibrary" %>
++ <%@ taglib prefix="forms" uri="http://www.springframework.org/tags/form" %>
+++<%@taglib prefix="botDetect" uri="https://captcha.com/java/jsp"%>
+++<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
++ 
++ <html>
++ <head>
++@@ -46,6 +48,7 @@
++             </c:when>
++             <c:when test="${action.equals(\"edit_user\")}">
++                 <c:set var="isEdit" value="true" scope="page"/>
+++                <c:set var="readonly" value="true" scope="page"/>
++                 <c:set var="formAction" value="/admin/edit" scope="page"/>
++                 Edit user
++             </c:when>
++@@ -66,81 +69,53 @@
++         <div class="form-group row">
++             <label class="col-xs-2 col-form-label">Login</label>
++             <div class="col-xs-10">
++-                <input name="login" type="text" class="form-control" placeholder="Login"
++-                       value="${user.login}" required
++-                       pattern="${userFieldPatternMap.get("login").getPattern()}"
++-                       title="${userFieldPatternMap.get("login").getValidateTitle()}"
++-
++-                       <c:if test="${isEdit}">readonly="readonly"</c:if> />
++-                <div class="fieldError">${errorMap.get("login")}</div>
+++                <forms:input path="login" cssClass="form-control" title="Login" readonly="${readonly}" value="${user.login}"/>
+++                <form:errors path="name" cssClass="incorrect"/>
+++                <%--<div class="fieldError">${errorMap.get("login")}</div>--%>
++             </div>
++         </div>
++ 
++         <div class="form-group row">
++             <label class="col-xs-2 col-form-label">Password</label>
++             <div class="col-xs-10">
++-                <input name="password" type="password" id="password" class="form-control"
++-                       placeholder="password"
++-                       required
++-                       pattern="${userFieldPatternMap.get("password").getPattern()}"
++-                       title="${userFieldPatternMap.get("password").getValidateTitle()}"
++-                />
++-                <div class="fieldError">${errorMap.get("password")}</div>
+++                <forms:input path="password" cssClass="form-control" title="password" value="${user.password}"/>
+++                <form:errors path="password" cssClass="incorrect"/>
++             </div>
++         </div>
++         <div class="form-group row">
++             <label class="col-xs-2 col-form-label">Confirm password</label>
++             <div class="col-xs-10">
++-                <input name="passwordConfirm" type="password" id="passwordConfirm" class="form-control"
++-                       placeholder="confirm password"
++-                       required
++-                       pattern="${userFieldPatternMap.get("password").getPattern()}"
++-                       title="${userFieldPatternMap.get("password").getValidateTitle()}r"
++-                />
++-                <div class="fieldError" id="confirmPasswordErrorMessage"></div>
+++                <forms:input path="passwordConfirm" cssClass="form-control" title="confirm password" value="${user.passwordConfirm}"/>
+++                <form:errors path="passwordConfirm" cssClass="incorrect"/>
++             </div>
++         </div>
++         <div class="form-group row">
++             <label class="col-xs-2 col-form-label">Email</label>
++             <div class="col-xs-10">
++-                <input name="email" type="email" class="form-control" placeholder="email"
++-                       value="${user.email}" required
++-                       pattern="${userFieldPatternMap.get("email").getPattern()}"
++-                />
++-                <div class="fieldError">${errorMap.get("email")}</div>
+++                <forms:input path="email" cssClass="form-control" title="email" value="${user.email}"/>
+++                <form:errors path="email" cssClass="incorrect"/>
++             </div>
++         </div>
++         <div class="form-group row">
++             <label class="col-xs-2 col-form-label">First name</label>
++             <div class="col-xs-10">
++-                <input name="firstName" type="text" class="form-control" placeholder="first name"
++-                       value="${user.firstName}" required
++-                       pattern="${userFieldPatternMap.get("firstName").getPattern()}"
++-                       title="${userFieldPatternMap.get("firstName").getValidateTitle()}"
++-                />
++-                <div class="fieldError">${errorMap.get("firstName")}</div>
+++                <forms:input path="firstName" cssClass="form-control" title="first name" value="${user.firstName}"/>
+++                <form:errors path="firstName" cssClass="incorrect"/>
++             </div>
++         </div>
++         <div class="form-group row">
++             <label class="col-xs-2 col-form-label">Last name</label>
++             <div class="col-xs-10">
++-                <input name="lastName" type="text" class="form-control" placeholder="last name"
++-                       value="${user.lastName}" required
++-                       pattern="${userFieldPatternMap.get("lastName").getPattern()}"
++-                       title="${userFieldPatternMap.get("lastName").getValidateTitle()}"
++-                />
++-                <div class="fieldError">${errorMap.get("lastName")}</div>
+++                <forms:input path="lastName" cssClass="form-control" title="last name" value="${user.lastName}"/>
+++                <form:errors path="lastName" cssClass="incorrect"/>
++             </div>
++         </div>
++         <div class="form-group row">
++             <label class="col-xs-2 col-form-label">Birhday</label>
++             <div class="col-xs-10">
++-                <input name="birthday" type="date" class="form-control" placeholder="birthday"
++-                       value="${user.birthday}" required
++-                       pattern="${userFieldPatternMap.get("birthday").getPattern()}"
++-                       title="${userFieldPatternMap.get("birthday").getValidateTitle()}"
++-                />
++-                <div class="fieldError">${errorMap.get("birthday")}</div>
+++
+++                <forms:input type="date" path="birthday" cssClass="form-control" title="birthday" value="${user.birthday}"/>
+++                <form:errors path="birthday" cssClass="incorrect"/>
++             </div>
++         </div>
++ 
++@@ -148,11 +123,30 @@
++             <div class="form-group row">
++                 <label class="col-xs-2 col-form-label">Role</label>
++                 <div class="col-xs-10">
++-                    <ex:RoleDropDownSelect roleNameList="${roleNameList}" styleClass="form-control"
++-                                           selectedRoleName="${user.roleName}"/>
+++<%--                    <form:select path="roleName">
+++                        <forms:options>
+++                            <forms:option value="User" selected="selected"/>
+++                            <forms:option value="Admin"/>
+++                        </forms:options>
+++                    </form:select>--%>
+++<%--                    <ex:RoleDropDownSelect roleNameList="${roleNameList}" styleClass="form-control"
+++                                           selectedRoleName="${user.roleName}"/>--%>
++                 </div>
++             </div>
++         </c:if>
+++
+++        <c:if test="${!user_form.captchaVerified}">
+++            <label for="captchaCode" class="prompt">Retype the characters from the picture:</label>
+++            <botDetect:captcha id="springFormCaptcha"
+++                               userInputID="captchaCode"
+++                               codeLength="3"
+++                               imageWidth="150"
+++                               imageStyle="GRAFFITI2" />
+++            <div class="validationDiv">
+++                <input id="captchaCode" type="text" name="captchaCode" value="${message.captchaCode}"/><br>
+++                <form:errors path="captchaCode" cssClass="incorrect"/>
+++            </div>
+++        </c:if>
++ 
++         <div class="form-group row">
++             <div class="btns-center">
++Index: SpringMVC/pom.xml
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- SpringMVC/pom.xml	(revision 18a4a3fc25e24aad0e24c8208bf25f56238519f6)
+++++ SpringMVC/pom.xml	(revision )
++@@ -6,12 +6,33 @@
++     <packaging>war</packaging>
++     <version>1.0-SNAPSHOT</version>
++ 
+++
+++    <repositories>
+++        <repository>
+++            <id>captcha</id>
+++            <name>BotDetect Captcha Repository</name>
+++            <url>https://git.captcha.com/maven.git/blob_plain/HEAD:/</url>
+++        </repository>
+++    </repositories>
+++
++     <properties>
++         <spring.version>4.3.4.RELEASE</spring.version>
++         <spring.securiry>4.2.0.RELEASE</spring.securiry>
++     </properties>
++ 
++     <dependencies>
+++        <dependency>
+++            <groupId>org.springframework</groupId>
+++            <artifactId>org.springframework.web.servlet</artifactId>
+++            <version>3.2.1.RELEASE</version>
+++        </dependency>
+++
+++        <dependency>
+++            <groupId>com.captcha</groupId>
+++            <artifactId>botdetect-jsf20</artifactId>
+++            <version>4.0.beta1</version>
+++        </dependency>
+++
++         <dependency>
++             <groupId>org.springframework</groupId>
++             <artifactId>spring-core</artifactId>
++Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserUpdateValidator.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserUpdateValidator.java	(revision )
+++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserUpdateValidator.java	(revision )
++@@ -0,0 +1,56 @@
+++package com.nixsolutions.bondarenko.study.spring_validator;
+++
+++import com.nixsolutions.bondarenko.study.UserFieldPattern;
+++import com.nixsolutions.bondarenko.study.dao.UserDao;
+++import com.nixsolutions.bondarenko.study.entity.User;
+++import com.nixsolutions.bondarenko.study.model.UserModel;
+++import org.springframework.beans.factory.annotation.Autowired;
+++import org.springframework.validation.Errors;
+++import org.springframework.validation.Validator;
+++
+++public class UserUpdateValidator extends UserAbstractValidator implements Validator {
+++    @Autowired
+++    private UserDao userDao;
+++
+++    @Override
+++    public boolean supports(Class<?> aClass) {
+++        return UserModel.class.isAssignableFrom(aClass);
+++    }
+++
+++    @Override
+++    public void validate(Object object, Errors errors) {
+++        UserModel userModel = (UserModel) object;
+++        validateEmail(userModel.getEmail(), errors);
+++        validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
+++        validateFirstName(userModel.getFirstName(), errors);
+++        validateLastName(userModel.getLastName(), errors);
+++        validateBirthday(userModel.getBirthday(), errors);
+++    }
+++
+++    private void validatePassword(String password, String passwordConfirm, Errors errors) {
+++        if (!password.matches(UserFieldPattern.PASSWORD_PATTERN.getPattern())) {
+++            errors.rejectValue("password", "Password does not matches request format: "
+++                    + UserFieldPattern.PASSWORD_PATTERN.getValidateTitle());
+++            return;
+++        }
+++        if (!password.equals(passwordConfirm)) {
+++            errors.rejectValue("password", "Passwords do not match!");
+++        }
+++    }
+++
+++    protected void validateEmail(String email, String login, Errors errors) {
+++        super.validateEmail(email, errors);
+++
+++        try {
+++            User userByEmail = userDao.findByEmail(email);
+++            if (userByEmail != null) {  //if user with this email was found and he is not this user
+++                if (!userByEmail.getLogin().equals(login)) {
+++                    errors.rejectValue("password", ERROR_NOT_UNIQUE_EMAIL);
+++                }
+++            }
+++        } catch (Exception e) {
+++            throw new RuntimeException(e);
+++        }
+++    }
+++
+++}
++\ No newline at end of file
++Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/controller/RegisterController.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/controller/RegisterController.java	(revision 18a4a3fc25e24aad0e24c8208bf25f56238519f6)
+++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/controller/RegisterController.java	(revision )
++@@ -3,7 +3,6 @@
++ import com.nixsolutions.bondarenko.study.UserFieldPattern;
++ import com.nixsolutions.bondarenko.study.dao.RoleDao;
++ import com.nixsolutions.bondarenko.study.dao.UserDao;
++-import com.nixsolutions.bondarenko.study.entity.Role;
++ import com.nixsolutions.bondarenko.study.entity.User;
++ import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
++ import com.nixsolutions.bondarenko.study.model.ModelConvert;
++@@ -18,8 +17,6 @@
++ import org.springframework.web.bind.annotation.RequestMethod;
++ import org.springframework.web.servlet.ModelAndView;
++ 
++-import java.util.ArrayList;
++-import java.util.List;
++ import java.util.Map;
++ 
++ @Controller
++@@ -38,6 +35,7 @@
++         modelMap.put("action", ACTION_REGISTER_USER);
++         modelMap.put("userFieldPatternMap", userFieldPatternMap);
++         try {
+++            modelMap.addAttribute("user", new UserModel());
++             return new ModelAndView("user_form", modelMap);
++         } catch (Exception e) {
++             modelMap.addAttribute("error", e);
++Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserAbstractValidator.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserAbstractValidator.java	(revision )
+++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserAbstractValidator.java	(revision )
++@@ -0,0 +1,59 @@
+++package com.nixsolutions.bondarenko.study.spring_validator;
+++
+++import com.captcha.botdetect.web.servlet.Captcha;
+++import com.nixsolutions.bondarenko.study.UserFieldPattern;
+++import org.springframework.validation.Errors;
+++
+++import javax.servlet.http.HttpServletRequest;
+++import javax.servlet.http.HttpSession;
+++
+++public abstract class UserAbstractValidator {
+++    String ERROR_NOT_UNIQUE_LOGIN = "User with this login already exists";
+++    String ERROR_NOT_UNIQUE_EMAIL = "This email is already attached to another user";
+++
+++    protected void validateFirstName(String firstName, Errors errors) {
+++        if (!firstName.matches(UserFieldPattern.FIRST_NAME_PATTERN.getPattern())) {
+++            errors.rejectValue("firstName", "First name does not matches request format: "
+++                    + UserFieldPattern.FIRST_NAME_PATTERN.getValidateTitle());
+++        }
+++    }
+++
+++    protected void validateLastName(String lastName, Errors errors) {
+++        if (!lastName.matches(UserFieldPattern.LAST_NAME_PATTERN.getPattern())) {
+++            errors.rejectValue("lastName", "Last name does not matches request format: "
+++                    + UserFieldPattern.LAST_NAME_PATTERN.getValidateTitle());
+++        }
+++    }
+++
+++    protected void validateBirthday(String birthday, Errors errors) {
+++        if (!birthday.matches(UserFieldPattern.BIRTHDAY_PATTERN.getPattern())) {
+++            errors.rejectValue("birthday", "Birthday does not matches request format: "
+++                    + UserFieldPattern.BIRTHDAY_PATTERN.getValidateTitle());
+++        }
+++    }
+++
+++    protected void validateEmail(String email, Errors errors) {
+++        if (!email.matches(UserFieldPattern.EMAIL_PATTERN.getPattern())) {
+++            errors.rejectValue("email", "Wrong email format"
+++                    + UserFieldPattern.EMAIL_PATTERN.getValidateTitle());
+++        }
+++    }
+++
+++    protected boolean isCaptchaValid(HttpServletRequest request, String captchaCode) {
+++        HttpSession session = request.getSession();
+++        if ((session != null) && (session.getAttribute("captchaVerified") != null)) {
+++            return true;
+++        }
+++        Captcha captcha = Captcha.load(request, "springFormCaptcha");
+++        boolean isHuman = captcha.validate(captchaCode);
+++        if (isHuman) {
+++            if (session == null) {
+++                session = request.getSession(true);
+++            }
+++            session.setAttribute("captchaVerified", true);
+++            return true;
+++        } else {
+++            return false;
+++        }
+++    }
+++}
++Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserCreateValidator.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserCreateValidator.java	(revision )
+++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserCreateValidator.java	(revision )
++@@ -0,0 +1,76 @@
+++package com.nixsolutions.bondarenko.study.spring_validator;
+++
+++import com.nixsolutions.bondarenko.study.UserFieldPattern;
+++import com.nixsolutions.bondarenko.study.dao.UserDao;
+++import com.nixsolutions.bondarenko.study.entity.User;
+++import com.nixsolutions.bondarenko.study.model.UserModel;
+++import org.springframework.beans.factory.annotation.Autowired;
+++import org.springframework.validation.Errors;
+++import org.springframework.validation.Validator;
+++
+++public class UserCreateValidator extends UserAbstractValidator implements Validator {
+++    @Autowired
+++    private UserDao userDao;
+++
+++    @Override
+++    public boolean supports(Class<?> aClass) {
+++        return UserModel.class.isAssignableFrom(aClass);
+++    }
+++
+++    @Override
+++    public void validate(Object object, Errors errors) {
+++        UserModel userModel = (UserModel) object;
+++        validateLogin(userModel.getLogin(), errors);
+++        validateEmail(userModel.getEmail(), errors);
+++        validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
+++        validateFirstName(userModel.getFirstName(), errors);
+++        validateLastName(userModel.getLastName(), errors);
+++        validateBirthday(userModel.getBirthday(), errors);
+++
+++        if (!isCaptchaValid(userModel.getRequest(), userModel.getCaptchaCode())) {
+++            errors.rejectValue("captchaCode", "captcha", "*");
+++        }
+++    }
+++
+++    private void validateLogin(String login, Errors errors) throws RuntimeException {
+++        //validate login format
+++        if (!login.matches(UserFieldPattern.LOGIN_PATTERN.getPattern())) {
+++            errors.rejectValue("login", "Login does not matches request format: "
+++                    + UserFieldPattern.LOGIN_PATTERN.getValidateTitle());
+++            return;
+++        }
+++        try {
+++            //whether login is not unique
+++            if (userDao.findByLogin(login) != null) {
+++                errors.rejectValue("login", ERROR_NOT_UNIQUE_LOGIN);
+++            }
+++        } catch (Exception e) {
+++            throw new RuntimeException(e);
+++        }
+++    }
+++
+++    private void validatePassword(String password, String passwordConfirm, Errors errors) {
+++        if (!password.matches(UserFieldPattern.PASSWORD_PATTERN.getPattern())) {
+++            errors.rejectValue("password", "Password does not matches request format: "
+++                    + UserFieldPattern.PASSWORD_PATTERN.getValidateTitle());
+++            return;
+++        }
+++        if (!password.equals(passwordConfirm)) {
+++            errors.rejectValue("password", "Passwords do not match!");
+++        }
+++    }
+++
+++    protected void validateEmail(String email, Errors errors) {
+++        super.validateEmail(email, errors);
+++
+++        try {
+++            User userByEmail = userDao.findByEmail(email);
+++            if (userByEmail != null) {  //if there is already a user with this email
+++                errors.rejectValue("email", ERROR_NOT_UNIQUE_EMAIL);
+++            }
+++
+++        } catch (Exception e) {
+++            throw new RuntimeException(e);
+++        }
+++    }
+++}
++Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/model/UserModel.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/model/UserModel.java	(revision 18a4a3fc25e24aad0e24c8208bf25f56238519f6)
+++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/model/UserModel.java	(revision )
++@@ -1,5 +1,8 @@
++ package com.nixsolutions.bondarenko.study.model;
++ 
+++import javax.servlet.http.HttpServletRequest;
+++import javax.servlet.http.HttpSession;
+++
++ public class UserModel {
++     protected String id = null;
++     protected String login;
++@@ -11,7 +14,11 @@
++     protected String birthday;
++     protected String roleName;
++ 
++-    public UserModel(){ }
+++    protected String captchaCode;
+++    protected HttpServletRequest request;
+++
+++    public UserModel() {
+++    }
++ 
++     public UserModel(String id, String login, String password, String passwordConfirm, String email, String firstName, String lastName, String birthday, String roleName) {
++         this.id = id;
++@@ -96,4 +103,31 @@
++     public void setPasswordConfirm(String passwordConfirm) {
++         this.passwordConfirm = passwordConfirm;
++     }
+++
+++    public String getCaptchaCode() {
+++        return captchaCode;
+++    }
+++
+++    public void setCaptchaCode(String captchaCode) {
+++        this.captchaCode = captchaCode;
+++    }
+++
+++    public HttpServletRequest getRequest() {
+++        return request;
+++    }
+++
+++    public void setRequest(HttpServletRequest request) {
+++        this.request = request;
+++    }
+++
+++    public boolean isCaptchaVerified() {
+++        if (this.request == null) {
+++            return false;
+++        }
+++        HttpSession session = request.getSession();
+++        if (session == null) {
+++            return false;
+++        }
+++        return (session.getAttribute("captchaVerified") != null);
+++    }
++ }
+Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserCreateValidator.java
+===================================================================
+--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserCreateValidator.java	(revision Shelved version)
++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/spring_validator/UserCreateValidator.java	(revision Shelved version)
+@@ -0,0 +1,76 @@
++package com.nixsolutions.bondarenko.study.spring_validator;
++
++import com.nixsolutions.bondarenko.study.UserFieldPattern;
++import com.nixsolutions.bondarenko.study.dao.UserDao;
++import com.nixsolutions.bondarenko.study.entity.User;
++import com.nixsolutions.bondarenko.study.model.UserModel;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.validation.Errors;
++import org.springframework.validation.Validator;
++
++public class UserCreateValidator extends UserAbstractValidator implements Validator {
++    @Autowired
++    private UserDao userDao;
++
++    @Override
++    public boolean supports(Class<?> aClass) {
++        return UserModel.class.isAssignableFrom(aClass);
++    }
++
++    @Override
++    public void validate(Object object, Errors errors) {
++        UserModel userModel = (UserModel) object;
++        validateLogin(userModel.getLogin(), errors);
++        validateEmail(userModel.getEmail(), errors);
++        validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
++        validateFirstName(userModel.getFirstName(), errors);
++        validateLastName(userModel.getLastName(), errors);
++        validateBirthday(userModel.getBirthday(), errors);
++
++        if (!isCaptchaValid(userModel.getRequest(), userModel.getCaptchaCode())) {
++            errors.rejectValue("captchaCode", "captcha", "*");
++        }
++    }
++
++    private void validateLogin(String login, Errors errors) throws RuntimeException {
++        //validate login format
++        if (!login.matches(UserFieldPattern.LOGIN_PATTERN.getPattern())) {
++            errors.rejectValue("login", "Login does not matches request format: "
++                    + UserFieldPattern.LOGIN_PATTERN.getValidateTitle());
++            return;
++        }
++        try {
++            //whether login is not unique
++            if (userDao.findByLogin(login) != null) {
++                errors.rejectValue("login", ERROR_NOT_UNIQUE_LOGIN);
++            }
++        } catch (Exception e) {
++            throw new RuntimeException(e);
++        }
++    }
++
++    private void validatePassword(String password, String passwordConfirm, Errors errors) {
++        if (!password.matches(UserFieldPattern.PASSWORD_PATTERN.getPattern())) {
++            errors.rejectValue("password", "Password does not matches request format: "
++                    + UserFieldPattern.PASSWORD_PATTERN.getValidateTitle());
++            return;
++        }
++        if (!password.equals(passwordConfirm)) {
++            errors.rejectValue("password", "Passwords do not match!");
++        }
++    }
++
++    protected void validateEmail(String email, Errors errors) {
++        super.validateEmail(email, errors);
++
++        try {
++            User userByEmail = userDao.findByEmail(email);
++            if (userByEmail != null) {  //if there is already a user with this email
++                errors.rejectValue("email", ERROR_NOT_UNIQUE_EMAIL);
++            }
++
++        } catch (Exception e) {
++            throw new RuntimeException(e);
++        }
++    }
++}
+Index: SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/model/UserModel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/model/UserModel.java	(revision Local version)
++++ SpringMVC/src/main/java/com/nixsolutions/bondarenko/study/model/UserModel.java	(revision Shelved version)
+@@ -1,5 +1,8 @@
+ package com.nixsolutions.bondarenko.study.model;
+ 
++import javax.servlet.http.HttpServletRequest;
++import javax.servlet.http.HttpSession;
++
+ public class UserModel {
+     protected String id = null;
+     protected String login;
+@@ -11,7 +14,11 @@
+     protected String birthday;
+     protected String roleName;
+ 
+-    public UserModel(){ }
++    protected String captchaCode;
++    protected HttpServletRequest request;
++
++    public UserModel() {
++    }
+ 
+     public UserModel(String id, String login, String password, String passwordConfirm, String email, String firstName, String lastName, String birthday, String roleName) {
+         this.id = id;
+@@ -96,4 +103,31 @@
+     public void setPasswordConfirm(String passwordConfirm) {
+         this.passwordConfirm = passwordConfirm;
+     }
++
++    public String getCaptchaCode() {
++        return captchaCode;
++    }
++
++    public void setCaptchaCode(String captchaCode) {
++        this.captchaCode = captchaCode;
++    }
++
++    public HttpServletRequest getRequest() {
++        return request;
++    }
++
++    public void setRequest(HttpServletRequest request) {
++        this.request = request;
++    }
++
++    public boolean isCaptchaVerified() {
++        if (this.request == null) {
++            return false;
++        }
++        HttpSession session = request.getSession();
++        if (session == null) {
++            return false;
++        }
++        return (session.getAttribute("captchaVerified") != null);
++    }
+ }
