@@ -1,10 +1,9 @@
 package com.nixsolutions.bondarenko.study.controller;
 
-import com.nixsolutions.bondarenko.study.HibernateUtil;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
-import com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,7 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 
 public class SigninController {
-    private UserDao userDao = new HibernateUserDao(HibernateUtil.getSessionFactory());
+    @Autowired
+    private UserDao userDao;
 
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public String signin(ModelMap model) {

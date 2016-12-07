@@ -1,6 +1,5 @@
 package com.nixsolutions.bondarenko.study.dao.hibernate;
 
-import com.nixsolutions.bondarenko.study.HibernateUtil;
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import org.hibernate.Criteria;
@@ -11,16 +10,10 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class HibernateRoleDao implements RoleDao {
-
-    private SessionFactory sessionFactory;
     private final Logger logger;
 
-    public HibernateRoleDao() {
-        logger = LoggerFactory.getLogger(this.getClass());
-        sessionFactory = HibernateUtil.getSessionFactory();
-    }
+    private SessionFactory sessionFactory;
 
     public HibernateRoleDao(SessionFactory sessionFactory) {
         logger = LoggerFactory.getLogger(this.getClass());

@@ -1,11 +1,8 @@
 package com.nixsolutions.bondarenko.study.controller;
 
-import com.nixsolutions.bondarenko.study.HibernateUtil;
 import com.nixsolutions.bondarenko.study.UserFieldPattern;
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
-import com.nixsolutions.bondarenko.study.dao.hibernate.HibernateRoleDao;
-import com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.entity.Role;
@@ -14,6 +11,7 @@ import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserUpdateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,8 +30,11 @@ public class AdminController {
     private static final String ACTION_CREATE_USER = "create_user";
     private static final String ACTION_EDIT_USER = "edit_user";
 
-    private UserDao userDao = new HibernateUserDao(HibernateUtil.getSessionFactory());
-    private RoleDao roleDao = new HibernateRoleDao(HibernateUtil.getSessionFactory());
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private RoleDao roleDao;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView admin(ModelMap model) {

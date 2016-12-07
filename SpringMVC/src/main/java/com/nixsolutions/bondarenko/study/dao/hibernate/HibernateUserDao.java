@@ -14,6 +14,7 @@ import java.util.List;
 
 public class HibernateUserDao implements UserDao {
     private final Logger logger;
+
     private SessionFactory sessionFactory;
 
     public HibernateUserDao(SessionFactory sessionFactory) {
