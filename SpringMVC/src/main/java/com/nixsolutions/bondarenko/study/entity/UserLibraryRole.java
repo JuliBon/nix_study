@@ -1,9 +1,9 @@
 package com.nixsolutions.bondarenko.study.entity;
 
 public enum UserLibraryRole {
-    USER(2L, "User"),
-    ADMIN(1L, "Admin"),
-    ANONYMOUS(3L, "Anonimus");
+    USER(2L, "USER"),
+    ADMIN(1L, "ADMIN"),
+    ANONYMOUS(3L, "ANONIMUS");
 
     private Long id;
     private String name;

@@ -9,17 +9,18 @@ import org.hibernate.TransactionException;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class HibernateUserDao implements UserDao {
     private final Logger logger;
 
+    @Autowired
     private SessionFactory sessionFactory;
 
-    public HibernateUserDao(SessionFactory sessionFactory) {
+    public HibernateUserDao() {
         logger = LoggerFactory.getLogger(this.getClass());
-        this.sessionFactory = sessionFactory;
     }
 
     @Override

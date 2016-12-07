@@ -28,7 +28,7 @@
         <label for="inputPassword" class="sr-only">Password: </label>
         <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-
+        <input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />
         <div class="centerLabel"><a href="/register"><h5>Register</h5></a></div>
     </form:form>
 </div>

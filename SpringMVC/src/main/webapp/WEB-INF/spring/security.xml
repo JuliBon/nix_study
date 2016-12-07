@@ -1,13 +1,38 @@
-<b:beans xmlns="http://www.springframework.org/schema/security"
-         xmlns:b="http://www.springframework.org/schema/beans"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+                                http://www.springframework.org/schema/security
+                                http://www.springframework.org/schema/security/spring-security-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <http/>
+    <context:annotation-config />
 
-    <user-service>
-        <user name="user" password="password" authorities="ROLE_USER"/>
-    </user-service>
+    <http auto-config="true" >
+        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/home" access="permitAll" />
+        <intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
+        <intercept-url pattern="/dba**" access="hasRole('ADMIN') and hasRole('DBA')" />
+        <form-login  login-page="/login"
+                     default-target-url="/admin"
+                     username-parameter="login"
+                     password-parameter="password"
+                     authentication-failure-url="/Access_Denied" />
+        <csrf/>
+    </http>
 
-</b:beans>
+    <authentication-manager >
+        <authentication-provider user-service-ref="customUserDetailsService"/>
+    </authentication-manager>
+
+    <beans:bean id="customUserDetailsService" class="com.nixsolutions.bondarenko.study.security.CustomUserDetailsService" />
+
+    <beans:bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <beans:property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    </beans:bean>
+
+    <beans:bean id="userDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao">
+    </beans:bean>
+
+</beans:beans>
