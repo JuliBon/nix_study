@@ -18,6 +18,11 @@ public class SigninController {
     @Autowired
     private UserDao userDao;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(ModelMap model) {
+        return "redirect: signin";
+    }
+
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public String signin(ModelMap model) {
         model.addAttribute("user", new User());

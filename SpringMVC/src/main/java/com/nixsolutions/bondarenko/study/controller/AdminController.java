@@ -62,8 +62,22 @@ public class AdminController {
         return new ModelAndView("redirect:/admin");
     }
 
+    @RequestMapping(value = "/admin/create", method = RequestMethod.GET)
+    public ModelAndView createUser(ModelMap modelMap) {
+        modelMap.put("action", ACTION_CREATE_USER);
+        modelMap.put("userFieldPatternMap", getUserFieldPatternMap());
+        try {
+            List<Role> roleList = findAllRoles();
+            modelMap.put("roleList", roleList);
+            return new ModelAndView("user_form", modelMap);
+        } catch (Exception e) {
+            modelMap.addAttribute("error", e);
+            return new ModelAndView("error", modelMap);
+        }
+    }
+
     @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("id") String id) {
+    public ModelAndView editUser(@PathVariable("id") String id) {
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute("action", ACTION_EDIT_USER);
         modelMap.addAttribute("userFieldPatternMap", getUserFieldPatternMap());
@@ -115,48 +129,61 @@ public class AdminController {
         return roleList;
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.POST)
-    public ModelAndView userForm(@ModelAttribute("user") UserModel userModel, ModelMap modelMap) {
-        String action = (String) modelMap.get("action");
-        if (action != null) {
-            modelMap.put("action", action);
 
-            try {
-                UserValidator userValidator;
-                Map<String, String> errorMap = new HashMap<>();
-                if (action.equals(ACTION_CREATE_USER)) {
-                    userValidator = new UserCreateValidator(userDao);
-                    errorMap = userValidator.validate(userModel);
-                } else if (action.equals(ACTION_EDIT_USER)) {
-                    userValidator = new UserUpdateValidator(userDao);
-                    errorMap = userValidator.validate(userModel);
-                }
+    @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
+    public ModelAndView createUser(@ModelAttribute("user") UserModel userModel, ModelMap modelMap) {
+        modelMap.put("action", ACTION_CREATE_USER);
 
-                if (errorMap.isEmpty()) {
-                    User user = ModelConvert.convertToUser(userModel, roleDao);
-                    if (action.equals(ACTION_CREATE_USER)) {
-                        userDao.create(user);
-                    } else if (action.equals(ACTION_EDIT_USER)) {
-                        userDao.update(user);
-                    }
-                    modelMap.put("userList", userDao.findAll());
-                    return new ModelAndView("admin", modelMap);
+        try {
+            UserValidator userValidator = new UserCreateValidator(userDao);
+            Map<String, String> errorMap = userValidator.validate(userModel);
 
-                } else {
-                    modelMap.put("userModel", userModel);
-                    modelMap.put("errorMap", errorMap);
+            if (errorMap.isEmpty()) {
+                User user = ModelConvert.convertToUser(userModel, roleDao);
+                userDao.create(user);
+                modelMap.put("userList", userDao.findAll());
+                return new ModelAndView("admin", modelMap);
+            } else {
+                modelMap.put("userModel", userModel);
+                modelMap.put("errorMap", errorMap);
 
-                    List<Role> roleList = findAllRoles();
-                    modelMap.put("roleList", roleList);
-                    modelMap.put("userFieldPatternMap", getUserFieldPatternMap());
-                    return new ModelAndView("user_form", modelMap);
-
-                }
-            } catch (Exception e) {
-                modelMap.addAttribute("error", e);
-                return new ModelAndView("error", modelMap);
+                List<Role> roleList = findAllRoles();
+                modelMap.put("roleList", roleList);
+                modelMap.put("userFieldPatternMap", getUserFieldPatternMap());
+                return new ModelAndView("user_form", modelMap);
             }
+        } catch (Exception e) {
+            modelMap.addAttribute("error", e);
+            return new ModelAndView("error", modelMap);
         }
-        return null;
+    }
+
+    @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
+    public ModelAndView userForm(@ModelAttribute("user") UserModel userModel, ModelMap modelMap) {
+        modelMap.put("action", ACTION_EDIT_USER);
+
+        try {
+            UserValidator userValidator = new UserUpdateValidator(userDao);
+
+            Map<String, String> errorMap = userValidator.validate(userModel);
+
+            if (errorMap.isEmpty()) {
+                User user = ModelConvert.convertToUser(userModel, roleDao);
+                userDao.update(user);
+                modelMap.put("userList", userDao.findAll());
+                return new ModelAndView("admin", modelMap);
+            } else {
+                modelMap.put("userModel", userModel);
+                modelMap.put("errorMap", errorMap);
+
+                List<Role> roleList = findAllRoles();
+                modelMap.put("roleList", roleList);
+                modelMap.put("userFieldPatternMap", getUserFieldPatternMap());
+                return new ModelAndView("user_form", modelMap);
+            }
+        } catch (Exception e) {
+            modelMap.addAttribute("error", e);
+            return new ModelAndView("error", modelMap);
+        }
     }
 }

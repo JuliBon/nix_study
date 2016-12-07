@@ -36,10 +36,12 @@
         <c:choose>
             <c:when test="${action.equals(\"create_user\")}">
                 <c:set var="isCreate" value="true" scope="page"/>
+                <c:set var="formAction" value="/admin/create" scope="page"/>
                 Add user
             </c:when>
             <c:otherwise>
                 <c:set var="isCreate" value="false" scope="page"/>
+                <c:set var="formAction" value="/admin/edit" scope="page"/>
                 Edit user
             </c:otherwise>
         </c:choose>
@@ -49,9 +51,7 @@
         <div class="message">${message}</div>
     </c:if>
 
-    <form action="/admin" class="form-user" method="post" id="userForm">
-        <input type="hidden" name="action" onsubmit="return validateForm()"
-               value="${action}">
+    <form action="${formAction}" class="form-user" method="post" id="userForm" onsubmit="return validateForm()">
         <input type="hidden" name="id" value="${user.id}">
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
