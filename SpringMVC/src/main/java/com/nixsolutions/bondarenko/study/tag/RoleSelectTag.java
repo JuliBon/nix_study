@@ -1,6 +1,5 @@
 package com.nixsolutions.bondarenko.study.tag;
 
-import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 
 import javax.servlet.jsp.JspTagException;
@@ -11,12 +10,12 @@ import java.util.List;
 
 
 public class RoleSelectTag extends TagSupport {
-    private List<Role> roleList;
+    private List<String> roleNameList;
     private String selectedRoleName;
     private String styleClass;
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setRoleNameList(List<String> roleNameList) {
+        this.roleNameList = roleNameList;
     }
 
     public void setSelectedRoleName(String selectedRoleName) {
@@ -29,7 +28,7 @@ public class RoleSelectTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspTagException {
-        Iterator<Role> roleIterator = roleList.iterator();
+        Iterator<String> roleIterator = roleNameList.iterator();
         try {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("<select id=\"roleName\" required ");
@@ -43,16 +42,16 @@ public class RoleSelectTag extends TagSupport {
             }
 
             while (roleIterator.hasNext()) {
-                Role role = roleIterator.next();
+                String roleName = roleIterator.next();
                 stringBuilder.append("<option");
 
-                if (role.getName().equals(selectedRoleName)) {
+                if (roleName.equals(selectedRoleName)) {
                     stringBuilder.append(" selected=\"selected\"");
                 }
                 stringBuilder.append(" value=");
-                stringBuilder.append(role.getName());
+                stringBuilder.append(roleName);
                 stringBuilder.append(">");
-                stringBuilder.append(role.getName());
+                stringBuilder.append(roleName);
                 stringBuilder.append("</option>");
             }
             stringBuilder.append("</select>");

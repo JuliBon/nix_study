@@ -23,6 +23,4 @@ public interface RoleDao {
      * @throws SQLException if SQLException occurred while executing search
      */
     Role findByName(String name) throws Exception;
-
-    List<Role> findAll() throws Exception;
 }

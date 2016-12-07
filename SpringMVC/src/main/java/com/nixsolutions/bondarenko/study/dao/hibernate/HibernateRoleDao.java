@@ -98,25 +98,4 @@ public class HibernateRoleDao implements RoleDao {
             session.close();
         }
     }
-
-
-    @Override
-    public List<Role> findAll() throws Exception {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            List<Role> list = session.createCriteria(Role.class).list();
-            session.getTransaction().commit();
-            return list;
-        } catch (Exception e) {
-            try {
-                session.getTransaction().rollback();
-            } catch (TransactionException trEx) {
-                logger.error("Couldn’t roll back transaction", trEx);
-            }
-            throw new Exception("Error while searching roles", e);
-        } finally {
-            session.close();
-        }
-    }
 }

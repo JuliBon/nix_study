@@ -37,3 +37,9 @@
 .form-control{
     margin-bottom: 0 !important;
 }
+
+.centerLabel{
+    width: 250px;
+    margin: 20px auto;
+    text-align: center;
+}

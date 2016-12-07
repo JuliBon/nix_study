@@ -18,7 +18,7 @@
         <tag-class>com.nixsolutions.bondarenko.study.tag.RoleSelectTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
-            <name>roleList</name>
+            <name>roleNameList</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

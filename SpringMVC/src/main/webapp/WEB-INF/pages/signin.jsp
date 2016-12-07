@@ -18,7 +18,7 @@
 <body>
 <div class="container">
     <form:form action="/signin" method="post" class="form-signin" modelAttribute="user">
-        <h2 class="form-signin-heading">Please sing in</h2>
+        <div class="centerLabel"><h2 class="form-signin-heading">Please sing in</h2></div>
         <c:if test="${errorMessage != null}">
             <div class="fieldError">${errorMessage}</div>
         </c:if>
@@ -28,6 +28,8 @@
         <label for="inputPassword" class="sr-only">Password: </label>
         <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+        <div class="centerLabel"><a href="/register"><h5>Register</h5></a></div>
     </form:form>
 </div>
 </body>
