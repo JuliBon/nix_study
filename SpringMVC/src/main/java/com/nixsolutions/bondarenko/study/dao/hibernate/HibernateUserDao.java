@@ -93,7 +93,7 @@ public class HibernateUserDao implements UserDao {
             } catch (TransactionException trEx) {
                 logger.error("Couldn’t roll back transaction", trEx);
             }
-            throw new Exception("Error while searching user user", e);
+            throw new Exception("Error while searching users", e);
         } finally {
             session.close();
         }
@@ -115,7 +115,7 @@ public class HibernateUserDao implements UserDao {
             } catch (TransactionException trEx) {
                 logger.error("Couldn’t roll back transaction", trEx);
             }
-            throw new Exception("Error while searching user user", e);
+            throw new Exception("Error while searching user", e);
         } finally {
             session.close();
         }
@@ -137,7 +137,7 @@ public class HibernateUserDao implements UserDao {
             } catch (TransactionException trEx) {
                 logger.error("Couldn’t roll back transaction", trEx);
             }
-            throw new Exception("Error while searching user user", e);
+            throw new Exception("Error while searching user", e);
         } finally {
             session.close();
         }
@@ -159,7 +159,7 @@ public class HibernateUserDao implements UserDao {
             } catch (TransactionException trEx) {
                 logger.error("Couldn’t roll back transaction", trEx);
             }
-            throw new Exception("Error while searching user user", e);
+            throw new Exception("Error while searching user", e);
         } finally {
             session.close();
         }

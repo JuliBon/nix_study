@@ -10,6 +10,8 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class HibernateRoleDao implements RoleDao {
     private final Logger logger;
 
@@ -92,6 +94,27 @@ public class HibernateRoleDao implements RoleDao {
                 logger.error("Couldn’t roll back transaction", trEx);
             }
             throw new Exception("Error while searching role", e);
+        } finally {
+            session.close();
+        }
+    }
+
+
+    @Override
+    public List<Role> findAll() throws Exception {
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            List<Role> list = session.createCriteria(Role.class).list();
+            session.getTransaction().commit();
+            return list;
+        } catch (Exception e) {
+            try {
+                session.getTransaction().rollback();
+            } catch (TransactionException trEx) {
+                logger.error("Couldn’t roll back transaction", trEx);
+            }
+            throw new Exception("Error while searching roles", e);
         } finally {
             session.close();
         }

@@ -1,5 +1,8 @@
 package com.nixsolutions.bondarenko.study;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum UserFieldPattern {
     LOGIN_PATTERN("^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$",
             "3-15 characters, beginning with letter. Can include letters, numbers, dashes, and underscores."),
@@ -36,5 +39,16 @@ public enum UserFieldPattern {
 
     public void setValidateTitle(String validateTitle) {
         this.validateTitle = validateTitle;
+    }
+
+    public static Map<String, UserFieldPattern> asMap() {
+        Map<String, UserFieldPattern> userFieldPatternMap = new HashMap<>();
+        userFieldPatternMap.put("login", UserFieldPattern.LOGIN_PATTERN);
+        userFieldPatternMap.put("password", UserFieldPattern.PASSWORD_PATTERN);
+        userFieldPatternMap.put("email", UserFieldPattern.EMAIL_PATTERN);
+        userFieldPatternMap.put("firstName", UserFieldPattern.FIRST_NAME_PATTERN);
+        userFieldPatternMap.put("lastName", UserFieldPattern.LAST_NAME_PATTERN);
+        userFieldPatternMap.put("birthday", UserFieldPattern.BIRTHDAY_PATTERN);
+        return userFieldPatternMap;
     }
 }
