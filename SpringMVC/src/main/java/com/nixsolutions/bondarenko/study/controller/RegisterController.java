@@ -7,6 +7,7 @@ import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
+import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
@@ -43,13 +45,21 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView register(@ModelAttribute("user") UserModel userModel, ModelMap modelMap) {
+    public ModelAndView register(@ModelAttribute("user") UserModel userModel, ModelMap modelMap, HttpServletRequest request) {
         modelMap.put("action", ACTION_REGISTER_USER);
         try {
             UserValidator userValidator = new UserCreateValidator(userDao);
             Map<String, String> errorMap = userValidator.validate(userModel);
 
-            if (errorMap.isEmpty()) {
+            boolean valid = errorMap.isEmpty();
+            if (valid) {
+                String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+                valid = VerifyUtils.verify(gRecaptchaResponse);
+                if (!valid) {
+                    modelMap.put("captchaError", "Captcha invalid!");
+                }
+            }
+            if (valid) {
                 User user = ModelConvert.convertToUser(userModel, roleDao);
                 user.setRole(roleDao.findByName(UserLibraryRole.USER.getName()));
                 userDao.create(user);

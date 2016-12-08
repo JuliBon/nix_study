@@ -9,9 +9,12 @@
     <title>Add new user</title>
     <meta charset="utf-8">
 
+    <script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+
     <link href="<c:url value="/resources/lib/bootstrap/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/shared.css"/>" rel="stylesheet" type="text/css">
     <link href="<c:url value="/resources/css/user.css"/>" rel="stylesheet" type="text/css">
+
 
     <script type="text/javascript">
         function validateForm() {
@@ -154,6 +157,14 @@
                 </div>
             </div>
         </c:if>
+
+        <div class="form-group row" style="margin: 0 auto; width: 300px;">
+            <div class="g-recaptcha"
+                 data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH">
+            </div>
+            <p>${captchaError}</p>
+        </div>
+        <div class="g-recaptcha" data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH"></div>
 
         <div class="form-group row">
             <div class="btns-center">

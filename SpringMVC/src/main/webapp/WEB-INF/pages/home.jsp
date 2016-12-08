@@ -10,9 +10,9 @@
 
 </head>
 <body>
-<div class="container">
-    <h2>Hello, ${userName}</h2>
-    <div>Click <a href="/logout">here</a> to logout</div>
+<div class="container helloContainer">
+        <h2>Hello, ${userName}</h2>
+        <div>Click <a href="/logout">here</a> to logout</div>
 </div>
 </body>
 </html>
