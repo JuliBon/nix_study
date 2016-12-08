@@ -1,13 +1,12 @@
 package com.nixsolutions.bondarenko.study.dao.hibernate;
 
-import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
+import com.nixsolutions.bondarenko.study.entity.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.TransactionException;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

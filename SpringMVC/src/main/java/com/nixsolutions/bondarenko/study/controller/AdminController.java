@@ -4,7 +4,9 @@ import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
-import com.nixsolutions.bondarenko.study.model.*;
+import com.nixsolutions.bondarenko.study.model.ModelConvert;
+import com.nixsolutions.bondarenko.study.model.UserCreateModel;
+import com.nixsolutions.bondarenko.study.model.UserUpdateModel;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserUpdateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,8 +113,10 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
     public ModelAndView edit(@ModelAttribute("user") @Valid UserUpdateModel userModel,
+                             Authentication authentication,
                              BindingResult bindingResult,
                              ModelMap modelMap) {
+        modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_EDIT_USER);
 
         try {
@@ -140,8 +143,10 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
     public ModelAndView create(@ModelAttribute("user") @Valid UserCreateModel userModel,
+                               Authentication authentication,
                                BindingResult bindingResult,
                                ModelMap modelMap) {
+        modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
 
         try {
