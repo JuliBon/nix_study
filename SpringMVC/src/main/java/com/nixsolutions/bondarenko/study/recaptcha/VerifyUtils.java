@@ -10,7 +10,7 @@ import javax.json.JsonReader;
 import javax.net.ssl.HttpsURLConnection;
 
 public class VerifyUtils {
-    public static final String SECRET_KEY = "6LdOMg4UAAAAABfcJAsdz2CaoIsMCm9iZld7zdf2";
+    private static final String SECRET_KEY = "6LdOMg4UAAAAABfcJAsdz2CaoIsMCm9iZld7zdf2";
     private static final String SITE_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 
     public static boolean verify(String gRecaptchaResponse) {
