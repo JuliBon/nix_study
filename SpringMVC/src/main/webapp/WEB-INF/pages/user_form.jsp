@@ -78,7 +78,8 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
-                <forms:input path="user.login" cssClass="form-control" title="Login" readonly="${readonly}" value="${user.login}"/>
+                <forms:input path="user.login" cssClass="form-control" title="Login" readonly="${readonly}"
+                             value="${user.login}"/>
                 <forms:errors path="user.login" cssClass="incorrect"/>
             </div>
         </div>
@@ -93,7 +94,8 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
-                <forms:input path="user.passwordConfirm" cssClass="form-control" title="confirm password" value="${user.passwordConfirm}"/>
+                <forms:input path="user.passwordConfirm" cssClass="form-control" title="confirm password"
+                             value="${user.passwordConfirm}"/>
                 <forms:errors path="user.passwordConfirm" cssClass="incorrect"/>
             </div>
         </div>
@@ -107,7 +109,8 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">First name</label>
             <div class="col-xs-10">
-                <forms:input path="user.firstName" cssClass="form-control" title="first name" value="${user.firstName}"/>
+                <forms:input path="user.firstName" cssClass="form-control" title="first name"
+                             value="${user.firstName}"/>
                 <forms:errors path="user.firstName" cssClass="incorrect"/>
             </div>
         </div>
@@ -121,7 +124,8 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Birhday</label>
             <div class="col-xs-10">
-                <forms:input type="date" path="user.birthday" cssClass="form-control" title="birthday" value="${user.birthday}"/>
+                <forms:input type="date" path="user.birthday" cssClass="form-control" title="birthday"
+                             value="${user.birthday}"/>
                 <forms:errors path="user.birthday" cssClass="incorrect"/>
             </div>
         </div>
@@ -136,13 +140,15 @@
             </div>
         </c:if>
 
-        <div class="form-group row" style="margin: 0 auto; width: 300px;">
-            <div class="g-recaptcha"
-                 data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH">
+        <c:if test="${isRegister}">
+            <div class="form-group row" style="margin: 0 auto; width: 300px;">
+                <div class="g-recaptcha"
+                     data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH">
+                </div>
+                <p class="incorrect">${captchaError}</p>
             </div>
-            <p class="incorrect">${captchaError}</p>
-        </div>
-        <div class="g-recaptcha" data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH"></div>
+            <div class="g-recaptcha" data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH"></div>
+        </c:if>
 
         <div class="form-group row">
             <div class="btns-center">

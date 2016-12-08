@@ -12,6 +12,10 @@ public class UserUpdateModel extends UserModel {
     @NotEmpty
     protected String roleName;
 
+    public UserUpdateModel(){
+
+    }
+
     public UserUpdateModel(String id, String login, String password, String passwordConfirm, String email, String firstName, String lastName, String birthday, String roleName) {
         super(login, password, passwordConfirm, email, firstName, lastName, birthday);
         this.id = id;

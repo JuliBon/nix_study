@@ -25,6 +25,9 @@ public class UserUpdateValidator extends UserValidator {
         if(!errors.hasFieldErrors("password")) {
             validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
         }
+        if(!errors.hasFieldErrors("birthday")){
+            validateBirthday(userModel.getBirthday(), errors);
+        }
     }
 
     /**
@@ -39,7 +42,7 @@ public class UserUpdateValidator extends UserValidator {
         } finally {
             if (userByEmail != null) {
                 if (!userByEmail.getLogin().equals(login)) {
-                    errors.rejectValue("email", ERROR_NOT_UNIQUE_EMAIL);
+                    errors.rejectValue("email", null, ERROR_NOT_UNIQUE_EMAIL);
                 }
             }
         }
