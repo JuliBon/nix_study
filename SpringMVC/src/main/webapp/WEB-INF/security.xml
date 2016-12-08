@@ -15,7 +15,7 @@
                      default-target-url="/index"
                      username-parameter="login"
                      password-parameter="password"
-                     authentication-failure-url="/Access_Denied" />
+                     authentication-failure-url="/login?error"/>
         <csrf/>
     </http>
 

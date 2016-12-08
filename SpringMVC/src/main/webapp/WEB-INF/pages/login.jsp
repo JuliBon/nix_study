@@ -19,12 +19,12 @@
 <div class="container">
     <form:form action="/login" method="post" class="form-signin" modelAttribute="user">
         <div class="centerLabel"><h2 class="form-signin-heading">Please sing in</h2></div>
-        <c:if test="${errorMessage != null}">
-            <div class="fieldError">${errorMessage}</div>
+        <c:if test="${not empty error}">
+            <div class="fieldError">${error}</div>
         </c:if>
+
         <label for="inputLogin" class="sr-only">Login: </label>
-        <input name="login" id="inputLogin" class="form-control" placeholder="Login" required autofocus
-               value="${user.login}">
+        <input name="login" id="inputLogin" class="form-control" placeholder="Login" required autofocus>
         <label for="inputPassword" class="sr-only">Password: </label>
         <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
