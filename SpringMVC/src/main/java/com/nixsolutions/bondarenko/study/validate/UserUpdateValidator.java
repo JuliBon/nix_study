@@ -1,66 +1,46 @@
 package com.nixsolutions.bondarenko.study.validate;
 
-import com.nixsolutions.bondarenko.study.UserFieldPattern;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserUpdateValidator extends UserAbstractValidator {
+public class UserUpdateValidator extends UserValidator {
     private UserDao userDao;
 
     public UserUpdateValidator(UserDao userDao) {
         this.userDao = userDao;
-
     }
 
-    /***
-     * Validate email format and email uniqueness
-     * @param userDTO instance of User data transfer object
-     * @throws RuntimeException if Exception occurred while searching user in userDao
-     */
     @Override
-    public Map<String, String> validate(UserModel userDTO) throws RuntimeException {
-
-        Map<String, String> errorMap = new HashMap<>();
-        validatePassword(userDTO.getPassword(), userDTO.getPasswordConfirm(), errorMap);
-        try {
-            validateEmail(userDTO.getEmail(), errorMap);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public void validate(Object object, Errors errors) {
+        UserModel userModel = (UserModel) object;
+        if (!errors.hasFieldErrors("login")) {
+            validateEmail(userModel.getEmail(), userModel.getLogin(), errors);
         }
-        validateFirstName(userDTO.getFirstName(), errorMap);
-        validateLastName(userDTO.getLastName(), errorMap);
-        validateBirthday(userDTO.getBirthday(), errorMap);
-        return errorMap;
-    }
-
-    private void validatePassword(String password, String passwordConfirm, Map<String, String> errorMap) {
-        if (!password.matches(UserFieldPattern.PASSWORD_PATTERN.getPattern())) {
-            errorMap.put("password", "Password does not matches request format: "
-                    + UserFieldPattern.PASSWORD_PATTERN.getValidateTitle());
-            return;
-        }
-        if (!password.equals(passwordConfirm)) {
-            errorMap.put("password", "Passwords do not match!");
+        if(!errors.hasFieldErrors("password")) {
+            validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
         }
     }
 
-    /***
-     * Validate email format and email uniqueness
-     * @param email
-     * @param errorMap
-     * @throws Exception if Exception occurred while searching user in userDao
+    /**
+     * Check if user with this email was found and he is not this user
      */
-    protected void validateEmail(String email, String login, Map<String, String> errorMap) throws Exception {
-        super.validateEmail(email, errorMap);
+    private void validateEmail(String email, String login, Errors errors) {
+        User userByEmail = null;
+        try {
+            userByEmail = userDao.findByEmail(email);
 
-        User userByEmail = userDao.findByEmail(email);
-        if (userByEmail != null) {  //if user with this email was found and he is not this user
-            if (!userByEmail.getLogin().equals(login)) {
-                errorMap.put("password", ERROR_NOT_UNIQUE_EMAIL);
+        } catch (Exception e) {
+        } finally {
+            if (userByEmail != null) {
+                if (!userByEmail.getLogin().equals(login)) {
+                    errors.rejectValue("email", ERROR_NOT_UNIQUE_EMAIL);
+                }
             }
         }
     }

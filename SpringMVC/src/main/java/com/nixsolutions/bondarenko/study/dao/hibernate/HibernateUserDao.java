@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.TransactionException;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +133,8 @@ public class HibernateUserDao implements UserDao {
                     .uniqueResult();
             session.getTransaction().commit();
             return user;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             try {
                 session.getTransaction().rollback();
             } catch (TransactionException trEx) {

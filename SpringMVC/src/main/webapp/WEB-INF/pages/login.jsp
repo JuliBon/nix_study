@@ -20,7 +20,7 @@
     <form:form action="/login" method="post" class="form-signin" modelAttribute="user">
         <div class="centerLabel"><h2 class="form-signin-heading">Please sing in</h2></div>
         <c:if test="${not empty error}">
-            <div class="fieldError">${error}</div>
+            <div class="incorrect">${error}</div>
         </c:if>
 
         <label for="inputLogin" class="sr-only">Login: </label>

@@ -36,4 +36,9 @@
 
     <bean id="roleDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateRoleDao">
     </bean>
+
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="messages"/>
+    </bean>
 </beans>

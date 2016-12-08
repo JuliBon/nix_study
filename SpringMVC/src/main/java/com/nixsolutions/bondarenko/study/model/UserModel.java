@@ -1,20 +1,47 @@
 package com.nixsolutions.bondarenko.study.model;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 public class UserModel {
-    protected String id = null;
+
+    @Pattern(regexp = "^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$",
+            message = "3-15 characters, beginning with letter. Can include letters, numbers, dashes, and underscores")
     protected String login;
+
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$",
+            message = "at least one number and one uppercase and lowercase letters")
     protected String password;
+
+    @NotNull
+    @NotEmpty
     protected String passwordConfirm;
+
+    @NotNull
+    @NotEmpty
+    @Email
     protected String email;
+
+    @Pattern(regexp = "[A-Za-z]+",
+            message = "one or more letters")
     protected String firstName;
+
+    @Pattern(regexp = "[A-Za-z]+",
+            message = "one or more letters")
     protected String lastName;
+
+    @NotNull
+    @NotEmpty
     protected String birthday;
-    protected String roleName;
 
-    public UserModel(){ }
+    public UserModel() {
+    }
 
-    public UserModel(String id, String login, String password, String passwordConfirm, String email, String firstName, String lastName, String birthday, String roleName) {
-        this.id = id;
+    public UserModel(String login, String password, String passwordConfirm, String email, String firstName, String lastName, String birthday) {
         this.login = login;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -22,15 +49,6 @@ public class UserModel {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
-        this.roleName = roleName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getLogin() {
@@ -47,6 +65,14 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public String getEmail() {
@@ -79,21 +105,5 @@ public class UserModel {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 }

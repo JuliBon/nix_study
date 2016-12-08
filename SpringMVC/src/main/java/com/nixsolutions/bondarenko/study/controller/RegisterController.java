@@ -1,30 +1,32 @@
 package com.nixsolutions.bondarenko.study.controller;
 
-import com.nixsolutions.bondarenko.study.UserFieldPattern;
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
+import com.nixsolutions.bondarenko.study.model.UserRegisterModel;
 import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.*;
+import org.springframework.web.bind.EscapedErrors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class RegisterController {
     private static final String ACTION_REGISTER_USER = "register_user";
-    private static final Map<String, UserFieldPattern> userFieldPatternMap = UserFieldPattern.asMap();
 
     @Autowired
     private UserDao userDao;
@@ -32,11 +34,12 @@ public class RegisterController {
     private RoleDao roleDao;
 
 
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView register(ModelMap modelMap) {
         modelMap.put("action", ACTION_REGISTER_USER);
-        modelMap.put("userFieldPatternMap", userFieldPatternMap);
         try {
+            modelMap.addAttribute("user", new UserModel());
             return new ModelAndView("user_form", modelMap);
         } catch (Exception e) {
             modelMap.addAttribute("error", e);
@@ -45,13 +48,15 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView register(@ModelAttribute("user") UserModel userModel, ModelMap modelMap, HttpServletRequest request) {
+    public ModelAndView register(@ModelAttribute("user") @Valid UserRegisterModel userModel,
+                                 BindingResult bindingResult,
+                                 ModelMap modelMap,
+                                 HttpServletRequest request) {
         modelMap.put("action", ACTION_REGISTER_USER);
-        try {
-            UserValidator userValidator = new UserCreateValidator(userDao);
-            Map<String, String> errorMap = userValidator.validate(userModel);
 
-            boolean valid = errorMap.isEmpty();
+        try {
+            new UserCreateValidator(userDao).validate(userModel, bindingResult);
+            boolean valid = !bindingResult.hasErrors();
             if (valid) {
                 String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
                 valid = VerifyUtils.verify(gRecaptchaResponse);
@@ -60,16 +65,16 @@ public class RegisterController {
                 }
             }
             if (valid) {
-                User user = ModelConvert.convertToUser(userModel, roleDao);
+                User user = ModelConvert.convertToUser(userModel);
                 user.setRole(roleDao.findByName(UserLibraryRole.USER.getName()));
                 userDao.create(user);
-                modelMap.put("currentUser", user);
-                return new ModelAndView("home", modelMap);
+                return new ModelAndView("redirect: login");
             } else {
-                modelMap.put("userModel", userModel);
-                modelMap.put("errorMap", errorMap);
+                modelMap.put("user", userModel);
 
-                modelMap.put("userFieldPatternMap", userFieldPatternMap);
+                if(bindingResult.hasErrors()) {
+                    modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
+                }
                 return new ModelAndView("user_form", modelMap);
             }
         } catch (Exception e) {

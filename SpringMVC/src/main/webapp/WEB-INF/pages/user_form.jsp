@@ -40,21 +40,27 @@
         </div>
     </c:if>
     <h3>
+        <c:set var="cancelRef" value="admin" scope="page"/>
+
         <c:set var="isEdit" value="false" scope="page"/>
+        <c:set var="isCreate" value="false" scope="page"/>
         <c:set var="isRegister" value="false" scope="page"/>
         <c:choose>
             <c:when test="${action.equals(\"create_user\")}">
+                <c:set var="isCreate" value="true" scope="page"/>
                 <c:set var="formAction" value="/admin/create" scope="page"/>
                 Add user
             </c:when>
             <c:when test="${action.equals(\"edit_user\")}">
                 <c:set var="isEdit" value="true" scope="page"/>
+                <c:set var="readonly" value="true" scope="page"/>
                 <c:set var="formAction" value="/admin/edit" scope="page"/>
                 Edit user
             </c:when>
             <c:otherwise>
                 <c:set var="isRegister" value="true" scope="page"/>
                 <c:set var="formAction" value="/register" scope="page"/>
+                <c:set var="cancelRef" value="login" scope="page"/>
                 Registration
             </c:otherwise>
         </c:choose>
@@ -66,89 +72,61 @@
 
     <form action="${formAction}" class="form-user" method="post" id="userForm" onsubmit="return validateForm()">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input type="hidden" name="id" value="${user.id}">
+        <c:if test="${isEdit}">
+            <forms:input type="hidden" path="user.id" value="${user.id}"/>
+        </c:if>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
-                <input name="login" type="text" class="form-control" placeholder="Login"
-                       value="${user.login}" required
-                       pattern="${userFieldPatternMap.get("login").getPattern()}"
-                       title="${userFieldPatternMap.get("login").getValidateTitle()}"
-
-                       <c:if test="${isEdit}">readonly="readonly"</c:if> />
-                <div class="fieldError">${errorMap.get("login")}</div>
+                <forms:input path="user.login" cssClass="form-control" title="Login" readonly="${readonly}" value="${user.login}"/>
+                <forms:errors path="user.login" cssClass="incorrect"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Password</label>
             <div class="col-xs-10">
-                <input name="password" type="password" id="password" class="form-control"
-                       placeholder="password"
-                       required
-                       pattern="${userFieldPatternMap.get("password").getPattern()}"
-                       title="${userFieldPatternMap.get("password").getValidateTitle()}"
-                />
-                <div class="fieldError">${errorMap.get("password")}</div>
+                <forms:input path="user.password" cssClass="form-control" title="password" value="${user.password}"/>
+                <forms:errors path="user.password" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
-                <input name="passwordConfirm" type="password" id="passwordConfirm" class="form-control"
-                       placeholder="confirm password"
-                       required
-                       pattern="${userFieldPatternMap.get("password").getPattern()}"
-                       title="${userFieldPatternMap.get("password").getValidateTitle()}r"
-                />
-                <div class="fieldError" id="confirmPasswordErrorMessage"></div>
+                <forms:input path="user.passwordConfirm" cssClass="form-control" title="confirm password" value="${user.passwordConfirm}"/>
+                <forms:errors path="user.passwordConfirm" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Email</label>
             <div class="col-xs-10">
-                <input name="email" type="email" class="form-control" placeholder="email"
-                       value="${user.email}" required
-                       pattern="${userFieldPatternMap.get("email").getPattern()}"
-                />
-                <div class="fieldError">${errorMap.get("email")}</div>
+                <forms:input path="user.email" cssClass="form-control" title="email" value="${user.email}"/>
+                <forms:errors path="user.email" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">First name</label>
             <div class="col-xs-10">
-                <input name="firstName" type="text" class="form-control" placeholder="first name"
-                       value="${user.firstName}" required
-                       pattern="${userFieldPatternMap.get("firstName").getPattern()}"
-                       title="${userFieldPatternMap.get("firstName").getValidateTitle()}"
-                />
-                <div class="fieldError">${errorMap.get("firstName")}</div>
+                <forms:input path="user.firstName" cssClass="form-control" title="first name" value="${user.firstName}"/>
+                <forms:errors path="user.firstName" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Last name</label>
             <div class="col-xs-10">
-                <input name="lastName" type="text" class="form-control" placeholder="last name"
-                       value="${user.lastName}" required
-                       pattern="${userFieldPatternMap.get("lastName").getPattern()}"
-                       title="${userFieldPatternMap.get("lastName").getValidateTitle()}"
-                />
-                <div class="fieldError">${errorMap.get("lastName")}</div>
+                <forms:input path="user.lastName" cssClass="form-control" title="last name" value="${user.lastName}"/>
+                <forms:errors path="user.lastName" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Birhday</label>
             <div class="col-xs-10">
-                <input name="birthday" type="date" class="form-control" placeholder="birthday"
-                       value="${user.birthday}" required
-                       pattern="${userFieldPatternMap.get("birthday").getPattern()}"
-                       title="${userFieldPatternMap.get("birthday").getValidateTitle()}"
-                />
-                <div class="fieldError">${errorMap.get("birthday")}</div>
+                <forms:input type="date" path="user.birthday" cssClass="form-control" title="birthday" value="${user.birthday}"/>
+                <forms:errors path="user.birthday" cssClass="incorrect"/>
             </div>
         </div>
 
-        <c:if test="${!isRegister}">
+        <c:if test="${isCreate || isEdit}">
             <div class="form-group row">
                 <label class="col-xs-2 col-form-label">Role</label>
                 <div class="col-xs-10">
@@ -162,14 +140,15 @@
             <div class="g-recaptcha"
                  data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH">
             </div>
-            <p>${captchaError}</p>
+            <p class="incorrect">${captchaError}</p>
         </div>
         <div class="g-recaptcha" data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH"></div>
 
         <div class="form-group row">
             <div class="btns-center">
                 <button class="btn btn-primary" type="submit">Ok</button>
-                <button onclick="location.href = '/admin';" class="btn btn-primary ">Cancel</button>
+                <button onclick="location.href = '${cancelRef}';" class="btn btn-primary ">Cancel</button>
+                <%--TODO fix link--%>
             </div>
         </div>
     </form>

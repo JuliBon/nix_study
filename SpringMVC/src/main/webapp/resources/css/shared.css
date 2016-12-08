@@ -28,7 +28,7 @@
     TEXT-ALIGN: RIGHT;
 }
 
-.fieldError {
+.incorrect {
     font-size: 9pt;
     color: red;
     text-align: center;

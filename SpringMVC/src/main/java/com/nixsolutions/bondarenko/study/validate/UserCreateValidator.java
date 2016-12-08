@@ -1,9 +1,11 @@
 package com.nixsolutions.bondarenko.study.validate;
 
-import com.nixsolutions.bondarenko.study.UserFieldPattern;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.entity.User;
+import org.hibernate.annotations.Check;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +13,7 @@ import java.util.Map;
 /**
  * @author Yulya Bondarenko
  */
-public class UserCreateValidator extends UserAbstractValidator {
+public class UserCreateValidator extends UserValidator {
     private UserDao userDao;
 
     public UserCreateValidator(UserDao userDao) {
@@ -19,69 +21,50 @@ public class UserCreateValidator extends UserAbstractValidator {
     }
 
 
-    /***
-     * Validate email format and email uniqueness
-     * @param userModel instance of User data transfer object
-     * @throws RuntimeException if Exception occurred while searching user in userDao
-     */
     @Override
-    public Map<String, String> validate(UserModel userModel) {
-        UserModel userCreateDTO = userModel;
-
-        Map<String, String> errorMap = new HashMap<>();
-        validateLogin(userCreateDTO.getLogin(), errorMap);
-        validatePassword(userCreateDTO.getPassword(), userCreateDTO.getPasswordConfirm(), errorMap);
-        try {
-            validateEmail(userCreateDTO.getEmail(), errorMap);
-        } catch (Exception e){
-            throw new RuntimeException(e);
+    public void validate(Object object, Errors errors) {
+        UserModel userModel = (UserModel) object;
+        if (!errors.hasFieldErrors("login")) {
+            validateLogin(userModel.getLogin(), errors);
         }
-        validateFirstName(userCreateDTO.getFirstName(), errorMap);
-        validateLastName(userCreateDTO.getLastName(), errorMap);
-        validateBirthday(userCreateDTO.getBirthday(), errorMap);
-        return errorMap;
-    }
-
-    private void validateLogin(String login, Map<String, String> errorMap) throws RuntimeException {
-        //validate login format
-        if (!login.matches(UserFieldPattern.LOGIN_PATTERN.getPattern())) {
-            errorMap.put("login", "Login does not matches request format: "
-                    + UserFieldPattern.LOGIN_PATTERN.getValidateTitle());
-            return;
+        if (!errors.hasFieldErrors("email")) {
+            validateEmail(userModel.getEmail(), errors);
         }
-        try {
-            //whether login is not unique
-            if (userDao.findByLogin(login) != null) {
-                errorMap.put("login", ERROR_NOT_UNIQUE_LOGIN);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if (!errors.hasFieldErrors("password")) {
+            validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
         }
-    }
-
-    private void validatePassword(String password, String passwordConfirm, Map<String, String> errorMap) {
-        if (!password.matches(UserFieldPattern.PASSWORD_PATTERN.getPattern())) {
-            errorMap.put("password", "Password does not matches request format: "
-                    + UserFieldPattern.PASSWORD_PATTERN.getValidateTitle());
-            return;
-        }
-        if (!password.equals(passwordConfirm)) {
-            errorMap.put("password", "Passwords do not match!");
+        if(!errors.hasFieldErrors("birthday")){
+            validateBirthday(userModel.getBirthday(), errors);
         }
     }
 
     /***
-     * Validate email format and email uniqueness
-     * @param email
-     * @param errorMap
-     * @throws Exception if Exception occurred while searching user in userDao
+     * Check whether login is not unique
      */
-    protected void validateEmail(String email, Map<String, String> errorMap) throws Exception {
-        super.validateEmail(email, errorMap);
+    private void validateLogin(String login, Errors errors) {
+        User user = null;
+        try {
+            user = userDao.findByLogin(login);
+        } catch (Exception e) {
+        } finally {
+            if (user != null) {
+                errors.rejectValue("login", null, ERROR_NOT_UNIQUE_LOGIN);
+            }
+        }
+    }
 
-        User userByEmail = userDao.findByEmail(email);
-        if (userByEmail != null) {  //if there is already a user with this email
-            errorMap.put("email", ERROR_NOT_UNIQUE_EMAIL);
+    /**
+     * Check if there is already a user with this email
+     */
+    private void validateEmail(String email, Errors errors) {
+        User userByEmail = null;
+        try {
+            userByEmail = userDao.findByEmail(email);
+        } catch (Exception e) {
+        } finally {
+            if (userByEmail != null) {
+                errors.rejectValue("email", null, ERROR_NOT_UNIQUE_EMAIL);
+            }
         }
     }
 }

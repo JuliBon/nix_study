@@ -1,12 +1,12 @@
 package com.nixsolutions.bondarenko.study.controller;
 
-import com.nixsolutions.bondarenko.study.UserFieldPattern;
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
+import com.nixsolutions.bondarenko.study.model.UserUpdateModel;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserUpdateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserValidator;
@@ -29,7 +29,6 @@ import java.util.Map;
 public class AdminController {
     private static final String ACTION_CREATE_USER = "create_user";
     private static final String ACTION_EDIT_USER = "edit_user";
-    private static final Map<String, UserFieldPattern> userFieldPatternMap = UserFieldPattern.asMap();
     private List<String> roleNameList;
     {
         roleNameList = new ArrayList<>();
@@ -74,7 +73,6 @@ public class AdminController {
     public ModelAndView create(ModelMap modelMap, Authentication authentication) {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
-        modelMap.put("userFieldPatternMap", userFieldPatternMap);
         try {
             modelMap.put("roleNameList", roleNameList);
             return new ModelAndView("user_form", modelMap);
@@ -88,13 +86,12 @@ public class AdminController {
     public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap, Authentication authentication) {
         modelMap.addAttribute("userName", ((UserDetails)authentication.getPrincipal()).getUsername());
         modelMap.addAttribute("action", ACTION_EDIT_USER);
-        modelMap.addAttribute("userFieldPatternMap", userFieldPatternMap);
 
         if (id != null) {
             Long id_value = new Long(id);
             try {
                 User user = userDao.findById(id_value);
-                UserModel userModel = new UserModel(user.getId().toString(),
+                UserModel userModel = new UserUpdateModel(user.getId().toString(),
                         user.getLogin(), "", "",
                         user.getEmail(),
                         user.getFirstName(),
@@ -117,7 +114,7 @@ public class AdminController {
         modelMap.put("action", ACTION_EDIT_USER);
 
         try {
-            UserValidator userValidator = new UserUpdateValidator(userDao);
+            /*UserValidator userValidator = new UserUpdateValidator(userDao);
             Map<String, String> errorMap = userValidator.validate(userModel);
 
             if (errorMap.isEmpty()) {
@@ -130,13 +127,13 @@ public class AdminController {
                 modelMap.put("errorMap", errorMap);
 
                 modelMap.put("roleNameList", roleNameList);
-                modelMap.put("userFieldPatternMap", userFieldPatternMap);
                 return new ModelAndView("user_form", modelMap);
-            }
+            }*/
         } catch (Exception e) {
             modelMap.addAttribute("error", e);
             return new ModelAndView("error", modelMap);
         }
+        return new ModelAndView("");
     }
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
@@ -148,7 +145,7 @@ public class AdminController {
     private ModelAndView createUser(@ModelAttribute("user") UserModel userModel, ModelMap modelMap) {
         try {
             UserValidator userValidator = new UserCreateValidator(userDao);
-            Map<String, String> errorMap = userValidator.validate(userModel);
+            /*Map<String, String> errorMap = userValidator.validate(userModel);
 
             if (errorMap.isEmpty()) {
                 User user = ModelConvert.convertToUser(userModel, roleDao);
@@ -160,12 +157,12 @@ public class AdminController {
                 modelMap.put("errorMap", errorMap);
 
                 modelMap.put("roleNameList", roleNameList);
-                modelMap.put("userFieldPatternMap", userFieldPatternMap);
                 return new ModelAndView("user_form", modelMap);
-            }
+            }*/
         } catch (Exception e) {
             modelMap.addAttribute("error", e);
             return new ModelAndView("error", modelMap);
         }
+        return new ModelAndView("");
     }
 }
