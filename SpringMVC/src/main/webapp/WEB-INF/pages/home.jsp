@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="container">
-    <h2>Hello, ${currentUser.login}</h2>
+    <h2>Hello, ${userName}</h2>
     <div>Click <a href="/logout">here</a> to logout</div>
 </div>
 </body>

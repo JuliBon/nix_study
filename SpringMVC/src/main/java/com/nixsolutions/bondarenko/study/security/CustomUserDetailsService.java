@@ -41,5 +41,4 @@ public class CustomUserDetailsService implements UserDetailsService {
         System.out.print("authorities :" + authorities);
         return authorities;
     }
-
 }

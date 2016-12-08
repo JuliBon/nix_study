@@ -3,15 +3,16 @@ package com.nixsolutions.bondarenko.study.controller;
 import com.nixsolutions.bondarenko.study.UserFieldPattern;
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
+import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
-import com.nixsolutions.bondarenko.study.entity.Role;
-import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserUpdateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,14 +44,15 @@ public class AdminController {
     private RoleDao roleDao;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public ModelAndView admin(ModelMap model) {
+    public ModelAndView admin(ModelMap modelMap, Authentication authentication) {
+        modelMap.addAttribute("userName", ((UserDetails)authentication.getPrincipal()).getUsername());
         try {
             List<User> userList = userDao.findAll();
-            model.addAttribute("userList", userList);
-            return new ModelAndView("admin", model);
+            modelMap.addAttribute("userList", userList);
+            return new ModelAndView("admin", modelMap);
         } catch (Exception e) {
-            model.addAttribute("error", e);
-            return new ModelAndView("admin", model);
+            modelMap.addAttribute("error", e);
+            return new ModelAndView("admin", modelMap);
         }
     }
 
@@ -69,7 +71,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.GET)
-    public ModelAndView create(ModelMap modelMap) {
+    public ModelAndView create(ModelMap modelMap, Authentication authentication) {
+        modelMap.addAttribute("userName", ((UserDetails)authentication.getPrincipal()).getUsername());
         modelMap.put("action", ACTION_CREATE_USER);
         modelMap.put("userFieldPatternMap", userFieldPatternMap);
         try {
@@ -82,7 +85,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap) {
+    public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap, Authentication authentication) {
+        modelMap.addAttribute("userName", ((UserDetails)authentication.getPrincipal()).getUsername());
         modelMap.addAttribute("action", ACTION_EDIT_USER);
         modelMap.addAttribute("userFieldPatternMap", userFieldPatternMap);
 

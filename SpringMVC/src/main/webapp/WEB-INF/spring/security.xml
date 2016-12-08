@@ -10,11 +10,9 @@
 
     <http auto-config="true" >
         <intercept-url pattern="/" access="permitAll" />
-        <intercept-url pattern="/home" access="permitAll" />
-        <intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
-        <intercept-url pattern="/dba**" access="hasRole('ADMIN') and hasRole('DBA')" />
+        <intercept-url pattern="/admin*/**" access="hasRole('ADMIN')" />
         <form-login  login-page="/login"
-                     default-target-url="/admin"
+                     default-target-url="/index"
                      username-parameter="login"
                      password-parameter="password"
                      authentication-failure-url="/Access_Denied" />

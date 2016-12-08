@@ -32,7 +32,7 @@
 <div class="container">
     <%--TODO change to role checking--%>
     <c:if test="${action.equals(\"create_user\") || action.equals(\"edit_user\")}">
-        <div class="adminLogout">Admin ${currentUser.login}
+        <div class="adminLogout">Admin ${userName}
             <a href="/logout">(logout)</a>
         </div>
     </c:if>
@@ -62,6 +62,7 @@
     </c:if>
 
     <form action="${formAction}" class="form-user" method="post" id="userForm" onsubmit="return validateForm()">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="id" value="${user.id}">
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
