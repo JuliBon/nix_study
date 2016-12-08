@@ -3,7 +3,6 @@ package com.nixsolutions.bondarenko.study.controller;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +27,7 @@ public class IndexController {
                     return "redirect: admin";
                 }
                 if (roleName.equals("ROLE_USER")) {
-                    modelMap.addAttribute("userName", ((UserDetails)authentication.getPrincipal()).getUsername());
+                    modelMap.addAttribute("userName", authentication.getName());
                     return "home";
                 }
             }

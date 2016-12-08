@@ -45,7 +45,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView admin(ModelMap modelMap, Authentication authentication) {
-        modelMap.addAttribute("userName", ((UserDetails)authentication.getPrincipal()).getUsername());
+        modelMap.addAttribute("userName", authentication.getName());
         try {
             List<User> userList = userDao.findAll();
             modelMap.addAttribute("userList", userList);
@@ -72,7 +72,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.GET)
     public ModelAndView create(ModelMap modelMap, Authentication authentication) {
-        modelMap.addAttribute("userName", ((UserDetails)authentication.getPrincipal()).getUsername());
+        modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
         modelMap.put("userFieldPatternMap", userFieldPatternMap);
         try {
