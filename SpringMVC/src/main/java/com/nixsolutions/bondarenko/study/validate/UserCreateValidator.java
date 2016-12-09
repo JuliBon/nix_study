@@ -20,31 +20,21 @@ public class UserCreateValidator extends UserValidator {
         this.userDao = userDao;
     }
 
-
     @Override
     public void validate(Object object, Errors errors) {
-        UserModel userModel = (UserModel) object;
+        super.validate(object, errors);
         if (!errors.hasFieldErrors("login")) {
-            validateLogin(userModel.getLogin(), errors);
-        }
-        if (!errors.hasFieldErrors("email")) {
-            validateEmail(userModel.getEmail(), errors);
-        }
-        if (!errors.hasFieldErrors("password")) {
-            validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
-        }
-        if(!errors.hasFieldErrors("birthday")){
-            validateBirthday(userModel.getBirthday(), errors);
+            validateLogin((UserModel) object, errors);
         }
     }
 
     /***
      * Check whether login is not unique
      */
-    private void validateLogin(String login, Errors errors) {
+    private void validateLogin(UserModel userModel, Errors errors) {
         User user = null;
         try {
-            user = userDao.findByLogin(login);
+            user = userDao.findByLogin(userModel.getLogin());
         } catch (Exception e) {
         } finally {
             if (user != null) {
@@ -56,10 +46,11 @@ public class UserCreateValidator extends UserValidator {
     /**
      * Check if there is already a user with this email
      */
-    private void validateEmail(String email, Errors errors) {
+    @Override
+    protected void validateEmail(UserModel userModel, Errors errors) {
         User userByEmail = null;
         try {
-            userByEmail = userDao.findByEmail(email);
+            userByEmail = userDao.findByEmail(userModel.getEmail());
         } catch (Exception e) {
         } finally {
             if (userByEmail != null) {
