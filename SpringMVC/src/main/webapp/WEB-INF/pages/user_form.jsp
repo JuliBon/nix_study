@@ -40,7 +40,7 @@
         </div>
     </c:if>
     <h3>
-        <c:set var="cancelRef" value="admin" scope="page"/>
+        <c:set var="cancelRef" value="${contextPath}/admin" scope="page"/>
 
         <c:set var="isEdit" value="false" scope="page"/>
         <c:set var="isCreate" value="false" scope="page"/>
@@ -60,7 +60,7 @@
             <c:otherwise>
                 <c:set var="isRegister" value="true" scope="page"/>
                 <c:set var="formAction" value="/register" scope="page"/>
-                <c:set var="cancelRef" value="login" scope="page"/>
+                <c:set var="cancelRef" value="${contextPath}/login" scope="page"/>
                 Registration
             </c:otherwise>
         </c:choose>
@@ -152,9 +152,8 @@
 
         <div class="form-group row">
             <div class="btns-center">
-                <button class="btn btn-primary" type="submit">Ok</button>
-                <button onclick="location.href = '${cancelRef}';" class="btn btn-primary ">Cancel</button>
-                <%--TODO fix link--%>
+                <button type="submit" class="btn btn-primary">Ok</button>
+                <button type="button" onclick="location.href = '${cancelRef}';" class="btn btn-primary ">Cancel</button>
             </div>
         </div>
     </form>
