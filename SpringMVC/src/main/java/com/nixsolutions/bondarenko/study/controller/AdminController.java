@@ -9,6 +9,8 @@ import com.nixsolutions.bondarenko.study.model.UserCreateModel;
 import com.nixsolutions.bondarenko.study.model.UserUpdateModel;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserUpdateValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,8 +29,10 @@ import java.util.List;
 
 @Controller
 public class AdminController {
+    private static final String errorMarker = "admin";
     private static final String ACTION_CREATE_USER = "create_user";
     private static final String ACTION_EDIT_USER = "edit_user";
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private List<String> roleNameList;
 
     {
@@ -51,8 +55,8 @@ public class AdminController {
             modelMap.addAttribute("userList", userList);
             return new ModelAndView("admin", modelMap);
         } catch (Exception e) {
-            modelMap.addAttribute("error", e);
-            return new ModelAndView("admin", modelMap);
+            logger.error(errorMarker, e);
+            return new ModelAndView("error");
         }
     }
 
@@ -63,8 +67,8 @@ public class AdminController {
             try {
                 userDao.remove(userDao.findById(id_value));
             } catch (Exception e) {
-                ModelMap modelMap = new ModelMap("error", e);
-                return new ModelAndView("error", modelMap);
+                logger.error(errorMarker, e);
+                return new ModelAndView("error");
             }
         }
         return new ModelAndView("redirect:/admin");
@@ -79,8 +83,8 @@ public class AdminController {
             modelMap.put("user", new UserCreateModel());
             return new ModelAndView("user_form", modelMap);
         } catch (Exception e) {
-            modelMap.addAttribute("error", e);
-            return new ModelAndView("error", modelMap);
+            logger.error(errorMarker, e);
+            return new ModelAndView("error");
         }
     }
 
@@ -104,8 +108,8 @@ public class AdminController {
                 modelMap.addAttribute("user", userModel);
                 modelMap.addAttribute("roleNameList", roleNameList);
             } catch (Exception e) {
-                modelMap.addAttribute("error", e);
-                return new ModelAndView("error", modelMap);
+                logger.error(errorMarker, e);
+                return new ModelAndView("error");
             }
         }
         return new ModelAndView("user_form", modelMap);
@@ -133,8 +137,8 @@ public class AdminController {
                 return new ModelAndView("user_form", modelMap);
             }
         } catch (Exception e) {
-            modelMap.addAttribute("error", e);
-            return new ModelAndView("error", modelMap);
+            logger.error(errorMarker, e);
+            return new ModelAndView("error");
         }
     }
 
@@ -161,8 +165,8 @@ public class AdminController {
                 return new ModelAndView("user_form", modelMap);
             }
         } catch (Exception e) {
-            modelMap.addAttribute("error", e);
-            return new ModelAndView("error", modelMap);
+            logger.error(errorMarker, e);
+            return new ModelAndView("error");
         }
     }
 }

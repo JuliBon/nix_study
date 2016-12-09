@@ -9,12 +9,12 @@ import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.model.UserRegisterModel;
 import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
-import com.nixsolutions.bondarenko.study.validate.UserValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.*;
-import org.springframework.web.bind.EscapedErrors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +26,9 @@ import java.util.List;
 
 @Controller
 public class RegisterController {
+    private static final String errorMarker = "register";
     private static final String ACTION_REGISTER_USER = "register_user";
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserDao userDao;
@@ -42,8 +44,8 @@ public class RegisterController {
             modelMap.addAttribute("user", new UserModel());
             return new ModelAndView("user_form", modelMap);
         } catch (Exception e) {
-            modelMap.addAttribute("error", e);
-            return new ModelAndView("error", modelMap);
+            logger.error(errorMarker, e);
+            return new ModelAndView("error");
         }
     }
 
@@ -78,8 +80,8 @@ public class RegisterController {
                 return new ModelAndView("user_form", modelMap);
             }
         } catch (Exception e) {
-            modelMap.addAttribute("error", e);
-            return new ModelAndView("error", modelMap);
+            logger.error(errorMarker, e);
+            return new ModelAndView("error");
         }
     }
 }

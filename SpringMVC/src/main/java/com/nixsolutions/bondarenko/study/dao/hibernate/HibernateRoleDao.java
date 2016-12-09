@@ -12,13 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class HibernateRoleDao implements RoleDao {
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SessionFactory sessionFactory;
 
     public HibernateRoleDao() {
-        logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override

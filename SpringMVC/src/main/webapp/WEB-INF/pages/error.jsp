@@ -12,9 +12,10 @@
 <div class="container errorContainer">
     <h1>Error! </h1>
     <br/>
-    <p>${error.getMessage()}</p>
+    <p>Some error occurred while processing request</p>
+    <br/>
+    <a href="javascript:history.back()">Go Back</a>
 </div>
-
 </body>
 </html>
 

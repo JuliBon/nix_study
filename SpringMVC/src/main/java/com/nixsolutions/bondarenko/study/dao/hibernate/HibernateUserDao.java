@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 public class HibernateUserDao implements UserDao {
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SessionFactory sessionFactory;
 
     public HibernateUserDao() {
-        logger = LoggerFactory.getLogger(this.getClass());
+
     }
 
     @Override
@@ -132,8 +132,7 @@ public class HibernateUserDao implements UserDao {
                     .uniqueResult();
             session.getTransaction().commit();
             return user;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             try {
                 session.getTransaction().rollback();
             } catch (TransactionException trEx) {
