@@ -23,6 +23,7 @@ public class HibernateUserDao implements UserDao {
 
     }
 
+    @Transactional
     @Override
     public void create(User user) throws Exception {
         try (Session session = sessionFactory.openSession()) {
@@ -34,10 +35,11 @@ public class HibernateUserDao implements UserDao {
         }
     }
 
+
     @Override
     public void update(User user) throws Exception {
         try (Session session = sessionFactory.openSession()) {
-            session.update(user);
+            session.saveOrUpdate(user);
         } catch (Exception e) {
             String message = "Error while updating user";
             logger.error(message, e);
@@ -56,6 +58,7 @@ public class HibernateUserDao implements UserDao {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<User> findAll() throws Exception {
         try (Session session = sessionFactory.openSession()) {
@@ -67,6 +70,7 @@ public class HibernateUserDao implements UserDao {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findById(Long id) throws Exception {
         try (Session session = sessionFactory.openSession()) {
@@ -78,6 +82,7 @@ public class HibernateUserDao implements UserDao {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findByLogin(String login) throws Exception {
         try (Session session = sessionFactory.openSession()) {
@@ -89,6 +94,7 @@ public class HibernateUserDao implements UserDao {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findByEmail(String email) throws Exception {
         try (Session session = sessionFactory.openSession()) {

@@ -16,20 +16,28 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
+
+import org.hibernate.exception.ConstraintViolationException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 @ContextConfiguration(locations = "classpath:application-context-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
+        TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
+@Transactional
 public class HibernateRoleDaoTest {
     @Autowired
     SessionFactory sessionFactory;
@@ -45,7 +53,8 @@ public class HibernateRoleDaoTest {
     @Before
     public void initialize() throws Exception {
         String JDBC_DRIVER = "org.h2.Driver";
-        String JDBC_URL = "jdbc:h2:mem:db_user_library";
+        String JDBC_URL = "jdbc:h2:tcp://localhost/./db/db_user_library";
+//        String JDBC_URL = "jdbc:h2:mem:db_user_library";
         String USER = "sa";
         String PASSWORD = "";
 
@@ -104,9 +113,8 @@ public class HibernateRoleDaoTest {
         checkRoleActualEqualsToExpected("RoleCreateExpectedDataSet");
     }
 
-    @Test  (expected = Exception.class)
-    public void testCreateRoleBad() throws Exception {
-        // try to create role with not unique name
+    @Test(expected = ConstraintViolationException.class)
+    public void testCreateRoleNotUnique() throws Exception {
         roleDao.create(new Role(4L, "ADMIN"));
     }
 
@@ -117,17 +125,17 @@ public class HibernateRoleDaoTest {
         checkUserAndRoleActualEqualsToExpected("RoleUpdateExpectedDataSet");
     }
 
-    @Test (expected = Exception.class)
+    @Test(expected = Exception.class)
     public void testUpdateRoleNotExisting() throws Exception {
         roleDao.update(new Role(100L, "system-admin"));
     }
 
-    @Test  (expected = Exception.class)
+    @Test(expected = Exception.class)
     public void testRemoveRole() throws Exception {
         roleDao.remove(new Role(2L, "USER"));
     }
 
-    @Test  (expected = Exception.class)
+    @Test (expected = Exception.class)
     public void testRemoveRoleNotExisting() throws Exception {
         roleDao.remove(new Role(100L, "guest"));
     }
