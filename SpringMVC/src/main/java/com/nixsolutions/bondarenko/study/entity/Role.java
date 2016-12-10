@@ -1,6 +1,9 @@
 package com.nixsolutions.bondarenko.study.entity;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Yuliya Bondarenko
@@ -15,8 +18,12 @@ public class Role {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @NaturalId
     @Column(name="name", unique = true, nullable = false)
     private String name;
+
+    @OneToMany(mappedBy="role", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    private List<User> users;
 
     public Role(){
 
@@ -49,5 +56,13 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

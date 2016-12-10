@@ -1,5 +1,7 @@
 package com.nixsolutions.bondarenko.study.entity;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -18,6 +20,7 @@ public class User {
     private Long id;
 
     @Column(name = "login", unique = true, nullable = false)
+    @NaturalId
     private String login;
 
     @Column(name = "password", nullable = false)
@@ -35,9 +38,10 @@ public class User {
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
-    @ManyToOne()
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "id_role", nullable = false)
     private Role role;
+
 
     public User() {
 

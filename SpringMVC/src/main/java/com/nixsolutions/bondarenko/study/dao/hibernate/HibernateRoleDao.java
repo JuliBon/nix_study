@@ -2,15 +2,16 @@ package com.nixsolutions.bondarenko.study.dao.hibernate;
 
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.entity.Role;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.TransactionException;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
+@Transactional
 public class HibernateRoleDao implements RoleDao {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -22,78 +23,45 @@ public class HibernateRoleDao implements RoleDao {
 
     @Override
     public void create(Role role) throws Exception {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
+        try (Session session = sessionFactory. openSession()) {
             session.save(role);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            try {
-                session.getTransaction().rollback();
-            } catch (TransactionException trEx) {
-                logger.error("Couldn’t roll back transaction", trEx);
-            }
-            throw new Exception("Error while creating role", e);
-        } finally {
-            session.close();
+            String message = "Error while creating role";
+            logger.error(message, e);
+            throw new Exception(message, e);
         }
     }
 
     @Override
     public void update(Role role) throws Exception {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
             session.update(role);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            try {
-                session.getTransaction().rollback();
-            } catch (TransactionException trEx) {
-                logger.error("Couldn’t roll back transaction", trEx);
-            }
-            throw new Exception("Error while updating role", e);
-        } finally {
-            session.close();
+            String message = "Error while updating role";
+            logger.error(message, e);
+            throw new Exception(message, e);
         }
     }
 
     @Override
     public void remove(Role role) throws Exception {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
             session.delete(role);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            try {
-                session.getTransaction().rollback();
-            } catch (TransactionException trEx) {
-                logger.error("Couldn’t roll back transaction", trEx);
-            }
-            throw new Exception("Error while removing role", e);
-        } finally {
-            session.close();
+            String message = "Error while removing role";
+            logger.error(message, e);
+            throw new Exception(message, e);
         }
     }
 
     @Override
     public Role findByName(String name) throws Exception {
-        Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            Criteria criteria = session.createCriteria(Role.class);
-            return (Role) criteria.add(Restrictions.eq("name", name))
-                    .uniqueResult();
+        try (Session session = sessionFactory.openSession()) {
+            return session.bySimpleNaturalId(Role.class).load(name);
         } catch (Exception e) {
-            try {
-                session.getTransaction().rollback();
-            } catch (TransactionException trEx) {
-                logger.error("Couldn’t roll back transaction", trEx);
-            }
-            throw new Exception("Error while searching role", e);
-        } finally {
-            session.close();
+            String message = "Error while searching role";
+            logger.error(message, e);
+            throw new Exception(message, e);
         }
     }
 }
