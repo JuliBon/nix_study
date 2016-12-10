@@ -1,7 +1,6 @@
 package com.nixsolutions.bondarenko.study.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.validation.constraints.NotNull;
 
 public class UserUpdateModel extends UserModel {

@@ -45,11 +45,10 @@ public class HibernateUserDaoTest {
 
     @Before
     public void initialize() throws Exception {
-        Map<String, Object> properties = sessionFactory.getProperties();
-        String JDBC_DRIVER = (String) properties.get("connection.driver_class");
-        String JDBC_URL = (String) properties.get("connection.url");
-        String USER = (String) properties.get("connection.username");
-        String PASSWORD = (String) properties.get("connection.password");
+        String JDBC_DRIVER = "org.h2.Driver";
+        String JDBC_URL = "jdbc:h2:mem:db_user_library";
+        String USER = "sa";
+        String PASSWORD = "";
 
         databaseTester = new JdbcDatabaseTester(JDBC_DRIVER, JDBC_URL, USER, PASSWORD);
         databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);

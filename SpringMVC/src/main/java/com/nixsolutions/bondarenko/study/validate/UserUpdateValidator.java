@@ -3,11 +3,8 @@ package com.nixsolutions.bondarenko.study.validate;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserUpdateValidator extends UserValidator {
     private UserDao userDao;
