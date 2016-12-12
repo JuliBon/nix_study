@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dataset>
-    <User login="yulya" password="12345" email="yulya@mail.ru" firstName="yuliya" lastName="bondarenko" birthday="1993-01-10" id_role="1"/>
+    <User  id="1" login="yulya" password="12345" email="yulya@mail.ru" firstName="yuliya" lastName="bondarenko" birthday="1993-01-10" id_role="1"/>
 </dataset>

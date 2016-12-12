@@ -1,6 +1,5 @@
 package com.nixsolutions.bondarenko.study.entity;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -39,7 +38,7 @@ public class User {
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
-    @ManyToOne (targetEntity = Role.class)
+    @ManyToOne
     @JoinColumn(name = "id_role", nullable = false)
     private Role role;
 

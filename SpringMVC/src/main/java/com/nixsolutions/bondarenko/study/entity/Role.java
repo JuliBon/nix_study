@@ -1,9 +1,9 @@
 package com.nixsolutions.bondarenko.study.entity;
 
 import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.List;
@@ -26,7 +26,6 @@ public class Role {
     private String name;
 
     @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
-    @Cascade(CascadeType.SAVE_UPDATE)
     private List<User> users;
 
     public Role(){
