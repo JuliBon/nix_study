@@ -16,8 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -125,19 +123,22 @@ public class HibernateRoleDaoTest {
         checkUserAndRoleActualEqualsToExpected("RoleUpdateExpectedDataSet");
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void testUpdateRoleNotExisting() throws Exception {
         roleDao.update(new Role(100L, "system-admin"));
+        checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
     @Test(expected = Exception.class)
     public void testRemoveRole() throws Exception {
         roleDao.remove(new Role(2L, "USER"));
+        checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
-    @Test (expected = Exception.class)
+    @Test
     public void testRemoveRoleNotExisting() throws Exception {
         roleDao.remove(new Role(100L, "guest"));
+        checkUserAndRoleActualEqualsToExpected("InitialDataSet");
     }
 
     @Test

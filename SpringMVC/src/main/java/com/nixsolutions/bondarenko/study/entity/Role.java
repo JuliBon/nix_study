@@ -1,8 +1,11 @@
 package com.nixsolutions.bondarenko.study.entity;
 
-import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -15,12 +18,16 @@ import java.util.List;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @NaturalId
     @Column(name="name", unique = true, nullable = false)
     private String name;
+
+    @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
+    @Cascade(CascadeType.SAVE_UPDATE)
+    private List<User> users;
 
     public Role(){
 
@@ -53,5 +60,13 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
