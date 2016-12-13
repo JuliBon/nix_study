@@ -70,7 +70,9 @@ public class RegisterController {
                 User user = ModelConvert.convertToUser(userModel);
                 user.setRole(roleDao.findByName(UserLibraryRole.USER.getName()));
                 userDao.create(user);
-                return new ModelAndView("redirect: login");
+
+                modelMap.put("registered", true);
+                return new ModelAndView("login", modelMap);
             } else {
                 modelMap.put("user", userModel);
 

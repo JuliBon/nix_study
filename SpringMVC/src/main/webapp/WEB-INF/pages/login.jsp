@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html lang="en">
@@ -17,6 +17,14 @@
 
 <body>
 <div class="container">
+    <c:if test="${registered}">
+        <script>
+            window.onload = function() {
+                alert( '"You have been successfully registered"' );
+            };
+        </script>
+    </c:if>
+
     <form:form action="/login" method="post" class="form-signin" modelAttribute="user">
         <div class="centerLabel"><h2 class="form-signin-heading">Please sing in</h2></div>
         <c:if test="${not empty error}">
@@ -28,7 +36,7 @@
         <label for="inputPassword" class="sr-only">Password: </label>
         <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="centerLabel"><a href="/register"><h5>Register</h5></a></div>
     </form:form>
 </div>
