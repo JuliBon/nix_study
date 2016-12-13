@@ -90,7 +90,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
     public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap, Authentication authentication) {
-        modelMap.addAttribute("userName", ((UserDetails) authentication.getPrincipal()).getUsername());
+        modelMap.addAttribute("userName", authentication.getName());
         modelMap.addAttribute("action", ACTION_EDIT_USER);
 
         if (id != null) {
@@ -120,7 +120,7 @@ public class AdminController {
                              BindingResult bindingResult,
                              Authentication authentication,
                              ModelMap modelMap) {
-        modelMap.addAttribute("userName", ((UserDetails) authentication.getPrincipal()).getUsername());
+        modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_EDIT_USER);
 
         try {
@@ -150,7 +150,7 @@ public class AdminController {
                                BindingResult bindingResult,
                                Authentication authentication,
                                ModelMap modelMap) {
-        modelMap.addAttribute("userName", ((UserDetails) authentication.getPrincipal()).getUsername());
+        modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
 
         try {

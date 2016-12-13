@@ -33,7 +33,6 @@
 <body>
 
 <div class="container">
-    <%--TODO change to role checking--%>
     <c:if test="${action.equals(\"create_user\") || action.equals(\"edit_user\")}">
         <div class="adminLogout">Admin ${userName}
             <a href="/logout">(logout)</a>
