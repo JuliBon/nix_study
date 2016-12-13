@@ -6,7 +6,6 @@ import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
-import com.nixsolutions.bondarenko.study.model.UserRegisterModel;
 import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import org.slf4j.Logger;
@@ -50,7 +49,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView register(@ModelAttribute("user") @Valid UserRegisterModel userModel,
+    public ModelAndView register(@ModelAttribute("userModel") @Valid UserModel userModel,
                                  BindingResult bindingResult,
                                  ModelMap modelMap,
                                  HttpServletRequest request) {
@@ -74,7 +73,7 @@ public class RegisterController {
                 modelMap.put("registered", true);
                 return new ModelAndView("login", modelMap);
             } else {
-                modelMap.put("user", userModel);
+                modelMap.put("userModel", userModel);
 
                 if(bindingResult.hasErrors()) {
                     modelMap.put(BindingResult.class.getName() + ".user", bindingResult);

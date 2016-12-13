@@ -20,10 +20,10 @@ public abstract class UserValidator implements Validator {
     public void validate(Object object, Errors errors) {
         UserModel userModel = (UserModel) object;
         if (!errors.hasFieldErrors("password")) {
-            validatePassword(userModel.getPassword(), userModel.getPasswordConfirm(), errors);
+            validatePassword(userModel, errors);
         }
         if (!errors.hasFieldErrors("birthday")) {
-            validateBirthday(userModel.getBirthday(), errors);
+            validateBirthday(userModel, errors);
         }
         if (!errors.hasFieldErrors("email")) {
             validateEmail((UserModel) object, errors);
@@ -32,16 +32,14 @@ public abstract class UserValidator implements Validator {
 
     protected abstract void validateEmail(UserModel userModel, Errors errors);
 
-    protected void validatePassword(String password, String passwordConfirm, Errors errors) {
-        if (!password.equals(passwordConfirm)) {
-            if (!errors.hasFieldErrors(password)) {
-                errors.rejectValue("password", null, "passwords do not match");
-            }
+    private void validatePassword(UserModel userModel, Errors errors) {
+        if (!userModel.getUser().getPassword().equals(userModel.getPasswordConfirm())) {
+            errors.rejectValue("password", null, "passwords do not match");
         }
     }
 
-    protected void validateBirthday(String birthday, Errors errors) {
-        if (!birthday.matches("^\\d{4}-(0\\d|10|11|12)-([012]\\d|30|31)$")) {
+    private void validateBirthday(UserModel userModel, Errors errors) {
+        if (!userModel.getBirthdayStr().matches("^\\d{4}-(0\\d|10|11|12)-([012]\\d|30|31)$")) {
             errors.rejectValue("birthday", null, "Birthday does not matches request format: "
                     + "bad date format");
         }

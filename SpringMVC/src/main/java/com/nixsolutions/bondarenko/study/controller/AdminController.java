@@ -5,15 +5,13 @@ import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
-import com.nixsolutions.bondarenko.study.model.UserCreateModel;
-import com.nixsolutions.bondarenko.study.model.UserUpdateModel;
+import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validate.UserUpdateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -80,7 +78,7 @@ public class AdminController {
         modelMap.put("action", ACTION_CREATE_USER);
         try {
             modelMap.put("roleNameList", roleNameList);
-            modelMap.put("user", new UserCreateModel());
+            modelMap.put("userModel", new UserModel());
             return new ModelAndView("user_form", modelMap);
         } catch (Exception e) {
             logger.error(errorMarker, e);
@@ -97,15 +95,10 @@ public class AdminController {
             Long id_value = new Long(id);
             try {
                 User user = userDao.findById(id_value);
-                UserUpdateModel userModel = new UserUpdateModel(user.getId().toString(),
-                        user.getLogin(), "", "",
-                        user.getEmail(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getBirthday().toString(),
-                        user.getRole().getName());
+                UserModel userModel = new UserModel(user);
+                userModel.getUser().setPassword(null);
 
-                modelMap.addAttribute("user", userModel);
+                modelMap.addAttribute("userModel", userModel);
                 modelMap.addAttribute("roleNameList", roleNameList);
             } catch (Exception e) {
                 logger.error(errorMarker, e);
@@ -116,7 +109,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
-    public ModelAndView edit(@ModelAttribute("user") @Valid UserUpdateModel userModel,
+    public ModelAndView edit(@ModelAttribute("userModel") @Valid UserModel userModel,
                              BindingResult bindingResult,
                              Authentication authentication,
                              ModelMap modelMap) {
@@ -146,7 +139,7 @@ public class AdminController {
 
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("user") @Valid UserCreateModel userModel,
+    public ModelAndView create(@ModelAttribute("userModel") @Valid UserModel userModel,
                                BindingResult bindingResult,
                                Authentication authentication,
                                ModelMap modelMap) {

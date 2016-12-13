@@ -29,7 +29,7 @@ public class UserCreateValidator extends UserValidator {
     private void validateLogin(UserModel userModel, Errors errors) {
         User user = null;
         try {
-            user = userDao.findByLogin(userModel.getLogin());
+            user = userDao.findByLogin(userModel.getUser().getLogin());
         } catch (Exception e) {
         } finally {
             if (user != null) {
@@ -45,7 +45,7 @@ public class UserCreateValidator extends UserValidator {
     protected void validateEmail(UserModel userModel, Errors errors) {
         User userByEmail = null;
         try {
-            userByEmail = userDao.findByEmail(userModel.getEmail());
+            userByEmail = userDao.findByEmail(userModel.getUser().getEmail());
         } catch (Exception e) {
         } finally {
             if (userByEmail != null) {

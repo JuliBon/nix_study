@@ -20,11 +20,11 @@ public class UserUpdateValidator extends UserValidator {
     protected void validateEmail(UserModel userModel, Errors errors) {
         User userByEmail = null;
         try {
-            userByEmail = userDao.findByEmail(userModel.getEmail());
+            userByEmail = userDao.findByEmail(userModel.getUser().getEmail());
         } catch (Exception e) {
         } finally {
             if (userByEmail != null) {
-                if (!userByEmail.getLogin().equals(userModel.getLogin())) {
+                if (!userByEmail.getLogin().equals(userModel.getUser().getLogin())) {
                     errors.rejectValue("email", null, ERROR_NOT_UNIQUE_EMAIL);
                 }
             }

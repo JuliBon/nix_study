@@ -72,13 +72,13 @@
     <form action="${formAction}" class="form-user" method="post" id="userForm" onsubmit="return validateForm()">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <c:if test="${isEdit}">
-            <forms:input type="hidden" path="user.id" value="${user.id}"/>
+            <forms:input type="hidden" path="userModel.user.id" value="${userModel.user.id}"/>
         </c:if>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
-                <forms:input path="user.login" cssClass="form-control" title="Login" readonly="${readonly}"
-                             value="${user.login}"/>
+                <forms:input path="userModel.user.login" cssClass="form-control" title="Login" readonly="${readonly}"
+                             value="${userModel.user.login}"/>
                 <forms:errors path="user.login" cssClass="incorrect"/>
             </div>
         </div>
@@ -86,46 +86,46 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Password</label>
             <div class="col-xs-10">
-                <forms:input path="user.password" cssClass="form-control" title="password" value="${user.password}"/>
+                <forms:input path="userModel.user.password" cssClass="form-control" title="password" value="${userModel.user.password}"/>
                 <forms:errors path="user.password" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
-                <forms:input path="user.passwordConfirm" cssClass="form-control" title="confirm password"
-                             value="${user.passwordConfirm}"/>
-                <forms:errors path="user.passwordConfirm" cssClass="incorrect"/>
+                <forms:input path="userModel.passwordConfirm" cssClass="form-control" title="confirm password"
+                             value="${userModel.passwordConfirm}"/>
+                <forms:errors path="userModel.passwordConfirm" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Email</label>
             <div class="col-xs-10">
-                <forms:input path="user.email" cssClass="form-control" title="email" value="${user.email}"/>
+                <forms:input path="userModel.user.email" cssClass="form-control" title="email" value="${userModel.user.email}"/>
                 <forms:errors path="user.email" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">First name</label>
             <div class="col-xs-10">
-                <forms:input path="user.firstName" cssClass="form-control" title="first name"
-                             value="${user.firstName}"/>
+                <forms:input path="userModel.user.firstName" cssClass="form-control" title="first name"
+                             value="${userModel.user.firstName}"/>
                 <forms:errors path="user.firstName" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Last name</label>
             <div class="col-xs-10">
-                <forms:input path="user.lastName" cssClass="form-control" title="last name" value="${user.lastName}"/>
+                <forms:input path="userModel.user.lastName" cssClass="form-control" title="last name" value="${userModel.user.lastName}"/>
                 <forms:errors path="user.lastName" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Birhday</label>
             <div class="col-xs-10">
-                <forms:input type="date" path="user.birthday" cssClass="form-control" title="birthday"
-                             value="${user.birthday}"/>
-                <forms:errors path="user.birthday" cssClass="incorrect"/>
+                <forms:input type="date" path="userModel.birthdayStr" cssClass="form-control" title="birthdayStr"
+                             value="${userModel.birthdayStr}"/>
+                <forms:errors path="userModel.birthdayStr" cssClass="incorrect"/>
             </div>
         </div>
 
@@ -134,7 +134,7 @@
                 <label class="col-xs-2 col-form-label">Role</label>
                 <div class="col-xs-10">
                     <ex:RoleDropDownSelect roleNameList="${roleNameList}" styleClass="form-control"
-                                           selectedRoleName="${user.roleName}"/>
+                                           selectedRoleName="${userModel.roleName}"/>
                 </div>
             </div>
         </c:if>
