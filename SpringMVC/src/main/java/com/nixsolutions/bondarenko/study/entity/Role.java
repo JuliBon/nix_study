@@ -13,31 +13,17 @@ import java.util.List;
  */
 
 @Entity
-@org.hibernate.annotations.Entity(dynamicUpdate = true)
-@Table( name = "Role")
+@Table(name = "ROLE")
 public class Role {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NaturalId
-    @Column(name="name", unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
-    private List<User> users;
-
-    public Role(){
-
-    }
-
-    public Role(Long id) {
-        this.id = id;
-    }
-
-    public Role(String name) {
-        this.name = name;
+    public Role() {
     }
 
     public Role(Long id, String name) {
@@ -59,13 +45,5 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 }

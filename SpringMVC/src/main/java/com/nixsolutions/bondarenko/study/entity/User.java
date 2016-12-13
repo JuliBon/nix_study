@@ -1,7 +1,5 @@
 package com.nixsolutions.bondarenko.study.entity;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,8 +9,7 @@ import java.sql.Date;
  * @author Yuliya Bondarenko
  */
 @Entity
-@org.hibernate.annotations.Entity(dynamicUpdate = true)
-@Table(name = "User")
+@Table(name = "USER")
 public class User {
 
     @Id
@@ -20,7 +17,6 @@ public class User {
     private Long id;
 
     @Column(name = "login", unique = true, nullable = false)
-    @NaturalId
     private String login;
 
     @Column(name = "password", nullable = false)
@@ -44,33 +40,9 @@ public class User {
 
 
     public User() {
-
     }
 
-    public User(String login, String password, String email, String firstName,
-                String lastName, Date birthday, Long idRole, String roleName) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.role = new Role(idRole, roleName);
-    }
-
-    public User(long id, String login, String password, String email, String firstName,
-                String lastName, Date birthday, long idRole, String roleName) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.role = new Role(idRole, roleName);
-    }
-
-    public User(String login, String password, String email, String firstName,
+    public User(Long id, String login, String password, String email, String firstName,
                 String lastName, Date birthday, Role role) {
         this.id = id;
         this.login = login;
