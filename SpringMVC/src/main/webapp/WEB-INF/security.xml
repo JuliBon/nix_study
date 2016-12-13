@@ -26,12 +26,4 @@
 
     <beans:bean id="customUserDetailsService" class="com.nixsolutions.bondarenko.study.security.CustomUserDetailsService" />
 
-    <beans:bean id="sessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <beans:property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-    </beans:bean>
-
-    <beans:bean id="userDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao">
-    </beans:bean>
-
 </beans:beans>

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Repository
 @Transactional
 public class HibernateUserDao implements UserDao {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -23,7 +22,6 @@ public class HibernateUserDao implements UserDao {
 
     }
 
-    @Transactional
     @Override
     public void create(User user) throws Exception {
         try (Session session = sessionFactory.openSession()) {
@@ -50,7 +48,8 @@ public class HibernateUserDao implements UserDao {
     @Override
     public void remove(User user) throws Exception {
         try (Session session = sessionFactory.openSession()) {
-            session.delete(user);
+            User userS = session.get(User.class, user.getId());
+            session.delete(userS);
         } catch (Exception e) {
             String message = "Error while removing user";
             logger.error(message, e);

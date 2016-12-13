@@ -1,46 +1,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <context:component-scan base-package="com.nixsolutions.bondarenko.study.dao.hibernate"/>
-
-    <bean id="userDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao"/>
-    <bean id="roleDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateRoleDao"/>
-
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-        <property name="driverClassName" value="org.h2.Driver" />
-        <!--<property name="url" value="jdbc:h2:tcp://localhost/./db/db_user_library" />-->
-        <property name="url" value="jdbc:h2:mem:db_user_library" />
-        <property name="username" value="sa" />
-        <property name="password" value="" />
-    </bean>
-
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-    </bean>
-
-    <!-- set the data type factory for dbunit -->
-    <bean id="dataTypeFactory" class ="org.dbunit.ext.h2.H2DataTypeFactory" />
-
-    <bean id="dbUnitDatabaseConfig" class="com.github.springtestdbunit.bean.DatabaseConfigBean">
-        <property name = "datatypeFactory" ref = "dataTypeFactory" />
-    </bean>
-
-    <bean id="dbUnitDatabaseConnection" class="com.github.springtestdbunit.bean.DatabaseDataSourceConnectionFactoryBean">
-        <property name="databaseConfig" ref="dbUnitDatabaseConfig"/>
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-
-
-    <tx:annotation-driven transaction-manager="txManager" />
-    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
+    <import resource="database-config.xml"/>
 </beans>
