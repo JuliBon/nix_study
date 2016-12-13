@@ -118,7 +118,9 @@ public class AdminController {
     @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
     public ModelAndView edit(@ModelAttribute("user") @Valid UserUpdateModel userModel,
                              BindingResult bindingResult,
+                             Authentication authentication,
                              ModelMap modelMap) {
+        modelMap.addAttribute("userName", ((UserDetails) authentication.getPrincipal()).getUsername());
         modelMap.put("action", ACTION_EDIT_USER);
 
         try {
@@ -146,7 +148,9 @@ public class AdminController {
     @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
     public ModelAndView create(@ModelAttribute("user") @Valid UserCreateModel userModel,
                                BindingResult bindingResult,
+                               Authentication authentication,
                                ModelMap modelMap) {
+        modelMap.addAttribute("userName", ((UserDetails) authentication.getPrincipal()).getUsername());
         modelMap.put("action", ACTION_CREATE_USER);
 
         try {
