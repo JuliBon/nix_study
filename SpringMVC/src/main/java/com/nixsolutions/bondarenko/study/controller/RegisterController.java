@@ -40,7 +40,7 @@ public class RegisterController {
     public ModelAndView register(ModelMap modelMap) {
         modelMap.put("action", ACTION_REGISTER_USER);
         try {
-            modelMap.addAttribute("user", new UserModel());
+            modelMap.addAttribute("userModel", new UserModel());
             return new ModelAndView("user_form", modelMap);
         } catch (Exception e) {
             logger.error(errorMarker, e);

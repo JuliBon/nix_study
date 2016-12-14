@@ -32,9 +32,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @NotNull
-    @NotEmpty
-    @Email
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$", message = "not a well-formed email address")
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
@@ -49,8 +47,6 @@ public class User {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @NotNull
-    @NotEmpty
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 

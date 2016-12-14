@@ -19,13 +19,13 @@ public abstract class UserValidator implements Validator {
     @Override
     public void validate(Object object, Errors errors) {
         UserModel userModel = (UserModel) object;
-        if (!errors.hasFieldErrors("password")) {
+        if (!errors.hasFieldErrors("user.password")) {
             validatePassword(userModel, errors);
         }
-        if (!errors.hasFieldErrors("birthday")) {
+        if (!errors.hasFieldErrors("birthdayStr")) {
             validateBirthday(userModel, errors);
         }
-        if (!errors.hasFieldErrors("email")) {
+        if (!errors.hasFieldErrors("user.email")) {
             validateEmail((UserModel) object, errors);
         }
     }
@@ -34,13 +34,13 @@ public abstract class UserValidator implements Validator {
 
     private void validatePassword(UserModel userModel, Errors errors) {
         if (!userModel.getUser().getPassword().equals(userModel.getPasswordConfirm())) {
-            errors.rejectValue("password", null, "passwords do not match");
+            errors.rejectValue("user.password", null, "passwords do not match");
         }
     }
 
     private void validateBirthday(UserModel userModel, Errors errors) {
         if (!userModel.getBirthdayStr().matches("^\\d{4}-(0\\d|10|11|12)-([012]\\d|30|31)$")) {
-            errors.rejectValue("birthday", null, "Birthday does not matches request format: "
+            errors.rejectValue("birthdayStr", null, "Birthday does not matches request format: "
                     + "bad date format");
         }
     }

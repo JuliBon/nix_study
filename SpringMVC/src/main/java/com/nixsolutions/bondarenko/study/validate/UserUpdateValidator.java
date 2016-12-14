@@ -25,7 +25,7 @@ public class UserUpdateValidator extends UserValidator {
         } finally {
             if (userByEmail != null) {
                 if (!userByEmail.getLogin().equals(userModel.getUser().getLogin())) {
-                    errors.rejectValue("email", null, ERROR_NOT_UNIQUE_EMAIL);
+                    errors.rejectValue("user.email", null, ERROR_NOT_UNIQUE_EMAIL);
                 }
             }
         }

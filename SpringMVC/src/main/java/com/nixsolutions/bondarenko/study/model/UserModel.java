@@ -3,9 +3,11 @@ package com.nixsolutions.bondarenko.study.model;
 import com.nixsolutions.bondarenko.study.entity.User;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 public class UserModel {
+    @Valid
     private User user;
 
     @NotNull
@@ -22,6 +24,7 @@ public class UserModel {
     private String roleName;
 
     public UserModel() {
+        user = new User();
     }
 
     public UserModel(User user){

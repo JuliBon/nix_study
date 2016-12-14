@@ -79,7 +79,7 @@
             <div class="col-xs-10">
                 <forms:input path="userModel.user.login" cssClass="form-control" title="Login" readonly="${readonly}"
                              value="${userModel.user.login}"/>
-                <forms:errors path="user.login" cssClass="incorrect"/>
+                <forms:errors path="userModel.user.login" cssClass="incorrect"/>
             </div>
         </div>
 
@@ -87,7 +87,7 @@
             <label class="col-xs-2 col-form-label">Password</label>
             <div class="col-xs-10">
                 <forms:input path="userModel.user.password" cssClass="form-control" title="password" value="${userModel.user.password}"/>
-                <forms:errors path="user.password" cssClass="incorrect"/>
+                <forms:errors path="userModel.user.password" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
@@ -102,7 +102,7 @@
             <label class="col-xs-2 col-form-label">Email</label>
             <div class="col-xs-10">
                 <forms:input path="userModel.user.email" cssClass="form-control" title="email" value="${userModel.user.email}"/>
-                <forms:errors path="user.email" cssClass="incorrect"/>
+                <forms:errors path="userModel.user.email" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
@@ -110,14 +110,14 @@
             <div class="col-xs-10">
                 <forms:input path="userModel.user.firstName" cssClass="form-control" title="first name"
                              value="${userModel.user.firstName}"/>
-                <forms:errors path="user.firstName" cssClass="incorrect"/>
+                <forms:errors path="userModel.user.firstName" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Last name</label>
             <div class="col-xs-10">
                 <forms:input path="userModel.user.lastName" cssClass="form-control" title="last name" value="${userModel.user.lastName}"/>
-                <forms:errors path="user.lastName" cssClass="incorrect"/>
+                <forms:errors path="userModel.user.lastName" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">

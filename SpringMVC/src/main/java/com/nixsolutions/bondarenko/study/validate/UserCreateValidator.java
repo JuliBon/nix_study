@@ -18,7 +18,7 @@ public class UserCreateValidator extends UserValidator {
     @Override
     public void validate(Object object, Errors errors) {
         super.validate(object, errors);
-        if (!errors.hasFieldErrors("login")) {
+        if (!errors.hasFieldErrors("user.login")) {
             validateLogin((UserModel) object, errors);
         }
     }
@@ -33,7 +33,7 @@ public class UserCreateValidator extends UserValidator {
         } catch (Exception e) {
         } finally {
             if (user != null) {
-                errors.rejectValue("login", null, ERROR_NOT_UNIQUE_LOGIN);
+                errors.rejectValue("user.login", null, ERROR_NOT_UNIQUE_LOGIN);
             }
         }
     }
@@ -49,7 +49,7 @@ public class UserCreateValidator extends UserValidator {
         } catch (Exception e) {
         } finally {
             if (userByEmail != null) {
-                errors.rejectValue("email", null, ERROR_NOT_UNIQUE_EMAIL);
+                errors.rejectValue("user.email", null, ERROR_NOT_UNIQUE_EMAIL);
             }
         }
     }
