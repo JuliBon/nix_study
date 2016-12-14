@@ -25,7 +25,7 @@
         </script>
     </c:if>
 
-    <form:form action="/login" method="post" class="form-signin" modelAttribute="user">
+    <form action="/login" method="post" class="form-signin">
         <div class="centerLabel"><h2 class="form-signin-heading">Please sing in</h2></div>
         <c:if test="${not empty error}">
             <div class="incorrect">${error}</div>
@@ -38,7 +38,7 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="centerLabel"><a href="/register"><h5>Register</h5></a></div>
-    </form:form>
+    <form>
 </div>
 </body>
 </html>
