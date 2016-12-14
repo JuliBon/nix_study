@@ -69,63 +69,64 @@
         <div class="message">${message}</div>
     </c:if>
 
-    <form action="${formAction}" class="form-user" method="post" id="userForm" onsubmit="return validateForm()">
+    <forms:form modelAttribute="userModel" action="${formAction}" class="form-user" method="POST" id="userForm"
+                onsubmit="return validateForm()">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <c:if test="${isEdit}">
-            <forms:input type="hidden" path="userModel.user.id" value="${userModel.user.id}"/>
+            <forms:input type="hidden" path="user.id" value="${user.id}"/>
         </c:if>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">
-                <forms:input path="userModel.user.login" cssClass="form-control" title="Login" readonly="${readonly}"
-                             value="${userModel.user.login}"/>
-                <forms:errors path="userModel.user.login" cssClass="incorrect"/>
+                <forms:input path="user.login" cssClass="form-control" title="Login" readonly="${readonly}"
+                             value="${user.login}"/>
+                <forms:errors path="user.login" cssClass="incorrect"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Password</label>
             <div class="col-xs-10">
-                <forms:input path="userModel.user.password" cssClass="form-control" title="password" value="${userModel.user.password}"/>
-                <forms:errors path="userModel.user.password" cssClass="incorrect"/>
+                <forms:input path="user.password" cssClass="form-control" title="password" value="${user.password}"/>
+                <forms:errors path="user.password" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
-                <forms:input path="userModel.passwordConfirm" cssClass="form-control" title="confirm password"
-                             value="${userModel.passwordConfirm}"/>
-                <forms:errors path="userModel.passwordConfirm" cssClass="incorrect"/>
+                <forms:input path="passwordConfirm" cssClass="form-control" title="confirm password"
+                             value="${passwordConfirm}"/>
+                <forms:errors path="passwordConfirm" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Email</label>
             <div class="col-xs-10">
-                <forms:input path="userModel.user.email" cssClass="form-control" title="email" value="${userModel.user.email}"/>
-                <forms:errors path="userModel.user.email" cssClass="incorrect"/>
+                <forms:input path="user.email" cssClass="form-control" title="email" value="${user.email}"/>
+                <forms:errors path="user.email" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">First name</label>
             <div class="col-xs-10">
-                <forms:input path="userModel.user.firstName" cssClass="form-control" title="first name"
-                             value="${userModel.user.firstName}"/>
-                <forms:errors path="userModel.user.firstName" cssClass="incorrect"/>
+                <forms:input path="user.firstName" cssClass="form-control" title="first name"
+                             value="${user.firstName}"/>
+                <forms:errors path="user.firstName" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Last name</label>
             <div class="col-xs-10">
-                <forms:input path="userModel.user.lastName" cssClass="form-control" title="last name" value="${userModel.user.lastName}"/>
-                <forms:errors path="userModel.user.lastName" cssClass="incorrect"/>
+                <forms:input path="user.lastName" cssClass="form-control" title="last name" value="${user.lastName}"/>
+                <forms:errors path="user.lastName" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Birhday</label>
             <div class="col-xs-10">
-                <forms:input type="date" path="userModel.birthdayStr" cssClass="form-control" title="birthdayStr"
-                             value="${userModel.birthdayStr}"/>
-                <forms:errors path="userModel.birthdayStr" cssClass="incorrect"/>
+                <forms:input type="date" path="birthdayStr" cssClass="form-control" title="birthdayStr"
+                             value="${birthdayStr}"/>
+                <forms:errors path="birthdayStr" cssClass="incorrect"/>
             </div>
         </div>
 
@@ -133,8 +134,7 @@
             <div class="form-group row">
                 <label class="col-xs-2 col-form-label">Role</label>
                 <div class="col-xs-10">
-                    <ex:RoleDropDownSelect roleNameList="${roleNameList}" styleClass="form-control"
-                                           selectedRoleName="${userModel.roleName}"/>
+                    <forms:select path="roleName" items="${roleNameList}" value="${roleName}" class="form-control"/>
                 </div>
             </div>
         </c:if>
@@ -155,7 +155,7 @@
                 <button type="button" onclick="location.href = '${cancelRef}';" class="btn btn-primary ">Cancel</button>
             </div>
         </div>
-    </form>
+    </forms:form>
 </div>
 </body>
 </html>

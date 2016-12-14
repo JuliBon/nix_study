@@ -12,24 +12,4 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
-
-    <tag>
-        <name>RoleDropDownSelect</name>
-        <tag-class>com.nixsolutions.bondarenko.study.tag.RoleSelectTag</tag-class>
-        <body-content>empty</body-content>
-        <attribute>
-            <name>roleNameList</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>selectedRoleName</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>styleClass</name>
-            <required>false</required>
-        </attribute>
-    </tag>
 </taglib>
