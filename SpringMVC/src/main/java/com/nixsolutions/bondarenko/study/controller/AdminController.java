@@ -15,10 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -46,28 +43,19 @@ public class AdminController {
     private RoleDao roleDao;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public ModelAndView admin(ModelMap modelMap, Authentication authentication) {
+    public ModelAndView admin(ModelMap modelMap, Authentication authentication) throws Exception {
         modelMap.addAttribute("userName", authentication.getName());
-        try {
-            List<User> userList = userDao.findAll();
-            modelMap.addAttribute("userList", userList);
-            return new ModelAndView("admin", modelMap);
-        } catch (Exception e) {
-            logger.error(errorMarker, e);
-            return new ModelAndView("error");
-        }
+
+        List<User> userList = userDao.findAll();
+        modelMap.addAttribute("userList", userList);
+        return new ModelAndView("admin", modelMap);
     }
 
     @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.GET)
-    public ModelAndView delete(@PathVariable("id") String id) {
+    public ModelAndView delete(@PathVariable("id") String id) throws Exception{
         if (id != null) {
             Long id_value = new Long(id);
-            try {
-                userDao.remove(userDao.findById(id_value));
-            } catch (Exception e) {
-                logger.error(errorMarker, e);
-                return new ModelAndView("error");
-            }
+            userDao.remove(userDao.findById(id_value));
         }
         return new ModelAndView("redirect:/admin");
     }
@@ -76,14 +64,10 @@ public class AdminController {
     public ModelAndView create(ModelMap modelMap, Authentication authentication) {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
-        try {
-            modelMap.put("roleNameList", roleNameList);
-            modelMap.put("userModel", new UserModel());
-            return new ModelAndView("user_form", modelMap);
-        } catch (Exception e) {
-            logger.error(errorMarker, e);
-            return new ModelAndView("error");
-        }
+
+        modelMap.put("roleNameList", roleNameList);
+        modelMap.put("userModel", new UserModel());
+        return new ModelAndView("user_form", modelMap);
     }
 
     @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
@@ -112,28 +96,23 @@ public class AdminController {
     public ModelAndView edit(@ModelAttribute("userModel") @Valid UserModel userModel,
                              BindingResult bindingResult,
                              Authentication authentication,
-                             ModelMap modelMap) {
+                             ModelMap modelMap) throws Exception {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_EDIT_USER);
 
-        try {
-            new UserUpdateValidator(userDao).validate(userModel, bindingResult);
-            if (!bindingResult.hasErrors()) {
-                User user = ModelConvert.convertToUser(userModel, roleDao);
-                userDao.update(user);
-                modelMap.put("userList", userDao.findAll());
-                return new ModelAndView("admin", modelMap);
-            } else {
-                modelMap.put("userModel", userModel);
-                modelMap.put("roleNameList", roleNameList);
-                if (bindingResult.hasErrors()) {
-                    modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
-                }
-                return new ModelAndView("user_form", modelMap);
+        new UserUpdateValidator(userDao).validate(userModel, bindingResult);
+        if (!bindingResult.hasErrors()) {
+            User user = ModelConvert.convertToUser(userModel, roleDao);
+            userDao.update(user);
+            modelMap.put("userList", userDao.findAll());
+            return new ModelAndView("admin", modelMap);
+        } else {
+            modelMap.put("userModel", userModel);
+            modelMap.put("roleNameList", roleNameList);
+            if (bindingResult.hasErrors()) {
+                modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
             }
-        } catch (Exception e) {
-            logger.error(errorMarker, e);
-            return new ModelAndView("error");
+            return new ModelAndView("user_form", modelMap);
         }
     }
 
@@ -142,28 +121,23 @@ public class AdminController {
     public ModelAndView create(@ModelAttribute("userModel") @Valid UserModel userModel,
                                BindingResult bindingResult,
                                Authentication authentication,
-                               ModelMap modelMap) {
+                               ModelMap modelMap) throws Exception {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
 
-        try {
-            new UserCreateValidator(userDao).validate(userModel, bindingResult);
-            if (!bindingResult.hasErrors()) {
-                User user = ModelConvert.convertToUser(userModel, roleDao);
-                userDao.create(user);
-                modelMap.put("userList", userDao.findAll());
-                return new ModelAndView("admin", modelMap);
-            } else {
-                modelMap.put("userModel", userModel);
-                if (bindingResult.hasErrors()) {
-                    modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
-                }
-                modelMap.put("roleNameList", roleNameList);
-                return new ModelAndView("user_form", modelMap);
+        new UserCreateValidator(userDao).validate(userModel, bindingResult);
+        if (!bindingResult.hasErrors()) {
+            User user = ModelConvert.convertToUser(userModel, roleDao);
+            userDao.create(user);
+            modelMap.put("userList", userDao.findAll());
+            return new ModelAndView("admin", modelMap);
+        } else {
+            modelMap.put("userModel", userModel);
+            if (bindingResult.hasErrors()) {
+                modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
             }
-        } catch (Exception e) {
-            logger.error(errorMarker, e);
-            return new ModelAndView("error");
+            modelMap.put("roleNameList", roleNameList);
+            return new ModelAndView("user_form", modelMap);
         }
     }
 }

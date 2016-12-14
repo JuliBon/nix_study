@@ -35,54 +35,45 @@ public class RegisterController {
     private RoleDao roleDao;
 
 
-
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView register(ModelMap modelMap) {
+    public ModelAndView register(ModelMap modelMap) throws Exception {
         modelMap.put("action", ACTION_REGISTER_USER);
-        try {
-            modelMap.addAttribute("userModel", new UserModel());
-            return new ModelAndView("user_form", modelMap);
-        } catch (Exception e) {
-            logger.error(errorMarker, e);
-            return new ModelAndView("error");
-        }
+
+        modelMap.addAttribute("userModel", new UserModel());
+        return new ModelAndView("user_form", modelMap);
+
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView register(@ModelAttribute("userModel") @Valid UserModel userModel,
                                  BindingResult bindingResult,
                                  ModelMap modelMap,
-                                 HttpServletRequest request) {
+                                 HttpServletRequest request) throws Exception {
         modelMap.put("action", ACTION_REGISTER_USER);
 
-        try {
-            new UserCreateValidator(userDao).validate(userModel, bindingResult);
-            boolean valid = !bindingResult.hasErrors();
-            if (valid) {
-                String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-                valid = VerifyUtils.verify(gRecaptchaResponse);
-                if (!valid) {
-                    modelMap.put("captchaError", "Captcha invalid!");
-                }
+        new UserCreateValidator(userDao).validate(userModel, bindingResult);
+        boolean valid = !bindingResult.hasErrors();
+        if (valid) {
+            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+            valid = VerifyUtils.verify(gRecaptchaResponse);
+            if (!valid) {
+                modelMap.put("captchaError", "Captcha invalid!");
             }
-            if (valid) {
-                User user = ModelConvert.convertToUser(userModel);
-                user.setRole(roleDao.findByName(UserLibraryRole.USER.getName()));
-                userDao.create(user);
+        }
+        if (valid) {
+            User user = ModelConvert.convertToUser(userModel);
+            user.setRole(roleDao.findByName(UserLibraryRole.USER.getName()));
+            userDao.create(user);
 
-                modelMap.put("registered", true);
-                return new ModelAndView("login", modelMap);
-            } else {
-                modelMap.put("userModel", userModel);
+            modelMap.put("registered", true);
+            return new ModelAndView("login", modelMap);
+        } else {
+            modelMap.put("userModel", userModel);
 
-                if(bindingResult.hasErrors()) {
-                    modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
-                }
-                return new ModelAndView("user_form", modelMap);
+            if (bindingResult.hasErrors()) {
+                modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
             }
-        } catch (Exception e) {
-            logger.error(errorMarker, e);
-            return new ModelAndView("error");
+            return new ModelAndView("user_form", modelMap);
         }
     }
 }
