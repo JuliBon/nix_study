@@ -70,40 +70,49 @@ public class HibernateUserDao implements UserDao {
 
     @Override
     public User findById(Long id) {
-        User userById = sessionFactory.getCurrentSession().byId(User.class).load(id);
-        if (userById != null) {
-            return userById;
+        try {
+            User userById = sessionFactory.getCurrentSession().byId(User.class).load(id);
+            if (userById != null) {
+                return userById;
+            }
+            throw new UserNotFoundException("User with id " + id + "not found");
+        }  catch (HibernateException e) {
+            logger.error("Error while searching user", e);
+            throw e;
         }
-        throw new UserNotFoundException("User with id " + id + "not found");
     }
 
     @Override
-    public User findByLogin(String login) throws Exception {
+    public User findByLogin(String login) {
         try {
-            User userByLogin = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
+            User user = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                     .add(Restrictions.naturalId()
                             .set("login", login)
                     ).uniqueResult();
-            return userByLogin;
-        } catch (Exception e) {
-            String message = "Error while searching user";
-            logger.error(message, e);
-            throw new Exception(message, e);
+            if (user != null) {
+                return user;
+            }
+            throw new UserNotFoundException("User with login " + login + "not found");
+        } catch (HibernateException e) {
+            logger.error("Error while searching user", e);
+            throw e;
         }
     }
 
     @Override
-    public User findByEmail(String email) throws Exception {
+    public User findByEmail(String email) {
         try {
-            return (User) sessionFactory.getCurrentSession().createCriteria(User.class)
+            User user = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                     .add(Restrictions.naturalId()
                             .set("email", email)
                     ).uniqueResult();
-        } catch (Exception e) {
-            String message = "Error while searching user";
-            logger.error(message, e);
-            throw new Exception(message, e);
+            if (user != null) {
+                return user;
+            }
+            throw new UserNotFoundException("User with email " + email + "not found");
+        } catch (HibernateException e) {
+            logger.error("Error while searching user", e);
+            throw e;
         }
     }
-
 }

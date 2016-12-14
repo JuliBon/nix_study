@@ -21,10 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         try {
-            User user = userDao.findByLogin(login);
-            System.out.println("User : " + user);
-            if (user == null) {
-                System.out.println("User not found");
+            User user;
+            try {
+                user = userDao.findByLogin(login);
+            } catch (UsernameNotFoundException e){
                 throw new UsernameNotFoundException("Username not found");
             }
             return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),

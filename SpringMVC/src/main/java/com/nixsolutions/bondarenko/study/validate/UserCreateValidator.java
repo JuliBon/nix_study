@@ -1,6 +1,7 @@
 package com.nixsolutions.bondarenko.study.validate;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
+import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.entity.User;
 import org.springframework.validation.Errors;
@@ -15,11 +16,8 @@ public class UserCreateValidator extends UserValidator {
         this.userDao = userDao;
     }
 
-    /**
-     * @throws RuntimeException if some error occurred while searching user in UserDao
-     */
     @Override
-    public void validate(Object object, Errors errors) throws RuntimeException{
+    public void validate(Object object, Errors errors) {
         super.validate(object, errors);
         if (!errors.hasFieldErrors("user.login")) {
             validateLogin((UserModel) object, errors);
@@ -31,13 +29,9 @@ public class UserCreateValidator extends UserValidator {
      */
     private void validateLogin(UserModel userModel, Errors errors) {
         try {
-            User user = userDao.findByLogin(userModel.getUser().getLogin());
-            if (user != null) {
-                errors.rejectValue("user.login", null, ERROR_NOT_UNIQUE_LOGIN);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            userDao.findByLogin(userModel.getUser().getLogin());
+            errors.rejectValue("user.login", null, ERROR_NOT_UNIQUE_LOGIN);
+        } catch (UserNotFoundException e) { }
     }
 
     /**
@@ -46,12 +40,9 @@ public class UserCreateValidator extends UserValidator {
     @Override
     protected void validateEmail(UserModel userModel, Errors errors) {
         try {
-            User userByEmail = userDao.findByEmail(userModel.getUser().getEmail());
-            if (userByEmail != null) {
-                errors.rejectValue("user.email", null, ERROR_NOT_UNIQUE_EMAIL);
-            }
-        }  catch (Exception e) {
-            throw new RuntimeException(e);
+            userDao.findByEmail(userModel.getUser().getEmail());
+            errors.rejectValue("user.email", null, ERROR_NOT_UNIQUE_EMAIL);
+        } catch (UserNotFoundException e) {
         }
     }
 }

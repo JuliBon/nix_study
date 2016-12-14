@@ -7,6 +7,7 @@ import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
+import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,18 +69,24 @@ public class HibernateUserDaoTest {
         userDao.create(testUser);
     }
 
-    @Test
+    @Test (expected = UserNotFoundException.class)
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindUserByLogin() throws Exception {
         assertNotNull(userDao.findByLogin("yulya"));
-        assertEquals(userDao.findByLogin("nata"), null);
+        userDao.findByLogin("nata");
     }
 
-    @Test
+    @Test (expected = UserNotFoundException.class)
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindUserByEmail() throws Exception {
         assertNotNull(userDao.findByEmail("yulya@mail.ru"));
-        assertEquals(userDao.findByEmail("nata@mail.ru"), null);
+        userDao.findByEmail("nata@mail.ru");
+    }
+
+    @Test (expected = UserNotFoundException.class)
+    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
+    public void testFindUserByIdl() throws Exception {
+        userDao.findById(67L);
     }
 
     @Test
