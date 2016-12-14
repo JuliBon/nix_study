@@ -52,7 +52,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.GET)
-    public ModelAndView delete(@PathVariable("id") String id) throws Exception{
+    public ModelAndView delete(@PathVariable("id") String id) throws Exception {
         if (id != null) {
             Long id_value = new Long(id);
             userDao.remove(userDao.findById(id_value));
@@ -71,23 +71,18 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap, Authentication authentication) {
+    public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap, Authentication authentication) throws Exception {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.addAttribute("action", ACTION_EDIT_USER);
 
         if (id != null) {
             Long id_value = new Long(id);
-            try {
-                User user = userDao.findById(id_value);
-                UserModel userModel = new UserModel(user);
-                userModel.getUser().setPassword(null);
+            User user = userDao.findById(id_value);
+            UserModel userModel = new UserModel(user);
+            userModel.getUser().setPassword(null);
 
-                modelMap.addAttribute("userModel", userModel);
-                modelMap.addAttribute("roleNameList", roleNameList);
-            } catch (Exception e) {
-                logger.error(errorMarker, e);
-                return new ModelAndView("error");
-            }
+            modelMap.addAttribute("userModel", userModel);
+            modelMap.addAttribute("roleNameList", roleNameList);
         }
         return new ModelAndView("user_form", modelMap);
     }
