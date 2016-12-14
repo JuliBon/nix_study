@@ -3,23 +3,28 @@ package com.nixsolutions.bondarenko.study.controller;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class IndexController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(ModelMap model) {
-        return "redirect: login";
+    public String root() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            return "redirect: index";
+        }
+        return "login";
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(ModelMap modelMap, Authentication authentication) {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-
             String roleName;
             for (GrantedAuthority authority : authentication.getAuthorities()) {
                 roleName = authority.getAuthority();
