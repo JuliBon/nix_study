@@ -15,8 +15,11 @@ public class UserCreateValidator extends UserValidator {
         this.userDao = userDao;
     }
 
+    /**
+     * @throws RuntimeException if some error occurred while searching user in UserDao
+     */
     @Override
-    public void validate(Object object, Errors errors) {
+    public void validate(Object object, Errors errors) throws RuntimeException{
         super.validate(object, errors);
         if (!errors.hasFieldErrors("user.login")) {
             validateLogin((UserModel) object, errors);
@@ -27,14 +30,13 @@ public class UserCreateValidator extends UserValidator {
      * Check whether login is not unique
      */
     private void validateLogin(UserModel userModel, Errors errors) {
-        User user = null;
         try {
-            user = userDao.findByLogin(userModel.getUser().getLogin());
-        } catch (Exception e) {
-        } finally {
+            User user = userDao.findByLogin(userModel.getUser().getLogin());
             if (user != null) {
                 errors.rejectValue("user.login", null, ERROR_NOT_UNIQUE_LOGIN);
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -43,14 +45,13 @@ public class UserCreateValidator extends UserValidator {
      */
     @Override
     protected void validateEmail(UserModel userModel, Errors errors) {
-        User userByEmail = null;
         try {
-            userByEmail = userDao.findByEmail(userModel.getUser().getEmail());
-        } catch (Exception e) {
-        } finally {
+            User userByEmail = userDao.findByEmail(userModel.getUser().getEmail());
             if (userByEmail != null) {
                 errors.rejectValue("user.email", null, ERROR_NOT_UNIQUE_EMAIL);
             }
+        }  catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
