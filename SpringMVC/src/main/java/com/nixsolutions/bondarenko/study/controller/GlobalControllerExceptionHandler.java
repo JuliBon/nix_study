@@ -21,7 +21,6 @@ public class GlobalControllerExceptionHandler {
                 (e.getClass(), ResponseStatus.class) != null)
             throw e;
 
-
         logger.error(req.getContextPath(), e);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("status", 500);

@@ -2,6 +2,7 @@ package com.nixsolutions.bondarenko.study.dao.hibernate;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
+import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
@@ -68,23 +69,22 @@ public class HibernateUserDao implements UserDao {
     }
 
     @Override
-    public User findById(Long id) throws Exception {
-        try {
-            return sessionFactory.getCurrentSession().byId(User.class).load(id);
-        } catch (Exception e) {
-            String message = "Error while searching user";
-            logger.error(message, e);
-            throw new Exception(message, e);
+    public User findById(Long id) {
+        User userById = sessionFactory.getCurrentSession().byId(User.class).load(id);
+        if (userById != null) {
+            return userById;
         }
+        throw new UserNotFoundException("User with id " + id + "not found");
     }
 
     @Override
     public User findByLogin(String login) throws Exception {
         try {
-            return (User) sessionFactory.getCurrentSession().createCriteria(User.class)
+            User userByLogin = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                     .add(Restrictions.naturalId()
                             .set("login", login)
                     ).uniqueResult();
+            return userByLogin;
         } catch (Exception e) {
             String message = "Error while searching user";
             logger.error(message, e);
