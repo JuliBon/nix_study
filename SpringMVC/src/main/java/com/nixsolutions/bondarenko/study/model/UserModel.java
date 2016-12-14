@@ -19,8 +19,6 @@ public class UserModel {
     @NotEmpty
     private String birthdayStr;
 
-    @NotNull
-    @NotEmpty
     private String roleName;
 
     public UserModel() {
