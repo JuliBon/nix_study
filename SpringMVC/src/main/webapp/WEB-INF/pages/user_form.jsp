@@ -142,11 +142,11 @@
         <c:if test="${isRegister}">
             <div class="form-group row" style="margin: 0 auto; width: 300px;">
                 <div class="g-recaptcha"
-                     data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH">
+                     data-sitekey="6LcNyQ4UAAAAADeZmMXsnP_5JxZkN4MJvyQEjuCO">
                 </div>
                 <p class="incorrect">${captchaError}</p>
             </div>
-            <div class="g-recaptcha" data-sitekey="6LdOMg4UAAAAAHr5SzMrguTatonrxpohXkE9OyKH"></div>
+            <div class="g-recaptcha" data-sitekey="6LcNyQ4UAAAAADeZmMXsnP_5JxZkN4MJvyQEjuCO"></div>
         </c:if>
 
         <div class="form-group row">
