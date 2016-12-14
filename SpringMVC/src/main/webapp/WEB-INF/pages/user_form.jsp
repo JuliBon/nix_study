@@ -87,14 +87,14 @@
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Password</label>
             <div class="col-xs-10">
-                <forms:input path="user.password" cssClass="form-control" title="password" value="${user.password}"/>
+                <forms:input type="password" path="user.password" cssClass="form-control" title="password" value="${user.password}"/>
                 <forms:errors path="user.password" cssClass="incorrect"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Confirm password</label>
             <div class="col-xs-10">
-                <forms:input path="passwordConfirm" cssClass="form-control" title="confirm password"
+                <forms:input type="password" path="passwordConfirm" cssClass="form-control" title="confirm password"
                              value="${passwordConfirm}"/>
                 <forms:errors path="passwordConfirm" cssClass="incorrect"/>
             </div>
