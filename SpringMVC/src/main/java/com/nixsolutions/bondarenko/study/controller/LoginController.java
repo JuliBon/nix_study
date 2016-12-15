@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -33,7 +32,7 @@ public class LoginController {
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        return "redirect: login";
+        return "login";
     }
 }
 

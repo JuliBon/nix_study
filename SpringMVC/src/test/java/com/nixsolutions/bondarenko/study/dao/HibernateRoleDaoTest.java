@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study;
+package com.nixsolutions.bondarenko.study.dao;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
