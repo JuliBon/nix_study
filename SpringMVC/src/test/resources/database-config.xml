@@ -6,9 +6,6 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <bean id="userDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao"/>
-    <bean id="roleDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateRoleDao"/>
-
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="org.h2.Driver" />
         <property name="url" value="jdbc:h2:mem:db_user_library" />

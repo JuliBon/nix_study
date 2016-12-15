@@ -66,7 +66,7 @@ public class HibernateUserDao implements UserDao {
             if (userById != null) {
                 return userById;
             }
-            throw new UserNotFoundException("User with id " + id + "not found");
+            throw new UserNotFoundException("User with id " + id + " not found");
         } catch (HibernateException e) {
             throw new RuntimeException("Error while searching user", e);
         }
@@ -82,7 +82,7 @@ public class HibernateUserDao implements UserDao {
             if (user != null) {
                 return user;
             }
-            throw new UserNotFoundException("User with login " + login + "not found");
+            throw new UserNotFoundException("User with login " + login + " not found");
         } catch (HibernateException e) {
             throw new RuntimeException("Error while searching user", e);
         }
@@ -98,7 +98,7 @@ public class HibernateUserDao implements UserDao {
             if (user != null) {
                 return user;
             }
-            throw new UserNotFoundException("User with email " + email + "not found");
+            throw new UserNotFoundException("User with email " + email + " not found");
         } catch (HibernateException e) {
             throw new RuntimeException("Error while searching user", e);
         }

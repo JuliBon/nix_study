@@ -9,7 +9,6 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="database-config.xml"/>
-
     <mvc:annotation-driven/>
     <context:component-scan
             base-package="com.nixsolutions.bondarenko.study.controller, com.nixsolutions.bondarenko.study.security"/>
@@ -23,6 +22,10 @@
         </property>
     </bean>
 
-    <bean id="userDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao"/>
-    <bean id="roleDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateRoleDao"/>
+    <bean id="userDao" name="userDao" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao"/>
+    </bean>
+    <bean id="roleDao" name="roleDao" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateRoleDao"/>
+    </bean>
 </beans>
