@@ -24,7 +24,6 @@ import java.util.List;
 
 @Controller
 public class AdminController {
-    private static final String errorMarker = "admin";
     private static final String ACTION_CREATE_USER = "create_user";
     private static final String ACTION_EDIT_USER = "edit_user";
     private List<String> roleNameList;
@@ -42,7 +41,7 @@ public class AdminController {
     private RoleDao roleDao;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public ModelAndView admin(ModelMap modelMap, Authentication authentication) throws Exception {
+    public ModelAndView admin(ModelMap modelMap, Authentication authentication) {
         modelMap.addAttribute("userName", authentication.getName());
 
         List<User> userList = userDao.findAll();
@@ -70,7 +69,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap, Authentication authentication) throws Exception {
+    public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap, Authentication authentication) {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.addAttribute("action", ACTION_EDIT_USER);
 
@@ -86,36 +85,11 @@ public class AdminController {
         return new ModelAndView("user_form", modelMap);
     }
 
-    @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
-    public ModelAndView edit(@ModelAttribute("userModel") @Valid UserModel userModel,
-                             BindingResult bindingResult,
-                             Authentication authentication,
-                             ModelMap modelMap) throws Exception {
-        modelMap.addAttribute("userName", authentication.getName());
-        modelMap.put("action", ACTION_EDIT_USER);
-
-        new UserUpdateValidator(userDao).validate(userModel, bindingResult);
-        if (!bindingResult.hasErrors()) {
-            User user = ModelConvert.convertToUser(userModel, roleDao);
-            userDao.update(user);
-            modelMap.put("userList", userDao.findAll());
-            return new ModelAndView("admin", modelMap);
-        } else {
-            modelMap.put("userModel", userModel);
-            modelMap.put("roleNameList", roleNameList);
-            if (bindingResult.hasErrors()) {
-                modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
-            }
-            return new ModelAndView("user_form", modelMap);
-        }
-    }
-
-
     @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
     public ModelAndView create(@ModelAttribute("userModel") @Valid UserModel userModel,
                                BindingResult bindingResult,
                                Authentication authentication,
-                               ModelMap modelMap) throws Exception {
+                               ModelMap modelMap) {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
 
@@ -131,6 +105,31 @@ public class AdminController {
                 modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
             }
             modelMap.put("roleNameList", roleNameList);
+            return new ModelAndView("user_form", modelMap);
+        }
+    }
+
+
+    @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
+    public ModelAndView edit(@ModelAttribute("userModel") @Valid UserModel userModel,
+                             BindingResult bindingResult,
+                             Authentication authentication,
+                             ModelMap modelMap) {
+        modelMap.addAttribute("userName", authentication.getName());
+        modelMap.put("action", ACTION_EDIT_USER);
+
+        new UserUpdateValidator(userDao).validate(userModel, bindingResult);
+        if (!bindingResult.hasErrors()) {
+            User user = ModelConvert.convertToUser(userModel, roleDao);
+            userDao.update(user);
+            modelMap.put("userList", userDao.findAll());
+            return new ModelAndView("admin", modelMap);
+        } else {
+            modelMap.put("userModel", userModel);
+            modelMap.put("roleNameList", roleNameList);
+            if (bindingResult.hasErrors()) {
+                modelMap.put(BindingResult.class.getName() + ".user", bindingResult);
+            }
             return new ModelAndView("user_form", modelMap);
         }
     }

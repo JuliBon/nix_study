@@ -6,7 +6,7 @@ import com.nixsolutions.bondarenko.study.entity.User;
 import java.sql.Date;
 
 public class ModelConvert {
-    public static User convertToUser(UserModel userModel, RoleDao roleDao) throws Exception {
+    public static User convertToUser(UserModel userModel, RoleDao roleDao){
         User user = userModel.getUser();
 
         user.setBirthday(Date.valueOf(userModel.getBirthdayStr()));
@@ -19,7 +19,7 @@ public class ModelConvert {
         return user;
     }
 
-    public static User convertToUser(UserModel userModel) throws Exception {
+    public static User convertToUser(UserModel userModel) {
         return convertToUser(userModel, null);
     }
 }
