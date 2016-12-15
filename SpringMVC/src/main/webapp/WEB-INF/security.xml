@@ -12,6 +12,7 @@
         <intercept-url pattern="/" access="permitAll" />
         <intercept-url pattern="/admin*/**" access="hasRole('ADMIN')" />
         <intercept-url pattern="/register" access="isAnonymous()" />
+        <intercept-url pattern="/login" access="isAnonymous()" />
         <form-login  login-page="/login"
                      default-target-url="/index"
                      username-parameter="login"
