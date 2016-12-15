@@ -14,7 +14,6 @@ import java.util.List;
 
 @Transactional
 public class HibernateUserDao implements UserDao {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -24,47 +23,39 @@ public class HibernateUserDao implements UserDao {
     }
 
     @Override
-    public void create(User user) throws Exception {
+    public void create(User user) {
         try {
             sessionFactory.getCurrentSession().save(user);
         } catch (Exception e) {
-            String message = "Error while creating user";
-            logger.error(message, e);
-            throw new Exception(message, e);
+            throw new RuntimeException("Error while creating user", e);
         }
     }
 
 
     @Override
-    public void update(User user) throws Exception {
+    public void update(User user) {
         try {
             sessionFactory.getCurrentSession().saveOrUpdate(user);
         } catch (Exception e) {
-            String message = "Error while updating user";
-            logger.error(message, e);
-            throw new Exception(message, e);
+            throw new RuntimeException("Error while updating user", e);
         }
     }
 
     @Override
-    public void remove(User user) throws Exception {
+    public void remove(User user) {
         try {
             sessionFactory.getCurrentSession().delete(user);
         } catch (Exception e) {
-            String message = "Error while removing user";
-            logger.error(message, e);
-            throw new Exception(message, e);
+            throw new RuntimeException("Error while removing user", e);
         }
     }
 
     @Override
-    public List<User> findAll() throws Exception {
+    public List<User> findAll() {
         try {
             return sessionFactory.getCurrentSession().createQuery("from User").list();
-        } catch (Exception e) {
-            String message = "Error while searching users";
-            logger.error(message, e);
-            throw new Exception(message, e);
+        } catch (HibernateException e) {
+            throw new RuntimeException("Error while searching users", e);
         }
     }
 
@@ -76,9 +67,8 @@ public class HibernateUserDao implements UserDao {
                 return userById;
             }
             throw new UserNotFoundException("User with id " + id + "not found");
-        }  catch (HibernateException e) {
-            logger.error("Error while searching user", e);
-            throw e;
+        } catch (HibernateException e) {
+            throw new RuntimeException("Error while searching user", e);
         }
     }
 
@@ -94,8 +84,7 @@ public class HibernateUserDao implements UserDao {
             }
             throw new UserNotFoundException("User with login " + login + "not found");
         } catch (HibernateException e) {
-            logger.error("Error while searching user", e);
-            throw e;
+            throw new RuntimeException("Error while searching user", e);
         }
     }
 
@@ -111,8 +100,7 @@ public class HibernateUserDao implements UserDao {
             }
             throw new UserNotFoundException("User with email " + email + "not found");
         } catch (HibernateException e) {
-            logger.error("Error while searching user", e);
-            throw e;
+            throw new RuntimeException("Error while searching user", e);
         }
     }
 }

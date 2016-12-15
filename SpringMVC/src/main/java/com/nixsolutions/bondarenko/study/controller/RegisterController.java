@@ -25,9 +25,7 @@ import java.util.List;
 
 @Controller
 public class RegisterController {
-    private static final String errorMarker = "register";
     private static final String ACTION_REGISTER_USER = "register_user";
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserDao userDao;

@@ -9,13 +9,13 @@ import java.util.List;
  * @author Yuliya Bondarenko
  */
 public interface UserDao {
-    void create(User user) throws Exception;
+    void create(User user);
 
-    void update(User user) throws Exception;
+    void update(User user);
 
-    void remove(User user) throws Exception;
+    void remove(User user);
 
-    List<User> findAll() throws Exception;
+    List<User> findAll();
 
     User findById(Long id) throws UserNotFoundException;
 

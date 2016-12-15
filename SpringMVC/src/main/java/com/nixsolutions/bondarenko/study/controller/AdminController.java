@@ -27,7 +27,6 @@ public class AdminController {
     private static final String errorMarker = "admin";
     private static final String ACTION_CREATE_USER = "create_user";
     private static final String ACTION_EDIT_USER = "edit_user";
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private List<String> roleNameList;
 
     {
