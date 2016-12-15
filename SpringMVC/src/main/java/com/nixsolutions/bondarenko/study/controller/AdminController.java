@@ -51,11 +51,9 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.GET)
     public ModelAndView delete(@PathVariable("id") String id) throws Exception {
-        if (id != null) {
-            Long id_value = new Long(id);
-            userDao.remove(userDao.findById(id_value));
-        }
-        return new ModelAndView("redirect:/admin");
+        Long id_value = new Long(id);
+        userDao.remove(userDao.findById(id_value));
+        return new ModelAndView("redirect:admin");
     }
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.GET)

@@ -17,9 +17,9 @@ public class IndexController {
     public String root() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            return "redirect: index";
+            return "redirect:index";
         }
-        return "redirect: login";
+        return "redirect:login";
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -30,7 +30,7 @@ public class IndexController {
             for (GrantedAuthority authority : authentication.getAuthorities()) {
                 roleName = authority.getAuthority();
                 if (roleName.equals("ROLE_ADMIN")) {
-                    return "redirect: admin";
+                    return "redirect:admin";
                 }
                 if (roleName.equals("ROLE_USER")) {
                     modelMap.addAttribute("userName", authentication.getName());
@@ -38,6 +38,6 @@ public class IndexController {
                 }
             }
         }
-        return "redirect: login";
+        return "redirect:login";
     }
 }

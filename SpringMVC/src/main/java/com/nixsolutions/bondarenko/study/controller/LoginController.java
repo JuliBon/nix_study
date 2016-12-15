@@ -33,7 +33,7 @@ public class LoginController {
         if (!(authentication instanceof AnonymousAuthenticationToken))  {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        return "redirect: login";
+        return "redirect:login";
     }
 }
 

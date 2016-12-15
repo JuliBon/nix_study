@@ -4,6 +4,7 @@ import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
+import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,24 @@ public class AdminControllerTest {
     private Role roleAdmin = new Role(UserLibraryRole.ADMIN.getId(), UserLibraryRole.ADMIN.getName());
     private Role roleUser = new Role(UserLibraryRole.USER.getId(), UserLibraryRole.USER.getName());
 
+    private User user1 = new User(1L,
+            "admin",
+            "Admin1",
+            "admin@mail.ru",
+            "admin",
+            "adminovich",
+            new Date(1990, 10, 10),
+            roleAdmin);
+
+    private User user2 = new User(2L,
+            "ivan",
+            "Ivan123",
+            "ivan@mail.ru",
+            "ivan",
+            "grozniy",
+            new Date(1530, 9, 3),
+            roleUser);
+
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
@@ -48,26 +67,32 @@ public class AdminControllerTest {
 
     @Test
     @WithMockAdmin
+    public void adminDelete() throws Exception {
+        when(userDao.findById(2L)).thenReturn(user2);
+
+        mockMvc.perform(get("/admin/delete/2"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("admin"));
+        verify(userDao, times(1)).remove (user2);
+    }
+
+    @Test (expected = UserNotFoundException.class)
+    @WithMockAdmin
+    public void adminDeleteBadId() throws Exception {
+        when(userDao.findById(100L)).thenThrow(new UserNotFoundException("No such user"));
+
+        mockMvc.perform(get("/admin/delete/100"))
+                .andExpect(status().is4xxClientError());
+
+        verify(userDao, times(1)).findById(100L);
+        verifyNoMoreInteractions(userDao);
+    }
+
+
+
+    @Test
+    @WithMockAdmin
     public void admin() throws Exception {
-
-        User user1 = new User(1L,
-                "admin",
-                "Admin1",
-                "admin@mail.ru",
-                "admin",
-                "adminovich",
-                new Date(1990, 10, 10),
-                roleAdmin);
-
-        User user2 = new User(2L,
-                "ivan",
-                "Ivan123",
-                "ivan@mail.ru",
-                "ivan",
-                "grozniy",
-                new Date(1530, 9, 3),
-                roleUser);
-
         when(userDao.findAll()).thenReturn(Arrays.asList(user1, user2));
 
         mockMvc.perform(get("/admin"))
