@@ -34,7 +34,7 @@ public class IndexControllerTest {
 
     @Test
     @WithAnonymousUser
-    public void rootTestAnonymous() throws Exception {
+    public void rootAnonymous() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect: login"));
@@ -42,7 +42,7 @@ public class IndexControllerTest {
 
     @Test
     @WithMockUser
-    public void rootTestUser() throws Exception {
+    public void rootUser() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect: index"));
@@ -51,7 +51,7 @@ public class IndexControllerTest {
 
     @Test
     @WithAnonymousUser
-    public void indexTestAnonymous() throws Exception {
+    public void indexAnonymous() throws Exception {
         mockMvc.perform(get("/index"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect: login"));
@@ -60,7 +60,7 @@ public class IndexControllerTest {
 
     @Test
     @WithMockUser
-    public void indexTestUser() throws Exception {
+    public void indexUser() throws Exception {
         mockMvc.perform(get("/index"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
@@ -70,7 +70,7 @@ public class IndexControllerTest {
 
     @Test
     @WithMockAdmin
-    public void indexTestAdmin() throws Exception {
+    public void indexAdmin() throws Exception {
         mockMvc.perform(get("/index"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect: admin"));
