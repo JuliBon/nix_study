@@ -4,15 +4,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,7 +33,49 @@ public class IndexControllerTest {
     }
 
     @Test
-    public void rootTest() throws Exception {
-        mockMvc.perform(get("/"));
+    @WithAnonymousUser
+    public void rootTestAnonymous() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect: login"));
     }
+
+    @Test
+    @WithMockUser
+    public void rootTestUser() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect: index"));
+    }
+
+
+    @Test
+    @WithAnonymousUser
+    public void indexTestAnonymous() throws Exception {
+        mockMvc.perform(get("/index"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect: login"));
+
+    }
+
+    @Test
+    @WithMockUser
+    public void indexTestUser() throws Exception {
+        mockMvc.perform(get("/index"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("home"))
+                .andExpect(forwardedUrl("/WEB-INF/pages/home.jsp"));
+
+    }
+
+    @Test
+    @WithMockAdmin
+    public void indexTestAdmin() throws Exception {
+        mockMvc.perform(get("/index"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect: admin"));
+
+    }
+
+
 }
