@@ -1,5 +1,6 @@
 package com.nixsolutions.bondarenko.study.controller;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -29,7 +30,7 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
+        if (!(authentication instanceof AnonymousAuthenticationToken))  {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         return "login";
