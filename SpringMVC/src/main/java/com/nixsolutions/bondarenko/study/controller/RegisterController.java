@@ -34,7 +34,7 @@ public class RegisterController {
 
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView register(ModelMap modelMap) throws Exception {
+    public ModelAndView register(ModelMap modelMap) {
         modelMap.put("action", ACTION_REGISTER_USER);
 
         modelMap.addAttribute("userModel", new UserModel());
@@ -46,7 +46,7 @@ public class RegisterController {
     public ModelAndView register(@ModelAttribute("userModel") @Valid UserModel userModel,
                                  BindingResult bindingResult,
                                  ModelMap modelMap,
-                                 HttpServletRequest request) throws Exception {
+                                 HttpServletRequest request) {
         modelMap.put("action", ACTION_REGISTER_USER);
 
         new UserCreateValidator(userDao).validate(userModel, bindingResult);

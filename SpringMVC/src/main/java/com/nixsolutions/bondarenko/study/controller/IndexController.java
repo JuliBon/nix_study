@@ -19,11 +19,12 @@ public class IndexController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             return "redirect: index";
         }
-        return "login";
+        return "redirect: login";
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(ModelMap modelMap, Authentication authentication) {
+    public String index(ModelMap modelMap) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String roleName;
             for (GrantedAuthority authority : authentication.getAuthorities()) {
@@ -37,6 +38,6 @@ public class IndexController {
                 }
             }
         }
-        return "login";
+        return "redirect: login";
     }
 }
