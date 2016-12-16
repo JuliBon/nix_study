@@ -5,9 +5,11 @@ import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
+import com.nixsolutions.bondarenko.study.model.UserModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,6 +24,7 @@ import java.util.Arrays;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -62,6 +65,7 @@ public class AdminControllerTest {
 
     @Before
     public void setup() {
+        Mockito. reset(userDao);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
 
@@ -79,7 +83,7 @@ public class AdminControllerTest {
                 .andExpect(model().attribute("userList", hasItem(user1)))
                 .andExpect(model().attribute("userList", hasItem(user2)));
 
-        //verify(userDao, times(1)).findAll().containsAll(Arrays.asList(user1, user2));
+        verify(userDao, times(1)).findAll().containsAll(Arrays.asList(user1, user2));
     }
 
     @Test
@@ -92,18 +96,18 @@ public class AdminControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("admin"));
 
-        //verify(userDao).findById(2L);
-        //verify(userDao).remove(user2);
+        verify(userDao).findById(2L);
     }
 
-    @Test //(expected = UserNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     @WithMockAdmin
     public void adminDeleteBadId() throws Exception {
         doThrow(new UserNotFoundException()).when(userDao).findById(100L);
 
         mockMvc.perform(get("/admin/delete/100"))
                 .andExpect(status().is4xxClientError());
-        //verify(userDao).findById(100L);
+
+        verify(userDao).findById(100L);
     }
 
     @Test
@@ -138,6 +142,63 @@ public class AdminControllerTest {
         doThrow(new UserNotFoundException()).when(userDao).findById(100L);
         mockMvc.perform(get("/admin/edit/100"))
                 .andExpect(status().is4xxClientError());
-        //verify(userDao).findById(100L);
+        verify(userDao).findById(100L);
     }
+
+
+    @Test
+    @WithMockAdmin
+    public void adminCreateUser() throws Exception {
+        UserModel userModel = new UserModel(user2);
+        doThrow(new UserNotFoundException()).when(userDao).findByLogin(user2.getLogin());
+        doThrow(new UserNotFoundException()).when(userDao).findByEmail(user2.getEmail());
+
+        mockMvc.perform(post("/admin/create")
+                .param("user.login", user2.getLogin())
+                .param("user.email", user2.getEmail())
+                .param("user.password", user2.getPassword())
+                .param("user.firstName", user2.getFirstName())
+                .param("user.lastName", user2.getLastName())
+                .param("birthdayStr", userModel.getBirthdayStr())
+                .param("passwordConfirm", user2.getPassword())
+                .param("roleName", user2.getRole().getName()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin"))
+                .andExpect(forwardedUrl("/WEB-INF/pages/admin.jsp"));
+
+        verify(userDao).create(org.mockito.Matchers.any(user2.getClass()));
+    }
+
+
+    @Test
+    @WithMockAdmin
+    public void adminCreateUserWithErrors() throws Exception {
+        UserModel userModel = new UserModel(user2);
+
+        User user3 = user1;
+        user3.setLogin(user2.getLogin());
+        user3.setEmail(user2.getEmail());
+
+        when(userDao.findByLogin(user2.getLogin())).thenReturn(user3);
+        when(userDao.findByLogin(user2.getEmail())).thenReturn(user3);
+
+        mockMvc.perform(post("/admin/create")
+                .param("user.login", user2.getLogin())
+                .param("user.email", user2.getEmail())
+                .param("user.password", user2.getPassword())
+                .param("user.firstName", user2.getFirstName())
+                .param("user.lastName", user2.getLastName())
+                .param("birthdayStr", userModel.getBirthdayStr())
+                .param("passwordConfirm", user2.getPassword())
+                .param("roleName", user2.getRole().getName()))
+                .andExpect(model().attributeHasFieldErrors("userModel", "user.login"))
+                .andExpect(model().attributeHasFieldErrors("userModel", "user.email"))
+                .andExpect(model().attributeExists("userModel"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user_form"))
+                .andExpect(forwardedUrl("/WEB-INF/pages/user_form.jsp"));
+
+        verify(userDao, times(0)).create(org.mockito.Matchers.any(user2.getClass()));
+    }
+
 }
