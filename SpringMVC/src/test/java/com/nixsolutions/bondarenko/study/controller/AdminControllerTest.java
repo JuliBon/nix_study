@@ -65,7 +65,7 @@ public class AdminControllerTest {
 
     @Before
     public void setup() {
-        Mockito. reset(userDao);
+        Mockito.reset(userDao);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
 
@@ -154,14 +154,37 @@ public class AdminControllerTest {
         doThrow(new UserNotFoundException()).when(userDao).findByEmail(user2.getEmail());
 
         mockMvc.perform(post("/admin/create")
-                .param("user.login", user2.getLogin())
-                .param("user.email", user2.getEmail())
-                .param("user.password", user2.getPassword())
-                .param("user.firstName", user2.getFirstName())
-                .param("user.lastName", user2.getLastName())
+                .param("user.login", userModel.getUser().getLogin())
+                .param("user.email", userModel.getUser().getEmail())
+                .param("user.password", userModel.getUser().getPassword())
+                .param("user.firstName", userModel.getUser().getFirstName())
+                .param("user.lastName", userModel.getUser().getLastName())
                 .param("birthdayStr", userModel.getBirthdayStr())
-                .param("passwordConfirm", user2.getPassword())
-                .param("roleName", user2.getRole().getName()))
+                .param("passwordConfirm", userModel.getUser().getPassword())
+                .param("roleName", userModel.getRoleName()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin"))
+                .andExpect(forwardedUrl("/WEB-INF/pages/admin.jsp"));
+
+        verify(userDao).create(org.mockito.Matchers.any(user2.getClass()));
+    }
+
+    @Test
+    @WithMockAdmin
+    public void adminEditUser() throws Exception {
+        UserModel userModel = new UserModel(user2);
+        doThrow(new UserNotFoundException()).when(userDao).findByEmail(user2.getEmail());
+
+        mockMvc.perform(post("/admin/edit")
+                .param("user.id", userModel.getUser().getId().toString())
+                .param("user.login", userModel.getUser().getLogin())
+                .param("user.email", userModel.getUser().getEmail())
+                .param("user.password", userModel.getUser().getPassword())
+                .param("user.firstName", userModel.getUser().getFirstName())
+                .param("user.lastName", userModel.getUser().getLastName())
+                .param("birthdayStr", userModel.getBirthdayStr())
+                .param("passwordConfirm", userModel.getUser().getPassword())
+                .param("roleName", userModel.getRoleName()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/admin.jsp"));
@@ -183,14 +206,14 @@ public class AdminControllerTest {
         when(userDao.findByLogin(user2.getEmail())).thenReturn(user3);
 
         mockMvc.perform(post("/admin/create")
-                .param("user.login", user2.getLogin())
-                .param("user.email", user2.getEmail())
-                .param("user.password", user2.getPassword())
-                .param("user.firstName", user2.getFirstName())
-                .param("user.lastName", user2.getLastName())
+                .param("user.login", userModel.getUser().getLogin())
+                .param("user.email", userModel.getUser().getEmail())
+                .param("user.password", userModel.getUser().getPassword())
+                .param("user.firstName", userModel.getUser().getFirstName())
+                .param("user.lastName", userModel.getUser().getLastName())
                 .param("birthdayStr", userModel.getBirthdayStr())
-                .param("passwordConfirm", user2.getPassword())
-                .param("roleName", user2.getRole().getName()))
+                .param("passwordConfirm", userModel.getUser().getPassword())
+                .param("roleName", userModel.getRoleName()))
                 .andExpect(model().attributeHasFieldErrors("userModel", "user.login"))
                 .andExpect(model().attributeHasFieldErrors("userModel", "user.email"))
                 .andExpect(model().attributeExists("userModel"))
@@ -200,5 +223,34 @@ public class AdminControllerTest {
 
         verify(userDao, times(0)).create(org.mockito.Matchers.any(user2.getClass()));
     }
+
+
+    @Test
+    @WithMockAdmin
+    public void adminEditUserWithErrors() throws Exception {
+        when(userDao.findById(2L)).thenReturn(user2);
+
+        UserModel userModel = new UserModel(user2);
+        userModel.setPasswordConfirm("bad_pass123");
+
+        mockMvc.perform(post("/admin/edit")
+                .param("user.id", userModel.getUser().getId().toString())
+                .param("user.login", userModel.getUser().getLogin())
+                .param("user.email", userModel.getUser().getEmail())
+                .param("user.password", userModel.getUser().getPassword())
+                .param("user.firstName", userModel.getUser().getFirstName())
+                .param("user.lastName", userModel.getUser().getLastName())
+                .param("birthdayStr", userModel.getBirthdayStr())
+                .param("passwordConfirm", userModel.getPasswordConfirm())
+                .param("roleName", userModel.getRoleName()))
+                .andExpect(model().attributeHasFieldErrors("userModel", "passwordConfirm"))
+                .andExpect(model().attributeExists("userModel"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user_form"))
+                .andExpect(forwardedUrl("/WEB-INF/pages/user_form.jsp"));
+
+        verify(userDao).create(org.mockito.Matchers.any(user2.getClass()));
+    }
+
 
 }

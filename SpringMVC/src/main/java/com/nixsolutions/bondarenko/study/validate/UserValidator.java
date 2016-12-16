@@ -19,7 +19,7 @@ public abstract class UserValidator implements Validator {
     @Override
     public void validate(Object object, Errors errors) {
         UserModel userModel = (UserModel) object;
-        if (!errors.hasFieldErrors("user.password")) {
+        if (!errors.hasFieldErrors("passwordConfirm")) {
             validatePassword(userModel, errors);
         }
         if (!errors.hasFieldErrors("birthdayStr")) {
@@ -34,7 +34,7 @@ public abstract class UserValidator implements Validator {
 
     private void validatePassword(UserModel userModel, Errors errors) {
         if (!userModel.getUser().getPassword().equals(userModel.getPasswordConfirm())) {
-            errors.rejectValue("user.password", null, "passwords do not match");
+            errors.rejectValue("passwordConfirm", null, "passwords do not match");
         }
     }
 
