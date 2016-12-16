@@ -23,8 +23,8 @@ import java.util.List;
 
 @Controller
 public class AdminController {
-    private static final String ACTION_CREATE_USER = "create_user";
-    private static final String ACTION_EDIT_USER = "edit_user";
+    public static final String ACTION_CREATE_USER = "create_user";
+    public static final String ACTION_EDIT_USER = "edit_user";
     private List<String> roleNameList;
 
     {
@@ -57,7 +57,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.GET)
-    public ModelAndView create(ModelMap modelMap, Authentication authentication) {
+    public ModelAndView create(ModelMap modelMap) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
 
@@ -67,27 +68,26 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap, Authentication authentication) {
+    public ModelAndView edit(@PathVariable("id") String id, ModelMap modelMap) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.addAttribute("action", ACTION_EDIT_USER);
 
-        if (id != null) {
-            Long id_value = new Long(id);
-            User user = userDao.findById(id_value);
-            UserModel userModel = new UserModel(user);
-            userModel.getUser().setPassword(null);
+        Long id_value = new Long(id);
+        User user = userDao.findById(id_value);
+        UserModel userModel = new UserModel(user);
+        userModel.getUser().setPassword(null);
 
-            modelMap.addAttribute("userModel", userModel);
-            modelMap.addAttribute("roleNameList", roleNameList);
-        }
+        modelMap.addAttribute("userModel", userModel);
+        modelMap.addAttribute("roleNameList", roleNameList);
         return new ModelAndView("user_form", modelMap);
     }
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
     public ModelAndView create(@ModelAttribute("userModel") @Valid UserModel userModel,
                                BindingResult bindingResult,
-                               Authentication authentication,
                                ModelMap modelMap) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
 
@@ -111,8 +111,8 @@ public class AdminController {
     @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
     public ModelAndView edit(@ModelAttribute("userModel") @Valid UserModel userModel,
                              BindingResult bindingResult,
-                             Authentication authentication,
                              ModelMap modelMap) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_EDIT_USER);
 

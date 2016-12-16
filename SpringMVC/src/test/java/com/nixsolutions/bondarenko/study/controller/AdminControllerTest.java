@@ -19,11 +19,11 @@ import org.springframework.web.context.WebApplicationContext;
 import java.sql.Date;
 import java.util.Arrays;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -65,30 +65,6 @@ public class AdminControllerTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
 
-    @Test
-    @WithMockAdmin
-    public void adminDelete() throws Exception {
-        when(userDao.findById(2L)).thenReturn(user2);
-
-        mockMvc.perform(get("/admin/delete/2"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("admin"));
-        verify(userDao, times(1)).remove (user2);
-    }
-
-    @Test (expected = UserNotFoundException.class)
-    @WithMockAdmin
-    public void adminDeleteBadId() throws Exception {
-        when(userDao.findById(100L)).thenThrow(new UserNotFoundException("No such user"));
-
-        mockMvc.perform(get("/admin/delete/100"))
-                .andExpect(status().is4xxClientError());
-
-        verify(userDao, times(1)).findById(100L);
-        verifyNoMoreInteractions(userDao);
-    }
-
-
 
     @Test
     @WithMockAdmin
@@ -99,32 +75,69 @@ public class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/admin.jsp"))
-
                 .andExpect(model().attribute("userList", hasSize(2)))
-                .andExpect(model().attribute("userList", hasItem(
-                        allOf(
-                                hasProperty("id", is(1L)),
-                                hasProperty("login", is("admin")),
-                                hasProperty("email", is("admin@mail.ru")),
-                                hasProperty("password", is("Admin1")),
-                                hasProperty("firstName", is("admin")),
-                                hasProperty("lastName", is("adminovich")),
-                                hasProperty("birthday", is(new Date(1990, 10, 10))),
-                                hasProperty("role", is(roleAdmin))
-                        )
-                )))
-                .andExpect(model().attribute("userList", hasItem(
-                        allOf(
-                                hasProperty("id", is(2L)),
-                                hasProperty("login", is("ivan")),
-                                hasProperty("password", is("Ivan123")),
-                                hasProperty("firstName", is("ivan")),
-                                hasProperty("lastName", is("grozniy")),
-                                hasProperty("birthday", is(new Date(1530, 9, 3))),
-                                hasProperty("role", is(roleUser))
-                        )
-                )));
-/*        verify(userDao, times(1)).findAll();
-        verifyNoMoreInteractions(userDao);*/
+                .andExpect(model().attribute("userList", hasItem(user1)))
+                .andExpect(model().attribute("userList", hasItem(user2)));
+
+        //verify(userDao, times(1)).findAll().containsAll(Arrays.asList(user1, user2));
+    }
+
+    @Test
+    @WithMockAdmin
+    public void adminDelete() throws Exception {
+        when(userDao.findById(2L)).thenReturn(user2);
+        doNothing().when(userDao).remove(user2);
+
+        mockMvc.perform(get("/admin/delete/2"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("admin"));
+
+        //verify(userDao).findById(2L);
+        //verify(userDao).remove(user2);
+    }
+
+    @Test //(expected = UserNotFoundException.class)
+    @WithMockAdmin
+    public void adminDeleteBadId() throws Exception {
+        doThrow(new UserNotFoundException()).when(userDao).findById(100L);
+
+        mockMvc.perform(get("/admin/delete/100"))
+                .andExpect(status().is4xxClientError());
+        //verify(userDao).findById(100L);
+    }
+
+    @Test
+    @WithMockAdmin
+    public void adminCreate() throws Exception {
+        mockMvc.perform(get("/admin/create"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user_form"))
+                .andExpect(forwardedUrl("/WEB-INF/pages/user_form.jsp"))
+                .andExpect(model().attributeExists("userModel"))
+                .andExpect(model().attributeExists("roleNameList"))
+                .andExpect(model().attribute("action", equalTo(AdminController.ACTION_CREATE_USER)));
+    }
+
+    @Test
+    @WithMockAdmin
+    public void adminEdit() throws Exception {
+        when(userDao.findById(2L)).thenReturn(user2);
+        mockMvc.perform(get("/admin/edit/2"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("user_form"))
+                .andExpect(forwardedUrl("/WEB-INF/pages/user_form.jsp"))
+                .andExpect(model().attribute("userModel", hasProperty("user", equalTo(user2))))
+                .andExpect(model().attributeExists("roleNameList"))
+                .andExpect(model().attribute("action", equalTo(AdminController.ACTION_EDIT_USER)));
+        verify(userDao).findById(2L);
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    @WithMockAdmin
+    public void adminEditBadId() throws Exception {
+        doThrow(new UserNotFoundException()).when(userDao).findById(100L);
+        mockMvc.perform(get("/admin/edit/100"))
+                .andExpect(status().is4xxClientError());
+        //verify(userDao).findById(100L);
     }
 }
