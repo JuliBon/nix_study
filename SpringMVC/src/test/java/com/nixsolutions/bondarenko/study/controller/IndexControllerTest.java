@@ -72,4 +72,12 @@ public class IndexControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin"));
     }
+
+    @Test
+    @WithMockUser(roles = "GUEST")
+    public void indexGuest() throws Exception {
+        mockMvc.perform(get("/index"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+    }
 }

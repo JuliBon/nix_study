@@ -39,6 +39,17 @@ public class LoginControllerTest {
     }
 
     @Test
+    public void loginError() throws Exception {
+        mockMvc.perform(get("/login")
+                .param("error", "some error message"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("error"))
+                .andExpect(view().name("login"))
+                .andExpect(forwardedUrl("/WEB-INF/pages/login.jsp"));
+    }
+
+
+    @Test
     public void logout() throws Exception {
         mockMvc.perform(get("/logout"))
                 .andExpect(status().is3xxRedirection())
