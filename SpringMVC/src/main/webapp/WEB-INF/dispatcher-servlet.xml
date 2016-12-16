@@ -23,4 +23,6 @@
             <value>.jsp</value>
         </property>
     </bean>
+
+    <bean id="verifyUtils" class="com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils"/>
 </beans>
