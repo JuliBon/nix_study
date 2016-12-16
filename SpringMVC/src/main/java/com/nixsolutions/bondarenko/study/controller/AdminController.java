@@ -53,7 +53,7 @@ public class AdminController {
     public ModelAndView delete(@PathVariable("id") String id) throws Exception {
         Long id_value = new Long(id);
         userDao.remove(userDao.findById(id_value));
-        return new ModelAndView("redirect:admin");
+        return new ModelAndView("redirect:/admin");
     }
 
     @RequestMapping(value = "/admin/create", method = RequestMethod.GET)

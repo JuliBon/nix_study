@@ -94,7 +94,7 @@ public class AdminControllerTest {
 
         mockMvc.perform(get("/admin/delete/2"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("admin"));
+                .andExpect(redirectedUrl("/admin"));
 
         verify(userDao).findById(2L);
     }
@@ -251,6 +251,4 @@ public class AdminControllerTest {
 
         verify(userDao).create(org.mockito.Matchers.any(user2.getClass()));
     }
-
-
 }

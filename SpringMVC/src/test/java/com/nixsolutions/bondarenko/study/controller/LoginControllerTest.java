@@ -42,8 +42,6 @@ public class LoginControllerTest {
     public void logout() throws Exception {
         mockMvc.perform(get("/logout"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("login"));
-        //TODO maybe check if non anonimous and check logout call
+                .andExpect(redirectedUrl("/login"));
     }
-
 }

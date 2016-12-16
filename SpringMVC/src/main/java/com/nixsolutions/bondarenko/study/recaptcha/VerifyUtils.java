@@ -13,7 +13,7 @@ public class VerifyUtils {
     private static final String SECRET_KEY = "6LcNyQ4UAAAAANtBpfHZtfNQUDlMeEg8K4C7CHpJ";
     private static final String SITE_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 
-    public static boolean verify(String gRecaptchaResponse) {
+    public boolean verify(String gRecaptchaResponse) {
         if (gRecaptchaResponse == null || gRecaptchaResponse.length() == 0) {
             return false;
         }

@@ -37,7 +37,7 @@ public class IndexControllerTest {
     public void rootAnonymous() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("login"));
+                .andExpect(redirectedUrl("/login"));
     }
 
     @Test
@@ -45,8 +45,7 @@ public class IndexControllerTest {
     public void rootUser() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("index"));
-    }
+                .andExpect(redirectedUrl("/index"));    }
 
 
     @Test
@@ -54,8 +53,7 @@ public class IndexControllerTest {
     public void indexAnonymous() throws Exception {
         mockMvc.perform(get("/index"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("login"));
-
+                .andExpect(redirectedUrl("/login"));
     }
 
     @Test
@@ -65,7 +63,6 @@ public class IndexControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/home.jsp"));
-
     }
 
     @Test
@@ -73,9 +70,6 @@ public class IndexControllerTest {
     public void indexAdmin() throws Exception {
         mockMvc.perform(get("/index"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("admin"));
-
+                .andExpect(redirectedUrl("/admin"));
     }
-
-
 }

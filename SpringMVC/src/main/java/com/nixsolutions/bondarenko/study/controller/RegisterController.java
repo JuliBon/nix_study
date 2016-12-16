@@ -8,8 +8,6 @@ import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,17 +19,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class RegisterController {
-    private static final String ACTION_REGISTER_USER = "register_user";
+    public static final String ACTION_REGISTER_USER = "register_user";
 
     @Autowired
     private UserDao userDao;
     @Autowired
     private RoleDao roleDao;
-
+    @Autowired
+    private VerifyUtils verifyUtils;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView register(ModelMap modelMap) {
@@ -53,7 +51,7 @@ public class RegisterController {
         boolean valid = !bindingResult.hasErrors();
         if (valid) {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-            valid = VerifyUtils.verify(gRecaptchaResponse);
+            valid = verifyUtils.verify(gRecaptchaResponse);
             if (!valid) {
                 modelMap.put("captchaError", "Captcha invalid!");
             }

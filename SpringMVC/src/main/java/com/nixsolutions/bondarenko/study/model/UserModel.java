@@ -25,10 +25,14 @@ public class UserModel {
         user = new User();
     }
 
-    public UserModel(User user){
+    public UserModel(User user) {
         this.user = user;
-        this.birthdayStr = user.getBirthday().toString();
-        this.roleName = user.getRole().getName();
+        if (user.getBirthday() != null) {
+            this.birthdayStr = user.getBirthday().toString();
+        }
+        if (user.getRole() != null) {
+            this.roleName = user.getRole().getName();
+        }
     }
 
     public User getUser() {

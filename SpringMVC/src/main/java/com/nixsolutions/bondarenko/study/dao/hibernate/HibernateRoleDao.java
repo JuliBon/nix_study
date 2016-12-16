@@ -17,10 +17,6 @@ public class HibernateRoleDao implements RoleDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
     @Override
     public void create(Role role) {
         try {

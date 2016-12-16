@@ -18,10 +18,6 @@ public class HibernateUserDao implements UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
     @Override
     public void create(User user) {
         try {
