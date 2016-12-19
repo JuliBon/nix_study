@@ -109,7 +109,6 @@ public class RegisterControllerTest {
                 .andExpect(view().name("user_form"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/user_form.jsp"))
                 .andExpect(model().attribute("action", equalTo(RegisterController.ACTION_REGISTER_USER)));
-
     }
 
     @Test
@@ -131,11 +130,11 @@ public class RegisterControllerTest {
                 .param("passwordConfirm", userModel.getUser().getPassword())
                 .param("roleName", userModel.getRoleName()))
                 .andExpect(status().isOk())
+                .andExpect(model().attributeExists("registered"))
                 .andExpect(view().name("login"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/login.jsp"));
 
-        //verify(verifyUtils).verify(any());
-        //verify(userDao).create(any(userValid.getClass()));
+        verify(verifyUtils).verify(any());
     }
 
 
@@ -162,6 +161,6 @@ public class RegisterControllerTest {
                 .andExpect(view().name("user_form"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/user_form.jsp"));
 
-        //verify(verifyUtils).verify(any());
+        verify(verifyUtils).verify(any());
     }
 }

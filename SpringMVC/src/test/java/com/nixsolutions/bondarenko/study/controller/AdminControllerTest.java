@@ -65,7 +65,7 @@ public class AdminControllerTest {
 
     @Before
     public void setup() {
-        //Mockito.reset(userDao);
+        Mockito.reset(userDao);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
 
@@ -82,32 +82,26 @@ public class AdminControllerTest {
                 .andExpect(model().attribute("userList", hasSize(2)))
                 .andExpect(model().attribute("userList", hasItem(user1)))
                 .andExpect(model().attribute("userList", hasItem(user2)));
-
-        //verify(userDao, times(1)).findAll().containsAll(Arrays.asList(user1, user2));
     }
 
     @Test
     @WithMockAdmin
     public void adminDelete() throws Exception {
         when(userDao.findById(2L)).thenReturn(user2);
-        doNothing().when(userDao).remove(user2);
 
         mockMvc.perform(get("/admin/delete/2"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin"));
 
-        //verify(userDao).findById(2L);
     }
 
-    @Test //(expected = UserNotFoundException.class)
+    @Test
     @WithMockAdmin
     public void adminDeleteBadId() throws Exception {
         doThrow(new UserNotFoundException()).when(userDao).findById(100L);
 
         mockMvc.perform(get("/admin/delete/100"))
                 .andExpect(status().is4xxClientError());
-
-        //verify(userDao).findById(100L);
     }
 
     @Test
@@ -133,16 +127,14 @@ public class AdminControllerTest {
                 .andExpect(model().attribute("userModel", hasProperty("user", equalTo(user2))))
                 .andExpect(model().attributeExists("roleNameList"))
                 .andExpect(model().attribute("action", equalTo(AdminController.ACTION_EDIT_USER)));
-        //verify(userDao).findById(2L);
     }
 
-    @Test //(expected = UserNotFoundException.class)
+    @Test
     @WithMockAdmin
     public void adminEditBadId() throws Exception {
         doThrow(new UserNotFoundException()).when(userDao).findById(100L);
         mockMvc.perform(get("/admin/edit/100"))
                 .andExpect(status().is4xxClientError());
-        //verify(userDao).findById(100L);
     }
 
 
@@ -165,8 +157,6 @@ public class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/admin.jsp"));
-
-        //verify(userDao).create(org.mockito.Matchers.any(user2.getClass()));
     }
 
     @Test
@@ -188,8 +178,6 @@ public class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/admin.jsp"));
-
-        //verify(userDao).update(org.mockito.Matchers.any(user2.getClass()));
     }
 
 
@@ -204,7 +192,6 @@ public class AdminControllerTest {
 
         when(userDao.findByLogin(user2.getLogin())).thenReturn(user3);
         when(userDao.findByLogin(user2.getEmail())).thenReturn(user3);
-        //doNothing().when(userDao).create(any());
 
         mockMvc.perform(post("/admin/create")
                 .param("user.login", userModel.getUser().getLogin())
@@ -221,8 +208,6 @@ public class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("user_form"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/user_form.jsp"));
-
-        //verify(userDao, never()).create(any());
     }
 
 
@@ -249,7 +234,5 @@ public class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("user_form"))
                 .andExpect(forwardedUrl("/WEB-INF/pages/user_form.jsp"));
-
-        //verify(userDao).create(org.mockito.Matchers.any(user2.getClass()));
     }
 }
