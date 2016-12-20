@@ -1,27 +1,27 @@
 <rootTag>
     <tag1>
         <tag2>
-            <tag3></tag3>
-            <tag4></tag4>
-            <tag5></tag5>
-            <tag6></tag6>
-            <tag7></tag7>
+            <tag3>3</tag3>
+            <tag4>4</tag4>
+            <tag5>5</tag5>
+            <tag6>6</tag6>
+            <tag7>7</tag7>
         </tag2>
         <tag8>
-            <tag9></tag9>
-            <tag10></tag10>
+            <tag9>9</tag9>
+            <tag10>10</tag10>
         </tag8>
         <tag11>
-            <tag12></tag12>
+            <tag12>12</tag12>
         </tag11>
     </tag1>
     <tag13>
         <tag14>
-            <tag15></tag15>
+            <tag15>15</tag15>
         </tag14>
         <tag16>
-            <tag17></tag17>
-            <tag18></tag18>
+            <tag17>17</tag17>
+            <tag18>18</tag18>
         </tag16>
     </tag13>
 </rootTag>

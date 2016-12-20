@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<householdDevises>
+    <goods>
+        <good serial_num="s1" type="Microwave">
+            <brand>LG</brand>
+            <price>2359</price>
+        </good>
+        <good serial_num="s3" type="Microwave">
+            <brand>GORENJE</brand>
+            <price>2200</price>
+        </good>
+        <good serial_num="s7" type="Washing machine">
+            <brand>LG</brand>
+            <price>4000</price>
+        </good>
+        <good serial_num="s6" type="Washing machine">
+            <brand>ZANUSSI</brand>
+            <price>2761</price>
+        </good>
+    </goods>
+</householdDevises>

@@ -1,0 +1,181 @@
+﻿<?xml version="1.0"?>
+<householdDevises>
+    <goods>
+        <good serial_num="s1" type="Microwave">
+            <brand>LG</brand>
+            <model>MC 8088</model>
+            <params>
+                <param>
+                    <pname>Volume</pname>
+                    <value>32 l</value>
+                </param>
+                <param>
+                    <pname>Power</pname>
+                    <value>1500 W</value>
+                </param>
+                <param>
+                    <pname>Dimensions</pname>
+                    <value>474 x 380 x 564 mm</value>
+                </param>
+            </params>
+        </good>
+        <good serial_num="s2" type="Microwave">
+            <brand>SAMSUNG</brand> 
+            <model>CE1185GBR</model>
+            <params>
+                <param>
+                    <pname>Volume</pname>
+                    <value>32 l</value>
+                </param> 
+                <param>
+                    <pname>Power</pname>
+                    <value>900 W</value>
+                </param> 
+                <param>
+                    <pname>Dimensions</pname>
+                    <value>522 x 312 x 539 mm</value>
+                </param>
+            </params>
+        </good>            
+        <good serial_num="s3" type="Microwave">
+            <brand>GORENJE</brand> 
+            <model>MO-230</model>
+            <params>
+                <param>
+                    <pname>Volume</pname>
+                    <value>23 l</value>
+                </param>
+                <param>
+                    <pname>Power</pname>
+                    <value>1200 W</value>
+                </param> 
+                <param>
+                    <pname>Dimensions</pname>
+                    <value>303 x 510 x 455 mm</value>
+                </param>
+            </params>
+        </good>  
+        <good serial_num="s4" type="Washing machine">
+            <brand>GORENJE</brand> 
+            <model>W 6823</model>
+            <params>
+                <param>
+                    <pname>Dimensions</pname>
+                    <value>600 x 850 x 440 mm</value>
+                </param>
+                <param>
+                    <pname>Max spin speed</pname>
+                    <value>1200 rpm</value>
+                </param>
+                <param>
+                    <pname>Washing class</pname>
+                    <value>A</value>
+                </param>
+                <param>
+                    <pname>Load type</pname>
+                    <value>Vertical</value>
+                </param>
+                <param>
+                    <pname>Max load</pname>
+                    <value>6 kg</value>
+                </param>  
+            </params>
+        </good>        
+        <good serial_num="s7" type="Washing machine">
+            <brand>LG</brand> 
+            <model>F1081ND</model>
+            <params>
+                <param>
+                    <pname>Dimensions</pname>
+                    <value>850 x 600 x 480 mm</value>
+                </param>
+                <param>
+                    <pname>Max spin speed</pname>
+                    <value>1000 rpm</value>
+                </param>
+                <param>
+                    <pname>Washing class</pname>
+                    <value>A/B/C</value>
+                </param>
+                <param>
+                    <pname>Load type</pname>
+                    <value>Front</value>
+                </param>
+                <param>
+                    <pname>Max load</pname>
+                    <value>6 kg</value>
+                </param>  
+            </params>
+        </good>
+        <good serial_num="s5" type="Washing machine">
+            <brand>INDESIT</brand> 
+            <model>IWSC 5105</model>
+            <params>
+                <param>
+                    <pname>Dimensions</pname>
+                    <value>850 х 595 х 400 mm</value>
+                </param>
+                <param>
+                    <pname>Max spin speed</pname>
+                    <value>1000 rpm</value>
+                </param>
+                <param>
+                    <pname>Washing class</pname>
+                    <value>A/A/C</value>
+                </param>
+                <param>
+                    <pname>Load type</pname>
+                    <value>Front</value>
+                </param>
+                <param>
+                    <pname>Max load</pname>
+                    <value>5 kg</value>
+                </param>  
+            </params>
+        </good>            
+        <good serial_num="s6" type="Washing machine">
+            <brand>ZANUSSI</brand> 
+            <model>ZWY 1100</model>
+            <params>
+                <param>
+                    <pname>Dimensions</pname>
+                    <value>850 x 400 x 600 mm</value>
+                </param>
+                <param>
+                    <pname>Max spin speed</pname>
+                    <value>1000 rpm</value>
+                </param>
+                <param>
+                    <pname>Washing class</pname>
+                    <value>A/A/C</value>
+                </param>
+                <param>
+                    <pname>Load type</pname>
+                    <value>Vertical</value>
+                </param>
+                <param>
+                    <pname>Max load</pname>
+                    <value>5 kg</value>
+                </param>  
+            </params>
+        </good>
+        <good serial_num="s0" type="Microwave">
+            <brand>PANASONIC</brand> 
+            <model>NN-CS596SZPE</model>
+            <params>
+                <param>
+                    <pname>Volume</pname>
+                    <value>27 l</value>
+                </param>
+                <param>
+                    <pname>Power</pname>
+                    <value>1200 W</value>
+                </param> 
+                <param>
+                    <pname>Dimensions</pname>
+                    <value>600 x 850 x 440 mm</value>
+                </param>
+            </params>
+        </good>
+    </goods>
+</householdDevises>

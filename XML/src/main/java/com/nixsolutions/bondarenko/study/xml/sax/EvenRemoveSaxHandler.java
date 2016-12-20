@@ -1,15 +1,10 @@
 package com.nixsolutions.bondarenko.study.xml.sax;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.*;
@@ -21,10 +16,8 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
     private boolean lastWasStart = false;
     private Stack<Integer> indexStack = new Stack<>();
 
-    public EvenRemoveSaxHandler(String outFileName) throws IOException, XMLStreamException {
-        OutputStream outputStream = new FileOutputStream(new File(outFileName));
-        out = XMLOutputFactory.newInstance().createXMLStreamWriter(
-                new OutputStreamWriter(outputStream, "utf-8"));
+    public EvenRemoveSaxHandler(XMLStreamWriter out) throws IOException, XMLStreamException {
+        this.out = out;
     }
 
     @Override
@@ -106,40 +99,13 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
         boolean toWrite = true;
         if (size > 0) {
             for (int i = size - 1; i >= 0; i--) {
-                toWrite = toWrite && (indexStack.get(i) % 2 != 0);
+                toWrite = indexStack.get(i) % 2 != 0;
                 if(!toWrite){
                     break;
                 }
             }
         }
         return toWrite;
-    }
-
-
-    private static String convertToFileURL(String fileName) {
-        String path = new File(fileName).getAbsolutePath();
-        if (File.separatorChar != '/') {
-            path = path.replace(File.separatorChar, '/');
-        }
-
-        if (!path.startsWith("/")) {
-            path = "/" + path;
-        }
-        return "file:" + path;
-    }
-
-    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, XMLStreamException {
-        String fileName = "goods2.xml";
-        String baseDir = "src/main/resources/";
-        //InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream(baseDir + fileName);
-
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        SAXParser saxParser = spf.newSAXParser();
-
-        XMLReader xmlReader = saxParser.getXMLReader();
-        xmlReader.setContentHandler(new EvenRemoveSaxHandler(baseDir + "out_" + fileName));
-        xmlReader.parse(convertToFileURL(baseDir + fileName));
     }
 }
 

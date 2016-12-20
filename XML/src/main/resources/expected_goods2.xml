@@ -1,0 +1,55 @@
+﻿<?xml version="1.0"?>
+<householdDevises>
+    <goods>
+        <good serial_num="s1" type="Microwave">
+            <brand>LG</brand>
+            <params>
+                <param>
+                    <pname>Volume</pname>
+                </param>
+                <param>
+                    <pname>Dimensions</pname>
+                </param>
+            </params>
+        </good>
+        <good serial_num="s3" type="Microwave">
+            <brand>GORENJE</brand>
+            <params>
+                <param>
+                    <pname>Volume</pname>
+                </param>
+                <param>
+                    <pname>Dimensions</pname>
+                </param>
+            </params>
+        </good>
+        <good serial_num="s7" type="Washing machine">
+            <brand>LG</brand>
+            <params>
+                <param>
+                    <pname>Dimensions</pname>
+                </param>
+                <param>
+                    <pname>Washing class</pname>
+                </param>
+                <param>
+                    <pname>Max load</pname>
+                </param>  
+            </params>
+        </good>
+        <good serial_num="s6" type="Washing machine">
+            <brand>ZANUSSI</brand>
+            <params>
+                <param>
+                    <pname>Dimensions</pname>
+                </param>
+                <param>
+                    <pname>Washing class</pname>
+                </param>
+                <param>
+                    <pname>Max load</pname>
+                </param>  
+            </params>
+        </good>
+    </goods>
+</householdDevises>
