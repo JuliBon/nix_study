@@ -24,7 +24,7 @@ import static org.xmlmatchers.transform.XmlConverters.the;
 
 public class EvenRemoveSaxHandlerTest {
     private final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-    private final String xmlOutDir = classLoader.getResource(".").getPath();
+    private final String xmlOutPath = classLoader.getResource(".").getPath();
 
     private XMLReader xmlReader;
 
@@ -39,17 +39,16 @@ public class EvenRemoveSaxHandlerTest {
     @Test
     public void test() throws ParserConfigurationException, IOException, SAXException, XMLStreamException {
         //String inputFileName = "goods.xml";
-        //String inputFileName = "goods2.xml";
-        String inputFileName = "test.xml";
+        String inputFileName = "goods2.xml";
         String expectedFileName = "expected_" + inputFileName;
-        File outFile = new File(xmlOutDir + "out_" + inputFileName);
+        File outFile = new File(xmlOutPath + "out_" + inputFileName);
 
         InputSource inputSource = new InputSource(classLoader.getResourceAsStream(inputFileName));
         OutputStream outputStream = new FileOutputStream(outFile);
-        XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
+        XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(
                 new OutputStreamWriter(outputStream, "utf-8"));
 
-        xmlReader.setContentHandler(new EvenRemoveSaxHandler(out));
+        xmlReader.setContentHandler(new EvenRemoveSaxHandler(xmlStreamWriter));
         xmlReader.parse(inputSource);
 
         InputStream xmlOut = new FileInputStream(outFile);
@@ -66,5 +65,17 @@ public class EvenRemoveSaxHandlerTest {
                 .getDocumentElement();
 
         assertThat(the(elementOut), isEquivalentTo(the(elementExpected)));
+    }
+
+    @Test (expected = SAXException.class)
+    public void testBad() throws IOException, SAXException, XMLStreamException {
+        String inputFileName = "bad.xml";
+        InputSource inputSource = new InputSource(classLoader.getResourceAsStream(inputFileName));
+        OutputStream outputStream = new FileOutputStream(new File(xmlOutPath + "out_" + inputFileName));
+        XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(
+                new OutputStreamWriter(outputStream, "utf-8"));
+
+        xmlReader.setContentHandler(new EvenRemoveSaxHandler(xmlStreamWriter));
+        xmlReader.parse(inputSource);
     }
 }

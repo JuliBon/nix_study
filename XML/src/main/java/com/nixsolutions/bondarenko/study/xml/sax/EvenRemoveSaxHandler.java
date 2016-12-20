@@ -11,19 +11,19 @@ import java.io.*;
 import java.util.Stack;
 
 public class EvenRemoveSaxHandler extends DefaultHandler {
-    private XMLStreamWriter out;
+    private XMLStreamWriter writer;
 
     private boolean lastWasStart = false;
     private Stack<Integer> indexStack = new Stack<>();
 
-    public EvenRemoveSaxHandler(XMLStreamWriter out) throws IOException, XMLStreamException {
-        this.out = out;
+    public EvenRemoveSaxHandler(XMLStreamWriter writer) throws IOException, XMLStreamException {
+        this.writer = writer;
     }
 
     @Override
     public void startDocument() throws SAXException {
         try {
-            out.writeStartDocument();
+            writer.writeStartDocument();
         } catch (XMLStreamException e) {
             e.printStackTrace();
         }
@@ -32,8 +32,8 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
         try {
-            out.writeEndDocument();
-            out.close();
+            writer.writeEndDocument();
+            writer.close();
         } catch (XMLStreamException e) {
             e.printStackTrace();
         }
@@ -55,9 +55,9 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
 
         if (checkIfToWrite()) {
             try {
-                out.writeStartElement(localName);
+                writer.writeStartElement(localName);
                 for (int i = 0; i < attributes.getLength(); i++) {
-                    out.writeAttribute(attributes.getLocalName(i), attributes.getValue(i));
+                    writer.writeAttribute(attributes.getLocalName(i), attributes.getValue(i));
                 }
             } catch (XMLStreamException e) {
                 e.printStackTrace();
@@ -76,7 +76,7 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
 
         if (checkIfToWrite()) {
             try {
-                out.writeEndElement();
+                writer.writeEndElement();
             } catch (XMLStreamException e) {
                 e.printStackTrace();
             }
@@ -87,7 +87,7 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (checkIfToWrite()) {
             try {
-                out.writeCharacters(new String(ch, start, length));
+                writer.writeCharacters(new String(ch, start, length));
             } catch (XMLStreamException e) {
                 e.printStackTrace();
             }
