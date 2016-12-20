@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.xml;
+package com.nixsolutions.bondarenko.study.xml.sax;
 
 import com.nixsolutions.bondarenko.study.xml.sax.EvenRemoveSaxHandler;
 import org.junit.Before;
@@ -67,7 +67,7 @@ public class EvenRemoveSaxHandlerTest {
         assertThat(the(elementOut), isEquivalentTo(the(elementExpected)));
     }
 
-    @Test (expected = SAXException.class)
+    @Test(expected = SAXException.class)
     public void testBad() throws IOException, SAXException, XMLStreamException {
         String inputFileName = "bad.xml";
         InputSource inputSource = new InputSource(classLoader.getResourceAsStream(inputFileName));

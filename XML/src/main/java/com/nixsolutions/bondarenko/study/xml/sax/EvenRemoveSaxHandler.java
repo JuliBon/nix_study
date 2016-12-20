@@ -25,7 +25,7 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
         try {
             writer.writeStartDocument();
         } catch (XMLStreamException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error while writing the start of document", e);
         }
     }
 
@@ -35,7 +35,7 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
             writer.writeEndDocument();
             writer.close();
         } catch (XMLStreamException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error while writing the end of document", e);
         }
     }
 
@@ -60,7 +60,7 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
                     writer.writeAttribute(attributes.getLocalName(i), attributes.getValue(i));
                 }
             } catch (XMLStreamException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error while writing the element", e);
             }
         }
     }
@@ -78,7 +78,7 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
             try {
                 writer.writeEndElement();
             } catch (XMLStreamException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error while writing the element", e);
             }
         }
     }
@@ -89,7 +89,7 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
             try {
                 writer.writeCharacters(new String(ch, start, length));
             } catch (XMLStreamException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Error while writing characters", e);
             }
         }
     }
@@ -100,7 +100,7 @@ public class EvenRemoveSaxHandler extends DefaultHandler {
         if (size > 0) {
             for (int i = size - 1; i >= 0; i--) {
                 toWrite = indexStack.get(i) % 2 != 0;
-                if(!toWrite){
+                if (!toWrite) {
                     break;
                 }
             }

@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.xml;
+package com.nixsolutions.bondarenko.study.xml.dom;
 
 import com.nixsolutions.bondarenko.study.xml.dom.EvenRemoveDomHandler;
 import org.junit.Test;
