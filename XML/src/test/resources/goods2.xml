@@ -1,5 +1,4 @@
-﻿<?xml version="1.0"?>
-<householdDevises>
+﻿<householdDevises>
     <goods>
         <good serial_num="s1" type="Microwave">
             <brand>LG</brand>
