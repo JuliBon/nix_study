@@ -4,6 +4,4 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean name="userDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateUserDao"/>
-    <bean name="roleDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateRoleDao"/>
 </beans>

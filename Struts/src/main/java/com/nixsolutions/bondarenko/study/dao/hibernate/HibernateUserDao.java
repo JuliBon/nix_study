@@ -1,12 +1,10 @@
 package com.nixsolutions.bondarenko.study.dao.hibernate;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
-import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -72,8 +70,6 @@ public class HibernateUserDao implements UserDao {
 
     @Override
     public User findByLogin(String login) {
-        return new User(1L, login, "admin", "email@mail.ru", "admin", "admin", null, new Role(1L, "ADMIN"));
-        /*
         try {
             User user = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                     .add(Restrictions.naturalId()
@@ -85,7 +81,7 @@ public class HibernateUserDao implements UserDao {
             throw new UserNotFoundException("User with login " + login + " not found");
         } catch (HibernateException e) {
             throw new RuntimeException("Error while searching user", e);
-        }*/
+        }
     }
 
     @Override
