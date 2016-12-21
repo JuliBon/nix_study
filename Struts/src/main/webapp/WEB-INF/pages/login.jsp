@@ -12,7 +12,7 @@
 
 <body>
 <div class="container">
-    <s:form action="Login" class="form-login">
+    <s:form action="login" class="form-login">
         <div class="centerLabel"><h2 class="form-signin-heading">Please sing in</h2></div>
         <s:textfield key="login" cssClass="form-control" placeholder="Login"/>
         <s:password key="password" cssClass="form-control" placeholder="Password"/>

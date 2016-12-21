@@ -1,6 +1,10 @@
-package com.nixsolutions.bondarenko.study;
+package com.nixsolutions.bondarenko.study.action;
 
-public class LoginAction {
+import com.opensymphony.xwork2.ActionSupport;
+
+public class Login extends ActionSupport {
+
+    @Override
     public String execute() throws Exception {
 
         if (isInvalid(getLogin())) return "input";

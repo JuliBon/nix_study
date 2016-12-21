@@ -7,12 +7,13 @@
     <constant name="struts.devMode" value="true"/>
 
     <package name="default" namespace="/" extends="struts-default">
-        <action name="hello"
-                class="com.nixsolutions.bondarenko.study.HelloWorldAction">
-            <result>/WEB-INF/pages/HelloWorld.jsp</result>
+        <action name="home"
+                class="com.nixsolutions.bondarenko.study.action.Home">
+            <result name="success">/WEB-INF/pages/home.jsp</result>
         </action>
-        <action name="login_*" class="com.nixsolutions.bondarenko.study.LoginAction">
+        <action name="login" class="com.nixsolutions.bondarenko.study.action.Login">
             <result name="input">/WEB-INF/pages/login.jsp</result>
+            <result name="success" type="redirectAction">home</result>
         </action>
     </package>
 </struts>
