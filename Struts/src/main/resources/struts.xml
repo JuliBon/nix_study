@@ -6,4 +6,13 @@
     <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
     <constant name="struts.devMode" value="true"/>
 
+    <package name="default" namespace="/" extends="struts-default">
+        <action name="hello"
+                class="com.nixsolutions.bondarenko.study.HelloWorldAction">
+            <result>/WEB-INF/pages/HelloWorld.jsp</result>
+        </action>
+        <action name="login_*" class="com.nixsolutions.bondarenko.study.LoginAction">
+            <result name="input">/WEB-INF/pages/login.jsp</result>
+        </action>
+    </package>
 </struts>
