@@ -1,16 +1,24 @@
 package com.nixsolutions.bondarenko.study.action;
 
+import com.nixsolutions.bondarenko.study.dao.UserDao;
+import com.nixsolutions.bondarenko.study.entity.User;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class Login extends ActionSupport {
 
+    private UserDao userDao;
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
     @Override
     public String execute() throws Exception {
-
         if (isInvalid(getLogin())) return "input";
 
         if (isInvalid(getPassword())) return "input";
 
+        User user = userDao.findByLogin(getLogin());
         return "success";
     }
 
