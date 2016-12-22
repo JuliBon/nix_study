@@ -35,8 +35,9 @@
 
     <h3>Registration</h3>
 
-    <s:form  action="register" method="POST" id="userForm" validate="true"
+    <form  action="register" method="POST" id="userForm" validate="true"
             onsubmit="return validateForm()">
+        <s:actionerror/>
 
         <s:textfield name="userModel.user.login" cssClass="form-group row form-control" label="Login"/>
         <s:fielderror fieldName="userModel.user.login" cssClass="incorrect"/>
@@ -55,7 +56,7 @@
         <s:fielderror fieldName="userModel.user.firstName" cssClass="incorrect"/>
 
         <s:textfield name="userModel.user.lastName" cssClass="form-control" label="Last name"/>
-        <s:fielderror key="userModel.user.lastName" cssClass="incorrect"/>
+        <s:fielderror fieldName="userModel.user.lastName" cssClass="incorrect"/>
 
         <s:textfield type="date" name="userModel.birthdayStr" cssClass="form-control" label="Birhday"/>
         <s:fielderror fieldName="userModel.birthdayStr" cssClass="incorrect"/>
@@ -71,7 +72,7 @@
                 </c:if>--%>
 
         <s:submit class="btn btn-primary" value="Ok"/>
-    </s:form>
+    </form>
         <s:a href='login' class="btn btn-primary ">Cancel</s:a>
 </div>
 </body>
