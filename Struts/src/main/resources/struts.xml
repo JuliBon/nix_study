@@ -6,8 +6,11 @@
     <constant name="struts.devMode" value="true"/>
 
     <package name="default" namespace="/" extends="struts-default">
-        <action name="home"
-                class="com.nixsolutions.bondarenko.study.action.Home">
+        <action name="register" class="com.nixsolutions.bondarenko.study.action.Register">
+            <interceptor-ref name="modelDriven"/>
+            <result name="success">/WEB-INF/pages/register.jsp</result>
+        </action>
+        <action name="home" class="com.nixsolutions.bondarenko.study.action.Home">
             <result name="success">/WEB-INF/pages/home.jsp</result>
         </action>
         <action name="login" class="com.nixsolutions.bondarenko.study.action.Login">
