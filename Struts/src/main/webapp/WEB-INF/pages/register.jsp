@@ -35,71 +35,30 @@
 
     <h3>Registration</h3>
 
-    <form action="register" class="form-user" method="POST" id="userForm" onsubmit="return validateForm()">
-        <div class="form-group row">
-            <s:label for="user.login" class="col-xs-2 col-form-label" value="Login"/>
-            <div class="col-xs-10">
-                <s:textfield name="user.login" cssClass="form-control" title="Login"/>
-                    <%-- value="${user.login}"--%>
+    <s:form  action="register" method="POST" id="userForm" validate="true"
+            onsubmit="return validateForm()">
 
-                <s:fielderror fieldName="user.login" cssClass="incorrect"/>
-            </div>
-        </div>
+        <s:textfield name="userModel.user.login" cssClass="form-group row form-control" label="Login"/>
+        <s:fielderror fieldName="userModel.user.login" cssClass="incorrect"/>
 
-        <div class="form-group row">
-            <s:label for="user.password" class="col-xs-2 col-form-label" value="Password"/>
-            <div class="col-xs-10">
-                <s:password name="user.password" cssClass="form-control" title="password"/>
-                    <%--value="${user.password}"--%>
+        <s:password name="userModel.user.password" cssClass="form-control" label="Password"/>
+        <s:fielderror fieldName="userModel.user.password" cssClass="incorrect"/>
 
-                <s:fielderror fieldName="user.password" cssClass="incorrect"/>
-            </div>
-        </div>
-        <div class="form-group row">
-            <s:label for="passwordConfirm" class="col-xs-2 col-form-label" value="Confirm password"/>
-            <div class="col-xs-10">
-                <s:password name="passwordConfirm" cssClass="form-control" title="confirm password"/>
-                    <%--value="${passwordConfirm}"--%>
+        <s:password name="userModel.passwordConfirm" cssClass="form-control" label="Confirm password"/>
+        <s:fielderror fieldName="userModel.passwordConfirm" cssClass="incorrect"/>
 
-                <s:fielderror fieldName="passwordConfirm" cssClass="incorrect"/>
-            </div>
-        </div>
-        <div class="form-group row">
-            <s:label for="user.email" class="col-xs-2 col-form-label" value="Email"/>
-            <div class="col-xs-10">
-                <s:textfield name="user.email" cssClass="form-control" title="email"/>
-                    <%--value="${user.email}"--%>
 
-                <s:fielderror fieldName="user.email" cssClass="incorrect"/>
-            </div>
-        </div>
-        <div class="form-group row">
-            <s:label for="user.firstName" class="col-xs-2 col-form-label" value="First name"/>
-            <div class="col-xs-10">
-                <s:textfield name="user.firstName" cssClass="form-control" title="first name"/>
-                    <%--value="${user.firstName}"--%>
+        <s:textfield name="userModel.user.email" cssClass="form-control" label="Email"/>
+        <s:fielderror fieldName="userModel.user.email" cssClass="incorrect"/>
 
-                <s:fielderror fieldName="user.firstName" cssClass="incorrect"/>
-            </div>
-        </div>
-        <div class="form-group row">
-            <s:label for="user.lastName" class="col-xs-2 col-form-label" value="Last name"/>
-            <div class="col-xs-10">
-                <s:textfield name="user.lastName" cssClass="form-control" title="last name"/>
-                    <%--value="${user.lastName}"--%>
+        <s:textfield name="userModel.user.firstName" cssClass="form-control"  label="First name"/>
+        <s:fielderror fieldName="userModel.user.firstName" cssClass="incorrect"/>
 
-                <s:fielderror fieldName="user.lastName" cssClass="incorrect"/>
-            </div>
-        </div>
-        <div class="form-group row">
-            <s:label for="birthdayStr" class="col-xs-2 col-form-label" value="Birhday"/>
-            <div class="col-xs-10">
-                <s:textfield type="date" name="birthdayStr" cssClass="form-control" title="birthdayStr"/>
-                    <%-- value="${birthdayStr}"--%>
+        <s:textfield name="userModel.user.lastName" cssClass="form-control" label="Last name"/>
+        <s:fielderror key="userModel.user.lastName" cssClass="incorrect"/>
 
-                <s:fielderror fieldName="birthdayStr" cssClass="incorrect"/>
-            </div>
-        </div>
+        <s:textfield type="date" name="userModel.birthdayStr" cssClass="form-control" label="Birhday"/>
+        <s:fielderror fieldName="userModel.birthdayStr" cssClass="incorrect"/>
 
         <%--        <c:if test="${isRegister}">
                     <div class="form-group row" style="margin: 0 auto; width: 300px;">
@@ -111,13 +70,9 @@
                     <div class="g-recaptcha" data-sitekey="6LcNyQ4UAAAAADeZmMXsnP_5JxZkN4MJvyQEjuCO"></div>
                 </c:if>--%>
 
-        <div class="form-group row">
-            <div class="btns-center">
-                <button type="submit" class="btn btn-primary">Ok</button>
-                <button type="button" onclick="location.href = 'login';" class="btn btn-primary ">Cancel</button>
-            </div>
-        </div>
-    </form>
+        <s:submit class="btn btn-primary" value="Ok"/>
+    </s:form>
+        <s:a href='login' class="btn btn-primary ">Cancel</s:a>
 </div>
 </body>
 </html>

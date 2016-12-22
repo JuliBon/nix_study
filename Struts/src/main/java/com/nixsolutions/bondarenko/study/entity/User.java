@@ -3,33 +3,41 @@ package com.nixsolutions.bondarenko.study.entity;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.sql.Date;
 
-/**
- * @author Yuliya Bondarenko
- */
 @Entity
 @Table(name = "USER")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
+    @Pattern(regexp = "^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$",
+            message = "3-15 characters, beginning with letter. Can include letters, numbers, dashes, and underscores")
     @Column(name = "login", unique = true, nullable = false)
     private String login;
 
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$",
+            message = "at least one number and one uppercase and lowercase letters")
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$", message = "not a well-formed email address")
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
 
+    @Pattern(regexp = "[A-Za-z]+",
+            message = "one or more letters")
     @Column(name = "firstName", nullable = false)
     private String firstName;
 
+    @Pattern(regexp = "[A-Za-z]+",
+            message = "one or more letters")
     @Column(name = "lastName", nullable = false)
     private String lastName;
 

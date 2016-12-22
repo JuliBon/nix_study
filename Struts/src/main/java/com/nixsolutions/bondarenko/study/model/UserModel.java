@@ -2,13 +2,18 @@ package com.nixsolutions.bondarenko.study.model;
 
 import com.nixsolutions.bondarenko.study.entity.User;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-public class UserModel implements Serializable{
+public class UserModel implements Serializable {
+    @Valid
     private User user;
 
+    @NotNull
     private String passwordConfirm;
 
+    @NotNull
     private String birthdayStr;
 
     private String roleName;
