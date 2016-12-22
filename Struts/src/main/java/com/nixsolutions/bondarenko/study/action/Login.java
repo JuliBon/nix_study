@@ -14,12 +14,12 @@ public class Login extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        if (isInvalid(getLogin())) return "input";
+        if (isInvalid(getLogin())) return INPUT;
 
-        if (isInvalid(getPassword())) return "input";
+        if (isInvalid(getPassword())) return INPUT;
 
         User user = userDao.findByLogin(getLogin());
-        return "success";
+        return SUCCESS;
     }
 
     private boolean isInvalid(String value) {
