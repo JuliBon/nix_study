@@ -6,10 +6,24 @@
     <constant name="struts.devMode" value="true"/>
 
     <package name="default" namespace="/" extends="struts-default">
+
+
+
+        <interceptors>
+            <interceptor-stack name="myValidationStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="myValidationInterceptor"/>
+                <interceptor-ref name="workflow"/>
+            </interceptor-stack>
+            <interceptor name="myValidationInterceptor" class="com.nixsolutions.bondarenko.study.UserValidateInterceptor"/>
+        </interceptors>
+
         <action name="register" class="com.nixsolutions.bondarenko.study.action.Register" method="input">
             <result name="input">/WEB-INF/pages/register.jsp</result>
         </action>
         <action name="registerUser" class="com.nixsolutions.bondarenko.study.action.Register" method="execute">
+            <interceptor-ref name="myValidationStack"/>
+
             <result name="input">/WEB-INF/pages/register.jsp</result>
             <result name="success">/WEB-INF/pages/success.jsp</result>
         </action>
