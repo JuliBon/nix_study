@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="sb" uri="/struts-bootstrap-tags" %>
 
 <html>
 <head>
-    <s:head/>
+    <sb:head includeScripts="true" includeScriptsValidation="true"/>
+
     <title>Register</title>
     <meta charset="utf-8">
 
@@ -20,7 +22,7 @@
             var passwordConfirm = document.getElementById("passwordConfirm").value;
             if (password != passwordConfirm) {
                 var confPassMassage = document.getElementById("confirmPasswordErrorMessage");
-                confPassMassage.innerHTML = "Passwords do not match!";
+                confPassMassage.innerHTML = "Passwords are not matching!";
                 document.getElementById("passwordConfirm").focus();
                 return false;
             }
@@ -36,11 +38,16 @@
 
     <h3>Registration</h3>
 
-    <s:form  action="registerUser" method="POST" id="userForm" validate="true"
+    <s:form action="registerUser" method="POST" id="userForm" validate="true"
+            theme="bootstrap"
+            cssClass="form-vertical, form-user"
+            labelCssClass="col-sm-2"
+            elementCssClass="col-sm-7"
             onsubmit="return validateForm()">
+
         <s:actionerror/>
 
-        <s:textfield name="userModel.user.login" cssClass="form-group row form-control" label="Login" />
+        <s:textfield name="userModel.user.login" cssClass="form-control" label="Login"/>
 
         <s:password name="userModel.user.password" cssClass="form-control" label="Password"/>
 
@@ -64,9 +71,15 @@
                     <div class="g-recaptcha" data-sitekey="6LcNyQ4UAAAAADeZmMXsnP_5JxZkN4MJvyQEjuCO"></div>
                 </c:if>--%>
 
-        <s:submit class="btn btn-primary" value="Ok"/>
+        <%--<s:submit class="btn btn-primary" value="Ok"/>--%>
+
+        <div class="form-group row">
+            <div class="btns-center">
+                <button type="submit" class="btn btn-primary">Ok</button>
+                <button type="button" onclick="location.href = 'login';" class="btn btn-primary ">Cancel</button>
+            </div>
+        </div>
     </s:form>
-        <s:a href='login' class="btn btn-primary ">Cancel</s:a>
 </div>
 </body>
 </html>
