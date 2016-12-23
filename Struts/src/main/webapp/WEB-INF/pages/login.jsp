@@ -18,6 +18,8 @@
         <s:password key="password" cssClass="form-control" placeholder="Password"/>
         <s:submit cssClass="btn btn-lg btn-primary btn-block" value="Sign in"/>
     </s:form>
+
+    <div class="centerLabel"><s:a href="/register"><h5>Register</h5></s:a></div>
 </div>
 </body>
 </html>
