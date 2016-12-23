@@ -15,7 +15,7 @@
                 <interceptor-ref name="myValidationInterceptor"/>
                 <interceptor-ref name="workflow"/>
             </interceptor-stack>
-            <interceptor name="myValidationInterceptor" class="com.nixsolutions.bondarenko.study.UserValidateInterceptor"/>
+            <interceptor name="myValidationInterceptor" class="com.nixsolutions.bondarenko.study.interceptor.PasswordConfirmationInterceptor"/>
         </interceptors>
 
         <action name="register" class="com.nixsolutions.bondarenko.study.action.Register" method="input">
