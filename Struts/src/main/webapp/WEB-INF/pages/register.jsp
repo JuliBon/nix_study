@@ -36,7 +36,7 @@
 
     <h3>Registration</h3>
 
-    <s:form  action="register" method="POST" id="userForm" validate="true"
+    <s:form  action="registerUser" method="POST" id="userForm" validate="true"
             onsubmit="return validateForm()">
         <s:actionerror/>
 

@@ -6,7 +6,10 @@
     <constant name="struts.devMode" value="true"/>
 
     <package name="default" namespace="/" extends="struts-default">
-        <action name="register" class="com.nixsolutions.bondarenko.study.action.Register" method="execute">
+        <action name="register" class="com.nixsolutions.bondarenko.study.action.Register" method="input">
+            <result name="input">/WEB-INF/pages/register.jsp</result>
+        </action>
+        <action name="registerUser" class="com.nixsolutions.bondarenko.study.action.Register" method="execute">
             <result name="input">/WEB-INF/pages/register.jsp</result>
             <result name="success">/WEB-INF/pages/success.jsp</result>
         </action>

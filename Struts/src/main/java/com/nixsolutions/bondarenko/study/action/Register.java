@@ -13,9 +13,15 @@ public class Register extends ActionSupport implements ModelDriven<UserModel> {
 
     private UserModel userModel = new UserModel();
 
+    @Override
     public String execute() throws Exception {
         UserModel userModel = getUserModel();
         return SUCCESS;
+    }
+
+    @Override
+    public String input() throws Exception {
+        return INPUT;
     }
 
     @Override
