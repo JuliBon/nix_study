@@ -1,19 +1,18 @@
 package com.nixsolutions.bondarenko.study.model;
 
 import com.nixsolutions.bondarenko.study.entity.User;
+import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+
 public class UserModel implements Serializable {
-    @Valid
     private User user;
 
-    @NotNull
     private String passwordConfirm;
 
-    @NotNull
     private String birthdayStr;
 
     private String roleName;
@@ -32,26 +31,32 @@ public class UserModel implements Serializable {
         }
     }
 
+
     public User getUser() {
         return user;
     }
 
+    @VisitorFieldValidator
     public void setUser(User user) {
         this.user = user;
     }
+
 
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
 
+    @RequiredFieldValidator(message = "Confirm password")
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
+
 
     public String getBirthdayStr() {
         return birthdayStr;
     }
 
+    @RequiredFieldValidator(message = "bad date format")
     public void setBirthdayStr(String birthdayStr) {
         this.birthdayStr = birthdayStr;
     }

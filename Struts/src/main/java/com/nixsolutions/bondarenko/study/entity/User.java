@@ -1,9 +1,11 @@
 package com.nixsolutions.bondarenko.study.entity;
 
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -16,28 +18,19 @@ public class User implements Serializable {
     private Long id;
 
 
-    @Pattern(regexp = "^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$",
-            message = "3-15 characters, beginning with letter. Can include letters, numbers, dashes, and underscores")
     @Column(name = "login", unique = true, nullable = false)
     private String login;
 
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$",
-            message = "at least one number and one uppercase and lowercase letters")
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$", message = "not a well-formed email address")
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
 
-    @Pattern(regexp = "[A-Za-z]+",
-            message = "one or more letters")
     @Column(name = "firstName", nullable = false)
     private String firstName;
 
-    @Pattern(regexp = "[A-Za-z]+",
-            message = "one or more letters")
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
@@ -76,6 +69,9 @@ public class User implements Serializable {
         return login;
     }
 
+    @RequiredStringValidator(message = "login required")
+    @RegexFieldValidator(regex = "^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$",
+            message = "3-15 characters, beginning with letter. Can include letters, numbers, dashes, and underscores")
     public void setLogin(String login) {
         this.login = login;
     }
@@ -84,6 +80,9 @@ public class User implements Serializable {
         return password;
     }
 
+    @RequiredStringValidator(message = "pasword required")
+    @RegexFieldValidator(regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$",
+            message = "at least one number and one uppercase and lowercase letters")
     public void setPassword(String password) {
         this.password = password;
     }
@@ -92,6 +91,10 @@ public class User implements Serializable {
         return email;
     }
 
+
+    @RequiredStringValidator(message = "email required")
+    @RegexFieldValidator(regex = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$",
+            message = "not a well-formed email address")
     public void setEmail(String email) {
         this.email = email;
     }
@@ -100,6 +103,9 @@ public class User implements Serializable {
         return firstName;
     }
 
+    @RequiredStringValidator(message = "first name required")
+    @RegexFieldValidator(regex = "[A-Za-z]+",
+            message = "one or more letters")
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -108,6 +114,9 @@ public class User implements Serializable {
         return lastName;
     }
 
+    @RequiredStringValidator(message = "last name required")
+    @RegexFieldValidator(regex = "[A-Za-z]+",
+            message = "one or more letters")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

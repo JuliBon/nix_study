@@ -3,6 +3,7 @@
 
 <html>
 <head>
+    <s:head/>
     <title>Register</title>
     <meta charset="utf-8">
 
@@ -35,31 +36,23 @@
 
     <h3>Registration</h3>
 
-    <form  action="register" method="POST" id="userForm" validate="true"
+    <s:form  action="register" method="POST" id="userForm" validate="true"
             onsubmit="return validateForm()">
         <s:actionerror/>
 
-        <s:textfield name="userModel.user.login" cssClass="form-group row form-control" label="Login"/>
-        <s:fielderror fieldName="userModel.user.login" cssClass="incorrect"/>
+        <s:textfield name="userModel.user.login" cssClass="form-group row form-control" label="Login" />
 
         <s:password name="userModel.user.password" cssClass="form-control" label="Password"/>
-        <s:fielderror fieldName="userModel.user.password" cssClass="incorrect"/>
 
         <s:password name="userModel.passwordConfirm" cssClass="form-control" label="Confirm password"/>
-        <s:fielderror fieldName="userModel.passwordConfirm" cssClass="incorrect"/>
-
 
         <s:textfield name="userModel.user.email" cssClass="form-control" label="Email"/>
-        <s:fielderror fieldName="userModel.user.email" cssClass="incorrect"/>
 
-        <s:textfield name="userModel.user.firstName" cssClass="form-control"  label="First name"/>
-        <s:fielderror fieldName="userModel.user.firstName" cssClass="incorrect"/>
+        <s:textfield name="userModel.user.firstName" cssClass="form-control" label="First name"/>
 
         <s:textfield name="userModel.user.lastName" cssClass="form-control" label="Last name"/>
-        <s:fielderror fieldName="userModel.user.lastName" cssClass="incorrect"/>
 
-        <s:textfield type="date" name="userModel.birthdayStr" cssClass="form-control" label="Birhday"/>
-        <s:fielderror fieldName="userModel.birthdayStr" cssClass="incorrect"/>
+        <s:textfield name="userModel.birthdayStr" type="date" cssClass="form-control" label="Birhday"/>
 
         <%--        <c:if test="${isRegister}">
                     <div class="form-group row" style="margin: 0 auto; width: 300px;">
@@ -72,7 +65,7 @@
                 </c:if>--%>
 
         <s:submit class="btn btn-primary" value="Ok"/>
-    </form>
+    </s:form>
         <s:a href='login' class="btn btn-primary ">Cancel</s:a>
 </div>
 </body>

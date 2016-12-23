@@ -5,14 +5,10 @@
 <struts>
     <constant name="struts.devMode" value="true"/>
 
-    <constant name="struts.beanValidation.providerClass" value="org.hibernate.validator.HibernateValidator"/>
-    <constant name="struts.beanValidation.ignoreXMLConfiguration" value="false"/>
-    <constant name="struts.beanValidation.convertMessageToUtf" value="false"/>
-    <constant name="struts.beanValidation.convertMessageFromEncoding" value="ISO-8859-1"/>
-
-    <package name="my-bean-validation" extends="struts-bean-validation">
+    <package name="default" namespace="/" extends="struts-default">
         <action name="register" class="com.nixsolutions.bondarenko.study.action.Register" method="execute">
-            <result name="input">/WEB-INF/pages/register.jsp</result>
+                        <result name="input">/WEB-INF/pages/register.jsp</result>
+            <result name="success">/WEB-INF/pages/login.jsp</result>
         </action>
 
         <action name="home" class="com.nixsolutions.bondarenko.study.action.Home">
