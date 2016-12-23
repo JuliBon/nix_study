@@ -4,12 +4,10 @@ import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.model.UserModel;
-import org.springframework.validation.Errors;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
 
 public class UserUpdateValidator extends UserValidator {
     private UserDao userDao;

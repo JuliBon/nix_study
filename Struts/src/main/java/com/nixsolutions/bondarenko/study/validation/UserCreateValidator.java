@@ -3,15 +3,11 @@ package com.nixsolutions.bondarenko.study.validation;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.model.UserModel;
-import org.springframework.validation.Errors;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Yulya Bondarenko
- */
 public class UserCreateValidator extends UserValidator {
     private UserDao userDao;
 
