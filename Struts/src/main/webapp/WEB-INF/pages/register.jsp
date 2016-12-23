@@ -52,7 +52,7 @@
 
         <s:textfield name="userModel.user.lastName" cssClass="form-control" label="Last name"/>
 
-        <s:textfield name="userModel.birthdayStr" type="date" cssClass="form-control" label="Birhday"/>
+        <s:textfield name="userModel.birthdayStr" type="date" cssClass="form-control" label="Birthday"/>
 
         <%--        <c:if test="${isRegister}">
                     <div class="form-group row" style="margin: 0 auto; width: 300px;">

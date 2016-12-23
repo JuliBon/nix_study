@@ -4,14 +4,10 @@ import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.validator.annotations.VisitorFieldValidator;
-import org.apache.struts.beanvalidation.constraints.FieldMatch;
 
 import java.util.List;
 import java.util.Map;
 
-@FieldMatch(first = "userModel.user.password",
-        second = "userModel.passwordConfirm",
-        message = "passwords are not matching" )
 public class Register extends ActionSupport implements ModelDriven<UserModel> {
 
 
