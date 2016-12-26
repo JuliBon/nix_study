@@ -36,9 +36,9 @@
             <div class="message">${message}</div>
         </c:if>--%>
 
-    <h3>Registration</h3>
+    <div class="center-label"><h3>Registration</h3></div>
 
-    <s:form action="registerUser" method="POST" id="userForm" validate="true"
+        <s:form action="registerUser" method="POST" id="userForm" validate="true"
             theme="bootstrap"
             cssClass="form-vertical, form-user"
             labelCssClass="col-sm-2"

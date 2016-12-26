@@ -13,13 +13,13 @@
 <body>
 <div class="container">
     <s:form action="login" class="form-login">
-        <div class="centerLabel"><h2 class="form-signin-heading">Please sing in</h2></div>
+        <div class="center-label"><h2 class="form-signin-heading">Please sing in</h2></div>
         <s:textfield key="login" cssClass="form-control" placeholder="Login"/>
         <s:password key="password" cssClass="form-control" placeholder="Password"/>
         <s:submit cssClass="btn btn-lg btn-primary btn-block" value="Sign in"/>
     </s:form>
 
-    <div class="centerLabel"><s:a href="/register"><h5>Register</h5></s:a></div>
+    <div class="center-label"><s:a href="/register"><h5>Register</h5></s:a></div>
 </div>
 </body>
 </html>

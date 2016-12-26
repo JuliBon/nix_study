@@ -7,7 +7,7 @@
     <link href="<s:url value="/resources/css/shared.css"/>" rel="stylesheet"/>
 </head>
 <body>
-<div class="container helloContainer">
+<div class="container hello-container">
         <h2>Hello,  <s:property value="login"/></h2>
         <div>Click <a href="/logout">here</a> to logout</div>
 </div>
