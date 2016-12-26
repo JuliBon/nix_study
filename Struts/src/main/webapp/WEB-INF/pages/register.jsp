@@ -49,17 +49,11 @@
         <s:textfield name="userModel.user.lastName" cssClass="form-control" label="Last name"/>
         <s:textfield name="userModel.birthdayStr" type="date" cssClass="form-control" label="Birthday"/>
 
-        <%--        <c:if test="${isRegister}">
-                    <div class="form-group row" style="margin: 0 auto; width: 300px;">
-                        <div class="g-recaptcha"
-                             data-sitekey="6LcNyQ4UAAAAADeZmMXsnP_5JxZkN4MJvyQEjuCO">
-                        </div>
-                        <p class="incorrect">${captchaError}</p>
-                    </div>
-                    <div class="g-recaptcha" data-sitekey="6LcNyQ4UAAAAADeZmMXsnP_5JxZkN4MJvyQEjuCO"></div>
-                </c:if>--%>
-
-        <%--<s:submit class="btn btn-primary" value="Ok"/>--%>
+        <div class="captcha">
+            <div class="g-recaptcha" data-sitekey="6LcNyQ4UAAAAADeZmMXsnP_5JxZkN4MJvyQEjuCO"></div>
+            <s:actionerror/>
+        </div>
+        <div class="g-recaptcha" data-sitekey="6LcNyQ4UAAAAADeZmMXsnP_5JxZkN4MJvyQEjuCO"></div>
 
         <div class="btns-center">
             <button type="submit" class="btn btn-primary">Ok</button>
