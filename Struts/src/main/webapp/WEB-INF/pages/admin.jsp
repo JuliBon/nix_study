@@ -14,7 +14,7 @@
 <body>
 <div class="container">
     <%--<div class="adminLogout">Admin ${userName} <a href="/logout">(logout)</a></div>--%>
-    <s:a href="/create"><h3>Add new user</h3></s:a>
+    <s:a href="/admin/create"><h3>Add new user</h3></s:a>
     <ex:UserTable userList="${userList}"/>
 </div>
 </body>

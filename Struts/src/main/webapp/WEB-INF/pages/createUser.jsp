@@ -6,7 +6,7 @@
 <head>
     <sb:head includeScripts="true" includeScriptsValidation="true"/>
 
-    <title>Register</title>
+    <title>Create user</title>
     <meta charset="utf-8">
 
     <link href="<s:url value="/resources/lib/bootstrap/css/bootstrap.min.css"/>" rel="stylesheet"/>
@@ -20,7 +20,7 @@
 <div class="container">
     <div class="center-label"><h3>Create new user</h3></div>
 
-    <s:form action="createUserPost" method="POST" id="userForm" validate="true"
+    <s:form action="/admin/createUserPost" method="POST" id="userForm" validate="true"
             theme="bootstrap"
             cssClass="form-vertical, form-user"
             labelCssClass="col-sm-2"
@@ -37,7 +37,7 @@
 
         <div class="btns-center">
             <button type="submit" class="btn btn-primary">Ok</button>
-            <button type="button" onclick="location.href = 'login';" class="btn btn-primary ">Cancel</button>
+            <button type="button" onclick="location.href = '/login';" class="btn btn-primary ">Cancel</button>
         </div>
     </s:form>
 </div>
