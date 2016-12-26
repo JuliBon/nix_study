@@ -12,11 +12,18 @@
 
 <body>
 <div class="container">
-    <s:form action="login" class="form-login">
+    <s:form action="/login" method="POST" class="form-login">
         <div class="center-label"><h2 class="form-signin-heading">Please sing in</h2></div>
-        <s:textfield key="login" cssClass="form-control" placeholder="Login"/>
-        <s:password key="password" cssClass="form-control" placeholder="Password"/>
+
+        <s:if test="%{#parameters.error != null}">
+            <div class="incorrect">Invalid user</div>
+        </s:if>
+
+        <s:textfield name="login" cssClass="form-control" placeholder="Login"/>
+        <s:password name="password" cssClass="form-control" placeholder="Password"/>
         <s:submit cssClass="btn btn-lg btn-primary btn-block" value="Sign in"/>
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </s:form>
 
     <div class="center-label"><s:a href="/register"><h5>Register</h5></s:a></div>
