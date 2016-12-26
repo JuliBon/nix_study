@@ -41,13 +41,22 @@
 
         <action name="createUserPost" class="com.nixsolutions.bondarenko.study.action.AdminCreateUser" method="execute">
             <result name="input">/WEB-INF/pages/createUser.jsp</result>
-            <result name="success" type="redirectAction">admin</result>
+            <result name="success" type="redirectAction">home</result>
+        </action>
+
+        <action name="edit/*" class="com.nixsolutions.bondarenko.study.action.AdminEditUser" method="input">
+            <param name="idUser">{1}</param>
+            <result name="input">/WEB-INF/pages/editUser.jsp</result>
+        </action>
+
+        <action name="editUserPost" class="com.nixsolutions.bondarenko.study.action.AdminEditUser" method="execute">
+            <result name="input">/WEB-INF/pages/editUser.jsp</result>
+            <result name="success" type="redirectAction">home</result>
         </action>
 
         <action name="delete/*" class="com.nixsolutions.bondarenko.study.action.AdminDeleteUser" method="execute">
             <param name="idUser">{1}</param>
             <result name="success" type="redirectAction">home</result>
         </action>
-
     </package>
 </struts>

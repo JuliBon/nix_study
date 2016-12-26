@@ -6,7 +6,7 @@
 <head>
     <sb:head includeScripts="true" includeScriptsValidation="true"/>
 
-    <title>Create user</title>
+    <title>Edit user</title>
     <meta charset="utf-8">
 
     <link href="<s:url value="/resources/lib/bootstrap/css/bootstrap.min.css"/>" rel="stylesheet"/>
@@ -16,15 +16,15 @@
 <body>
 
 <div class="container">
-    <div class="center-label"><h3>Create new user</h3></div>
+    <div class="center-label"><h3>Edit user</h3></div>
 
-    <s:form action="/admin/createUserPost" method="POST" id="userForm" validate="true"
-            theme="bootstrap"
-            cssClass="form-vertical, form-user"
+    <s:form action="/admin/editUserPost" method="POST" id="userForm" validate="true"
+            theme="bootstrap" cssClass="form-vertical, form-user"
             labelCssClass="col-sm-2"
             elementCssClass="col-sm-7">
 
-        <s:textfield name="userModel.user.login" cssClass="form-control" label="Login"/>
+        <s:hidden name="userModel.user.id"/>
+        <s:textfield name="userModel.user.login" cssClass="form-control" label="Login" readonly="true"/>
         <s:password name="userModel.user.password" cssClass="form-control" label="Password"/>
         <s:password name="userModel.passwordConfirm" cssClass="form-control" label="Confirm password"/>
         <s:textfield name="userModel.user.email" cssClass="form-control" label="Email"/>
