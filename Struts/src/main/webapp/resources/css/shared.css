@@ -12,7 +12,8 @@
 }
 
 .error-container {
-    margin-top: 50px;
+    width: 300px;
+    margin: 50px auto;
     text-align: center;
 }
 
