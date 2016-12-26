@@ -2,6 +2,7 @@ package com.nixsolutions.bondarenko.study.validation;
 
 import com.nixsolutions.bondarenko.study.model.UserModel;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,16 @@ public abstract class UserValidator {
         if (!fieldErrors.containsKey("userModel.user.email")) {
             validateEmail((UserModel) object, fieldErrors);
         }
+        if(!fieldErrors.containsKey("userModel.passwordConfirm")){
+            validatePassword((UserModel) object, fieldErrors);
+        }
     }
 
     protected abstract void validateEmail(UserModel userModel, Map<String, List<String>> fieldErrors);
+
+    private void validatePassword(UserModel userModel, Map<String, List<String>> fieldErrors) {
+        if (!userModel.getUser().getPassword().equals(userModel.getPasswordConfirm())) {
+            fieldErrors.put("userModel.passwordConfirm", Arrays.asList("passwords do not match"));
+        }
+    }
 }
