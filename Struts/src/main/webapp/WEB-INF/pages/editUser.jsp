@@ -35,7 +35,7 @@
 
         <div class="btns-center">
             <button type="submit" class="btn btn-primary">Ok</button>
-            <button type="button" onclick="location.href = '/login';" class="btn btn-primary ">Cancel</button>
+            <button type="button" onclick="location.href = '/admin/home';" class="btn btn-primary ">Cancel</button>
         </div>
     </s:form>
 </div>
