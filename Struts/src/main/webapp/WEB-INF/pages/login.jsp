@@ -15,9 +15,7 @@
     <s:form action="/login" method="POST" class="form-login">
         <div class="center-label"><h2 class="form-signin-heading">Please sing in</h2></div>
 
-        <s:if test="%{#parameters.error != null}">
-            <div class="incorrect">Invalid user</div>
-        </s:if>
+        <div class="incorrect">${error}</div>
 
         <s:textfield name="login" cssClass="form-control" placeholder="Login"/>
         <s:password name="password" cssClass="form-control" placeholder="Password"/>

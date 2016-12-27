@@ -30,9 +30,10 @@
 }
 
 .incorrect {
-    font-size: 9pt;
+    font-size: 11pt;
     color: red;
     text-align: center;
+    padding: 5px;
 }
 
 .form-control{

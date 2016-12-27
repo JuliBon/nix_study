@@ -8,8 +8,8 @@
 </head>
 <body>
 <div class="container hello-container">
-        <h2>Hello,  <s:property value="login"/></h2>
-        <div>Click <a href="/logout">here</a> to logout</div>
+    <h2>Hello, <s:property value="userName"/></h2>
+    <div>Click <s:a href="/logout">here</s:a> to logout</div>
 </div>
 </body>
 </html>

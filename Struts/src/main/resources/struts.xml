@@ -19,14 +19,8 @@
     </package>
 
     <package name="guest-user" namespace="/" extends="default">
-<!--        <action name="login" class="com.nixsolutions.bondarenko.study.action.Login">
+        <action name="login" class="com.nixsolutions.bondarenko.study.action.Login" method="input">
             <result name="input">/WEB-INF/pages/login.jsp</result>
-            &lt;!&ndash;<result name="success" type="redirectAction">home</result>&ndash;&gt;
-            <result name="success" type="redirectAction">admin/home</result>
-        </action>-->
-
-        <action name="login">
-            <result>/WEB-INF/pages/login.jsp</result>
         </action>
 
         <action name="home" class="com.nixsolutions.bondarenko.study.action.Home">
