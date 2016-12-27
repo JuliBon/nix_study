@@ -19,7 +19,6 @@ public class AdminEditUser extends ActionSupport implements ModelDriven<UserMode
     private UserDao userDao;
     private RoleDao roleDao;
     private List<String> roleNameList = RoleUtils.getRoleNames();
-    private String defaultRoleName = UserLibraryRole.DEFAULT_ROLE.name();
     private Long idUser;
     private UserModel userModel;
 
@@ -33,10 +32,6 @@ public class AdminEditUser extends ActionSupport implements ModelDriven<UserMode
 
     public List<String> getRoleNameList() {
         return roleNameList;
-    }
-
-    public String getDefaultRoleName() {
-        return defaultRoleName;
     }
 
     public UserModel getUserModel() {

@@ -31,7 +31,7 @@
         <s:textfield name="userModel.user.firstName" cssClass="form-control" label="First name"/>
         <s:textfield name="userModel.user.lastName" cssClass="form-control" label="Last name"/>
         <s:textfield name="userModel.birthdayStr" type="date" cssClass="form-control" label="Birthday"/>
-        <s:select name="userModel.roleName" list="roleNameList" value="defaultRoleName" cssClass="form-control"/>
+        <s:select name="userModel.roleName" list="roleNameList" value="userModel.roleName" cssClass="form-control"/>
 
         <div class="btns-center">
             <button type="submit" class="btn btn-primary">Ok</button>
