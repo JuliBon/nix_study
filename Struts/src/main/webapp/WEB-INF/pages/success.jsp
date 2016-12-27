@@ -1,16 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: jubee
-  Date: 23.12.16
-  Time: 14:47
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Registration</title>
+    <link href="<s:url value="/resources/css/shared.css"/>" rel="stylesheet"/>
 </head>
 <body>
-    Registration successful!
+    <div class="container hello-container">
+        <h2>Registration successful!</h2>
+        <br/>
+        <s:a href="/login">Sign in</s:a>
+    </div>
 </body>
 </html>
