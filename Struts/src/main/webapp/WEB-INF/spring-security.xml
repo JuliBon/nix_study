@@ -19,13 +19,13 @@
     <http auto-config="true">
         <intercept-url pattern="/" access="permitAll"/>
         <intercept-url pattern="/admin*/**" access="hasRole('ADMIN')"/>
+        <intercept-url pattern="/home" access="hasRole('USER')"/>
         <intercept-url pattern="/register" access="isAnonymous()"/>
         <intercept-url pattern="/login" access="isAnonymous()"/>
         <form-login login-page="/login"
                     username-parameter="login"
                     password-parameter="password"
                     authentication-success-handler-ref="customSuccessHandler"/>
-        <logout logout-success-url="/login?logout" />
         <csrf/>
     </http>
 
