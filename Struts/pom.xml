@@ -125,11 +125,6 @@
             <artifactId>spring-security-config</artifactId>
             <version>${spring.securiry.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring.securiry.version}</version>
-        </dependency>
 
         <!--Hibernate-->
         <dependency>
