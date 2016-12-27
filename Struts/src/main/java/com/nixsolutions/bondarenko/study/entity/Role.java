@@ -1,13 +1,8 @@
 package com.nixsolutions.bondarenko.study.entity;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 
-/**
- * @author Yuliya Bondarenko
- */
 
 @Entity
 @Table(name = "ROLE")

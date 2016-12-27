@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Register extends ActionSupport implements ModelDriven<UserModel> {
-
     private UserDao userDao;
     private RoleDao roleDao;
     private UserModel userModel = new UserModel();
