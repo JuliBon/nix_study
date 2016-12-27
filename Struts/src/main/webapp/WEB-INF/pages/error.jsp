@@ -10,8 +10,7 @@
 <body>
 
 <div class="container error-container">
-    <%--<h2>Error ${status}</h2>--%>
-    <p>Some error occurred while processing request</p>
+    <p>Error occurred while processing request</p>
     <br/>
     <a href="javascript:history.back()">Go back</a>
 </div>
