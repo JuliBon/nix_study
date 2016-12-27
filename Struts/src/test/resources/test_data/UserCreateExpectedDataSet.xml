@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <ROLE id="1" name="ADMIN"/>
+    <ROLE id="2" name="USER"/>
+
+    <USER id="1"  login="yulya" password="12345" email="yulya@mail.ru" firstName="yuliya" lastName="bondarenko" birthday="1993-01-10" id_role="1"/>
+    <USER id="2"  login="ivan" password="98765" email="ivan@mail.ru" firstName="ivan" lastName="grozniy" birthday="1530-09-03" id_role="2"/>
+    <USER id="5" login="nata" password="Agent007" email="nata@mail.ru" firstName="nataliya" lastName="bondarenko" birthday="1991-09-19" id_role="2"/>
+</dataset>
