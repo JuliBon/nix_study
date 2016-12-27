@@ -32,7 +32,7 @@
 <body>
 
 <div class="container">
-    <div class="center-label"><h3>Registration</h3></div>
+    <div class="center-label"><h2>Registration</h2></div>
 
     <s:form action="registerUser" method="POST" id="userForm" validate="true"
             theme="bootstrap"
@@ -59,6 +59,8 @@
             <button type="submit" class="btn btn-primary">Ok</button>
             <button type="button" onclick="location.href = 'login';" class="btn btn-primary ">Cancel</button>
         </div>
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </s:form>
 </div>
 </body>

@@ -16,7 +16,7 @@
 <body>
 
 <div class="container">
-    <div class="center-label"><h3>Edit user</h3></div>
+    <div class="center-label"><h2>Edit user</h2></div>
 
     <s:form action="/admin/editUserPost" method="POST" id="userForm" validate="true"
             theme="bootstrap" cssClass="form-vertical, form-user"
@@ -37,6 +37,8 @@
             <button type="submit" class="btn btn-primary">Ok</button>
             <button type="button" onclick="location.href = '/admin/home';" class="btn btn-primary ">Cancel</button>
         </div>
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </s:form>
 </div>
 </body>

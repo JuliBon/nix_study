@@ -10,10 +10,10 @@ public class Logout extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(ServletActionContext.getRequest(), ServletActionContext.getResponse(), auth);
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(ServletActionContext.getRequest(), ServletActionContext.getResponse(), authentication);
         }
         return SUCCESS;
     }

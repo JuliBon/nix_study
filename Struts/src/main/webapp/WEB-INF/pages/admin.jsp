@@ -1,8 +1,5 @@
-<%@ page import="com.nixsolutions.bondarenko.study.entity.User" %>
-<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-
 <%@ taglib prefix="ex" uri="UserLibrary" %>
 
 <html>
@@ -13,7 +10,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="adminLogout">Admin ${userName} <s:a href="/logout">(logout)</s:a></div>
+    <div class="admin-logout">Admin ${userName} <s:a href="/logout">(logout)</s:a></div>
     <s:a href="/admin/create"><h3>Add new user</h3></s:a>
     <ex:UserTable userList="${userList}"/>
 </div>

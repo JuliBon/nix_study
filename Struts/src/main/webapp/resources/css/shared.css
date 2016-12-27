@@ -17,16 +17,10 @@
     text-align: center;
 }
 
-.message {
-    color: blue;
+.center-label{
+    width: 250px;
+    margin: 20px auto 15px auto;
     text-align: center;
-    margin: 10px 0;
-}
-
-.admin-logout {
-    padding: 10px 0;
-    width: 100%;
-    TEXT-ALIGN: RIGHT;
 }
 
 .incorrect {
@@ -36,13 +30,8 @@
     padding: 5px;
 }
 
-.form-control{
-    margin-bottom: 0 !important;
+.admin-logout {
+    padding: 15px 0 10px 0;
+    width: 100%;
+    TEXT-ALIGN: RIGHT;
 }
-
-.center-label{
-    width: 250px;
-    margin: 20px auto;
-    text-align: center;
-}
-

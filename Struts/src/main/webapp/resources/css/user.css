@@ -4,10 +4,6 @@
     margin: 0 auto;
 }
 
-.form-control {
-    margin-bottom: 10px;
-}
-
 .btn {
     min-width: 100px;
     margin: 0 20px;
@@ -16,10 +12,6 @@
 .btns-center {
     width: 300px;
     margin: 0 auto;
-}
-
-label {
-    color: black !important;
 }
 
 .captcha {

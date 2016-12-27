@@ -27,7 +27,7 @@
         </action>
 
         <action name="home" class="com.nixsolutions.bondarenko.study.action.Home">
-            <result name="success">/WEB-INF/pages/home.jsp</result>
+            <result>/WEB-INF/pages/home.jsp</result>
         </action>
 
         <action name="register" class="com.nixsolutions.bondarenko.study.action.Register" method="input">
