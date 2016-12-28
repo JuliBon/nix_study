@@ -4,7 +4,6 @@ import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.RoleUtils;
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
