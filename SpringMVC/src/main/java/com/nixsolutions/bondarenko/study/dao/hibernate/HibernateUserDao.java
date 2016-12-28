@@ -5,8 +5,6 @@ import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

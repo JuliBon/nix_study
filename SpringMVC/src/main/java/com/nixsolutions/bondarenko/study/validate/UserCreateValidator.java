@@ -3,7 +3,6 @@ package com.nixsolutions.bondarenko.study.validate;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.model.UserModel;
-import com.nixsolutions.bondarenko.study.entity.User;
 import org.springframework.validation.Errors;
 
 /**

@@ -2,6 +2,7 @@ package com.nixsolutions.bondarenko.study.controller;
 
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
+import com.nixsolutions.bondarenko.study.entity.RoleUtils;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
@@ -25,13 +26,7 @@ import java.util.List;
 public class AdminController {
     public static final String ACTION_CREATE_USER = "create_user";
     public static final String ACTION_EDIT_USER = "edit_user";
-    private List<String> roleNameList;
-
-    {
-        roleNameList = new ArrayList<>();
-        roleNameList.add(UserLibraryRole.USER.getName());
-        roleNameList.add(UserLibraryRole.ADMIN.getName());
-    }
+    private List<String> roleNameList = RoleUtils.getRoleNames();
 
     @Autowired
     private UserDao userDao;
@@ -51,8 +46,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.GET)
     public ModelAndView delete(@PathVariable("id") String id) throws Exception {
-        Long id_value = new Long(id);
-        userDao.remove(userDao.findById(id_value));
+        userDao.remove(userDao.findById(Long.valueOf(id)));
         return new ModelAndView("redirect:/admin");
     }
 
@@ -73,8 +67,7 @@ public class AdminController {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.addAttribute("action", ACTION_EDIT_USER);
 
-        Long id_value = new Long(id);
-        User user = userDao.findById(id_value);
+        User user = userDao.findById(Long.valueOf(id));
         UserModel userModel = new UserModel(user);
         userModel.getUser().setPassword(null);
 

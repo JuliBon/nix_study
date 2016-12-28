@@ -1,17 +1,10 @@
 package com.nixsolutions.bondarenko.study.entity;
 
-import org.hibernate.annotations.*;
-
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.List;
 
 /**
  * @author Yuliya Bondarenko
  */
-
 @Entity
 @Table(name = "ROLE")
 public class Role {

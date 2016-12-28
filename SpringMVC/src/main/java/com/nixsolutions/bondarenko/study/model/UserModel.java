@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class UserModel {
     @Valid
@@ -14,9 +15,7 @@ public class UserModel {
     @NotEmpty
     private String passwordConfirm;
 
-
-    @NotNull
-    @NotEmpty
+    @Pattern(regexp = "^\\d{4}-(0\\d|10|11|12)-([012]\\d|30|31)$", message = "bad date format")
     private String birthdayStr;
 
     private String roleName;

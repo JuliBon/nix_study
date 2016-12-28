@@ -58,7 +58,7 @@ public class RegisterController {
         }
         if (valid) {
             User user = ModelConvert.convertToUser(userModel);
-            user.setRole(roleDao.findByName(UserLibraryRole.USER.getName()));
+            user.setRole(roleDao.findByName(UserLibraryRole.USER.name()));
             userDao.create(user);
 
             modelMap.put("registered", true);

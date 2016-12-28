@@ -35,7 +35,7 @@ public class HibernateUserDaoTest {
     private UserDao userDao;
 
     private User testUser = new User( 5L, "nata", "Agent007", "nata@mail.ru",
-            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), new Role(UserLibraryRole.USER.getId(), null));
+            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), new Role(2L, null));
 
     @Test
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")

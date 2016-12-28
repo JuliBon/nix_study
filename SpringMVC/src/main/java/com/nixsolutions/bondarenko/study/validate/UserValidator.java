@@ -22,9 +22,6 @@ public abstract class UserValidator implements Validator {
         if (!errors.hasFieldErrors("passwordConfirm")) {
             validatePassword(userModel, errors);
         }
-        if (!errors.hasFieldErrors("birthdayStr")) {
-            validateBirthday(userModel, errors);
-        }
         if (!errors.hasFieldErrors("user.email")) {
             validateEmail((UserModel) object, errors);
         }
@@ -35,13 +32,6 @@ public abstract class UserValidator implements Validator {
     private void validatePassword(UserModel userModel, Errors errors) {
         if (!userModel.getUser().getPassword().equals(userModel.getPasswordConfirm())) {
             errors.rejectValue("passwordConfirm", null, "passwords do not match");
-        }
-    }
-
-    private void validateBirthday(UserModel userModel, Errors errors) {
-        if (!userModel.getBirthdayStr().matches("^\\d{4}-(0\\d|10|11|12)-([012]\\d|30|31)$")) {
-            errors.rejectValue("birthdayStr", null, "Birthday does not matches request format: "
-                    + "bad date format");
         }
     }
 }

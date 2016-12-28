@@ -42,8 +42,8 @@ public class AdminControllerTest {
 
     private MockMvc mockMvc;
 
-    private Role roleAdmin = new Role(UserLibraryRole.ADMIN.getId(), UserLibraryRole.ADMIN.getName());
-    private Role roleUser = new Role(UserLibraryRole.USER.getId(), UserLibraryRole.USER.getName());
+    private Role roleAdmin = new Role(1L, UserLibraryRole.ADMIN.name());
+    private Role roleUser = new Role(2L, UserLibraryRole.USER.name());
 
     private User user1 = new User(1L,
             "admin",

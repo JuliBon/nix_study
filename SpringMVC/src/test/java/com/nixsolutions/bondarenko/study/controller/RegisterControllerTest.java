@@ -54,7 +54,7 @@ public class RegisterControllerTest {
             "ivan",
             "grozniy",
             new Date(1530, 9, 3),
-            new Role(UserLibraryRole.USER.getId(), UserLibraryRole.USER.getName()));
+            new Role(2L, UserLibraryRole.USER.name()));
 
     @Before
     public void setup() {
@@ -84,7 +84,7 @@ public class RegisterControllerTest {
                 "bad_email",
                 "",
                 "",
-                null,
+                new Date(1999, 9, 9),
                 null);
 
         UserModel userModel = new UserModel(user);
@@ -103,7 +103,6 @@ public class RegisterControllerTest {
                 .andExpect(model().attributeHasFieldErrors("userModel", "user.email"))
                 .andExpect(model().attributeHasFieldErrors("userModel", "user.firstName"))
                 .andExpect(model().attributeHasFieldErrors("userModel", "user.lastName"))
-                .andExpect(model().attributeHasFieldErrors("userModel", "birthdayStr"))
                 .andExpect(model().attributeExists("userModel"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user_form"))
