@@ -9,7 +9,7 @@ import java.util.List;
  * @author Yuliya Bondarenko
  */
 public interface UserDao {
-    void create(User user);
+    Long create(User user);
 
     void update(User user);
 

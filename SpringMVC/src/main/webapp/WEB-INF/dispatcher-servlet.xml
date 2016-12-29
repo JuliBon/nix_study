@@ -8,9 +8,12 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.nixsolutions.bondarenko.study.controller,
+    <import resource="database-config.xml"/>
+    <context:component-scan base-package="
+    com.nixsolutions.bondarenko.study.dao.hibernate,
+    com.nixsolutions.bondarenko.study.rest.*,
     com.nixsolutions.bondarenko.study.security,
-    com.nixsolutions.bondarenko.study.dao.hibernate"/>
+    com.nixsolutions.bondarenko.study.controller"/>
 
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:annotation-driven/>
@@ -25,4 +28,7 @@
     </bean>
 
     <bean id="verifyUtils" class="com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils"/>
+
+    <bean id="userService" class="com.nixsolutions.bondarenko.study.rest.service.UserServiceImpl"/>
+    <bean id="usersResource" class="com.nixsolutions.bondarenko.study.rest.resource.UsersResource"/>
 </beans>
