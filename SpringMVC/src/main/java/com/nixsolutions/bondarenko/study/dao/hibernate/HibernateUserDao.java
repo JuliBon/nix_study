@@ -19,8 +19,7 @@ public class HibernateUserDao implements UserDao {
     @Override
     public Long create(User user) {
         try {
-            User createdUser = (User) sessionFactory.getCurrentSession().save(user);
-            return createdUser.getId();
+            return (Long) sessionFactory.getCurrentSession().save(user);
         } catch (Exception e) {
             throw new RuntimeException("Error while creating user", e);
         }
