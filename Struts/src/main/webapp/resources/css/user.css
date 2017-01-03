@@ -1,0 +1,20 @@
+.form-user {
+    width: 500px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.btn {
+    min-width: 100px;
+    margin: 0 20px;
+}
+
+.btns-center {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.captcha {
+    margin: 10px auto;
+    width: 300px;
+}

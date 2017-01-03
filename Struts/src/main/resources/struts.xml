@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <constant name="struts.devMode" value="false"/>
+
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.mapper.alwaysSelectFullNamespace" value="false"/>
+
+    <package name="default" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor-stack name="appDefaultStack">
+                <interceptor-ref name="defaultStack">
+                    <param name="exception.logEnabled">true</param>
+                    <param name="exception.logLevel">ERROR</param>
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="appDefaultStack" />
+
+        <global-results>
+            <result name="error">/WEB-INF/pages/error.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+    </package>
+
+    <package name="guest-user" namespace="/" extends="default">
+        <action name="login" class="com.nixsolutions.bondarenko.study.action.Login" method="input">
+            <result name="input">/WEB-INF/pages/login.jsp</result>
+        </action>
+        <action name="logout" class="com.nixsolutions.bondarenko.study.action.Logout" method="execute">
+            <result name="success" type="redirectAction">login</result>
+        </action>
+
+        <action name="home" class="com.nixsolutions.bondarenko.study.action.Home">
+            <result>/WEB-INF/pages/home.jsp</result>
+        </action>
+
+        <action name="register" class="com.nixsolutions.bondarenko.study.action.Register" method="input">
+            <result name="input">/WEB-INF/pages/register.jsp</result>
+        </action>
+
+        <action name="registerUser" class="com.nixsolutions.bondarenko.study.action.Register" method="execute">
+            <result name="input">/WEB-INF/pages/register.jsp</result>
+            <result name="success">/WEB-INF/pages/success.jsp</result>
+        </action>
+    </package>
+
+    <package name="admin" namespace="/admin" extends="default">
+        <action name="home" class="com.nixsolutions.bondarenko.study.action.Admin" method="execute">
+            <result name="success">/WEB-INF/pages/admin.jsp</result>
+        </action>
+
+        <action name="create" class="com.nixsolutions.bondarenko.study.action.AdminCreateUser" method="input">
+            <result name="input">/WEB-INF/pages/createUser.jsp</result>
+        </action>
+
+        <action name="createUserPost" class="com.nixsolutions.bondarenko.study.action.AdminCreateUser" method="execute">
+            <result name="input">/WEB-INF/pages/createUser.jsp</result>
+            <result name="success" type="redirectAction">home</result>
+        </action>
+
+        <action name="edit/*" class="com.nixsolutions.bondarenko.study.action.AdminEditUser" method="input">
+            <param name="idUser">{1}</param>
+            <result name="input">/WEB-INF/pages/editUser.jsp</result>
+        </action>
+
+        <action name="editUserPost" class="com.nixsolutions.bondarenko.study.action.AdminEditUser" method="execute">
+            <result name="input">/WEB-INF/pages/editUser.jsp</result>
+            <result name="success" type="redirectAction">home</result>
+        </action>
+
+        <action name="delete/*" class="com.nixsolutions.bondarenko.study.action.AdminDeleteUser" method="execute">
+            <param name="idUser">{1}</param>
+            <result name="success" type="redirectAction">home</result>
+        </action>
+    </package>
+</struts>

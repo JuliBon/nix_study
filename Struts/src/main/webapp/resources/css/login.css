@@ -1,0 +1,13 @@
+.form-login{
+    width: 250px;
+    padding: 15px 0;
+    margin: 0 auto;
+}
+
+.form-control {
+    margin-bottom: 10px !important;
+}
+
+.form-login label{
+    display: none;
+}

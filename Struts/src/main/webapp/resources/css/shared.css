@@ -1,0 +1,38 @@
+.container {
+    width: 750px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.hello-container {
+    width: 300px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.error-container {
+    width: 300px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.center-label{
+    width: 250px;
+    margin: 20px auto 15px auto;
+    text-align: center;
+}
+
+.incorrect {
+    font-size: 11pt;
+    color: red;
+    text-align: center;
+    padding: 5px;
+}
+
+.admin-logout {
+    padding: 15px 0 10px 0;
+    width: 100%;
+    TEXT-ALIGN: RIGHT;
+}
