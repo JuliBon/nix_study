@@ -12,7 +12,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.context.ContextConfiguration;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
@@ -23,7 +22,7 @@ import java.sql.Date;
 
 
 public class UserResourceTest {
-    private static final URI BASE_URI = URI.create("http://localhost:8080/rest/users");
+    private static final URI BASE_URI = URI.create("http://localhost:8081/rest/users");
     private HttpServer server;
     private WebTarget target;
 
@@ -32,9 +31,9 @@ public class UserResourceTest {
 
     @Before
     public void setUp() throws IOException {
-/*        ResourceConfig resourceConfig = new ResourceConfig(UsersResource.class );
+        ResourceConfig resourceConfig = new ResourceConfig(UsersResource.class);
         server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, resourceConfig);
-        server.start();*/
+        server.start();
 
         ClientConfig clientConfig = new ClientConfig();
         clientConfig.register(JacksonFeature.class);
@@ -42,15 +41,15 @@ public class UserResourceTest {
         target = client.target(BASE_URI);
     }
 
-/*    @After
+    @After
     public void tearDown() throws Exception {
         server.stop();
-    }*/
+    }
 
 
     @Test
     public void testGetUserByLogin() {
-        Invocation.Builder request = target.path("/yulya").request(MediaType.APPLICATION_JSON);
+        Invocation.Builder request = target.path("/nata").request(MediaType.APPLICATION_JSON);
         Response response = request.get();
         Assert.assertTrue(response.getStatus() == 200);
     }
@@ -71,7 +70,7 @@ public class UserResourceTest {
 
     @Test
     public void testUpdateUser() {
-        testUser.setId(240L);
+        testUser.setId(260L);
         testUser.setRole(new Role(1L, "ADMIN"));
         Response response = target.request(MediaType.APPLICATION_JSON).put(Entity.entity(testUser, MediaType.APPLICATION_JSON), Response.class);
         System.out.println(response.getStatus());
@@ -80,7 +79,7 @@ public class UserResourceTest {
 
     @Test
     public void testDelete() {
-        Response response = target.path("/197").request().delete();
+        Response response = target.path("/260").request().delete();
         Assert.assertTrue(response.getStatus() == 204);
     }
 }
