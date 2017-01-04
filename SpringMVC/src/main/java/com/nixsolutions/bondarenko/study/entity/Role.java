@@ -39,4 +39,23 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + id.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
+
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        boolean result = false;
+        if (other instanceof Role) {
+            Role role = (Role) other;
+            result = role.getId().equals(id) && role.getName().equals(name);
+        }
+        return result;
+    }
 }

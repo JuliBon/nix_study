@@ -127,4 +127,41 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + login.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + birthday.hashCode();
+        result = 31 * result + role.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof User) {
+            User user = (User) other;
+            if (!user.getLogin().equals(login)) {
+                return false;
+            } else if (!user.getPassword().equals(password)) {
+                return false;
+            } else if (!user.getEmail().equals(email)) {
+                return false;
+            } else if (!user.getFirstName().equals(firstName)) {
+                return false;
+            } else if (!user.getLastName().equals(lastName)) {
+                return false;
+            } else if (!user.getBirthday().toLocalDate().equals(birthday.toLocalDate())) {
+                return false;
+            } else if (!user.getRole().equals(role)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

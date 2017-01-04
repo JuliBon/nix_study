@@ -13,8 +13,12 @@ import java.util.List;
 @Transactional
 public class HibernateUserDao implements UserDao {
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Long create(User user) {
