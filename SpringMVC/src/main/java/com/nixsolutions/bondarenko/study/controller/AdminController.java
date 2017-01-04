@@ -67,7 +67,7 @@ public class AdminController {
 
         User user = userDao.findById(Long.valueOf(id));
         UserModel userModel = new UserModel(user);
-        userModel.getUser().setPassword(null);
+        userModel.getUser().setPassword("");
 
         modelMap.addAttribute("userModel", userModel);
         modelMap.addAttribute("roleNameList", roleNameList);

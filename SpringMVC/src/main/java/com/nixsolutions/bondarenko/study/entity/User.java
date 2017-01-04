@@ -136,8 +136,8 @@ public class User {
         result = 31 * result + password.hashCode();
         result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();
-        result = 31 * result + birthday.hashCode();
-        result = 31 * result + role.hashCode();
+        result = 31 * result + ((birthday == null) ? 0 : birthday.hashCode());
+        result = 31 * result + ((role == null) ? 0 : role.hashCode());
         return result;
     }
 

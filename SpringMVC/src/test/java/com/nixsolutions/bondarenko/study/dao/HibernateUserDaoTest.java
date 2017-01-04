@@ -32,7 +32,7 @@ public class HibernateUserDaoTest {
     private UserDao userDao;
 
     private User testUser = new User( 5L, "nata", "Agent007", "nata@mail.ru",
-            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), new Role(2L, null));
+            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), new Role(2L, "USER"));
 
     @Test
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
