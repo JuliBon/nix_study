@@ -7,7 +7,7 @@ import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
-import com.nixsolutions.bondarenko.study.validate.model.UserModelCreateValidator;
+import com.nixsolutions.bondarenko.study.validation.model.UserModelCreateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

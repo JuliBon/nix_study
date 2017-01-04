@@ -1,18 +1,19 @@
-package com.nixsolutions.bondarenko.study.validate.model;
+package com.nixsolutions.bondarenko.study.validation.model;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
-import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.model.UserModel;
+import com.nixsolutions.bondarenko.study.validation.user.UserCreateValidator;
 import org.springframework.validation.Errors;
 
 /**
  * @author Yulya Bondarenko
  */
 public class UserModelCreateValidator extends UserModelValidator {
-    private UserDao userDao;
+    private UserCreateValidator userCreateValidator;
 
     public UserModelCreateValidator(UserDao userDao) {
-        this.userDao = userDao;
+        userCreateValidator = new UserCreateValidator(userDao);
+
     }
 
     @Override
@@ -27,10 +28,9 @@ public class UserModelCreateValidator extends UserModelValidator {
      * Check whether login is not unique
      */
     public void validateLogin(UserModel userModel, Errors errors) {
-        try {
-            userDao.findByLogin(userModel.getUser().getLogin());
+        if (!userCreateValidator.isLoginUnique(userModel.getUser())) {
             errors.rejectValue("user.login", null, ERROR_NOT_UNIQUE_LOGIN);
-        } catch (UserNotFoundException e) { }
+        }
     }
 
     /**
@@ -38,10 +38,8 @@ public class UserModelCreateValidator extends UserModelValidator {
      */
     @Override
     public void validateEmail(UserModel userModel, Errors errors) {
-        try {
-            userDao.findByEmail(userModel.getUser().getEmail());
+        if (!userCreateValidator.isEmailUnique(userModel.getUser())) {
             errors.rejectValue("user.email", null, ERROR_NOT_UNIQUE_EMAIL);
-        } catch (UserNotFoundException e) {
         }
     }
 }

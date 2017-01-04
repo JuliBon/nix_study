@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.validate.model;
+package com.nixsolutions.bondarenko.study.validation.model;
 
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import org.springframework.validation.Errors;

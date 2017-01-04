@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.validate.user;
+package com.nixsolutions.bondarenko.study.validation.user;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
@@ -11,11 +11,16 @@ public class UserUpdateValidator {
         this.userDao = userDao;
     }
 
-    public boolean isEmailValid(User user) {
+    /**
+     * Check if user with this email was found and he is not this user
+     */
+    public boolean isEmailUnique(User user) {
         try {
             User userByEmail = userDao.findByEmail(user.getEmail());
-            if (!userByEmail.getLogin().equals(user.getLogin())) {
-                return false;
+            if (userByEmail != null) {
+                if (!userByEmail.getLogin().equals(user.getLogin())) {
+                    return false;
+                }
             }
         } catch (UserNotFoundException e) {
         }

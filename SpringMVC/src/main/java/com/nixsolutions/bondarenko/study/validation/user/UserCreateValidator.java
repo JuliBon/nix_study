@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.validate.user;
+package com.nixsolutions.bondarenko.study.validation.user;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
