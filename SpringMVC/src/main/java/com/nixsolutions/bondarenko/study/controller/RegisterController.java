@@ -7,7 +7,7 @@ import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
-import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
+import com.nixsolutions.bondarenko.study.validate.model.UserModelCreateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,7 +47,7 @@ public class RegisterController {
                                  HttpServletRequest request) {
         modelMap.put("action", ACTION_REGISTER_USER);
 
-        new UserCreateValidator(userDao).validate(userModel, bindingResult);
+        new UserModelCreateValidator(userDao).validate(userModel, bindingResult);
         boolean valid = !bindingResult.hasErrors();
         if (valid) {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");

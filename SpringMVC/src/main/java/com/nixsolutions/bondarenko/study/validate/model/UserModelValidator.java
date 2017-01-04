@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.validate;
+package com.nixsolutions.bondarenko.study.validate.model;
 
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import org.springframework.validation.Errors;
@@ -7,7 +7,7 @@ import org.springframework.validation.Validator;
 /**
  * @author Yulya Bondarenko
  */
-public abstract class UserValidator implements Validator {
+public abstract class UserModelValidator implements Validator {
     String ERROR_NOT_UNIQUE_LOGIN = "user with this login already exists";
     String ERROR_NOT_UNIQUE_EMAIL = "this email is already attached to another user";
 
@@ -27,7 +27,7 @@ public abstract class UserValidator implements Validator {
         }
     }
 
-    protected abstract void validateEmail(UserModel userModel, Errors errors);
+    public abstract void validateEmail(UserModel userModel, Errors errors);
 
     private void validatePassword(UserModel userModel, Errors errors) {
         if (!userModel.getUser().getPassword().equals(userModel.getPasswordConfirm())) {

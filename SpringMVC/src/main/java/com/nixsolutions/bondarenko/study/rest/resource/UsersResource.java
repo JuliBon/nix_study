@@ -4,6 +4,7 @@ import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.rest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -35,19 +36,23 @@ public class UsersResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response createUser(User user) {
-        userService.createUser(user);
-        return Response.status(Response.Status.CREATED) // 201
-                .entity("A new user has been created").build();
-
+        try {
+            userService.createUser(user);
+            return Response.status(Response.Status.CREATED).entity("A new user has been created").build();
+        } catch (Exception exception) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("User has not been created. " + exception.getMessage()).build();
+        }
     }
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public Response updateUser(User user) {
-        userService.updateUser(user);
-        return Response.status(Response.Status.OK)
-                .entity("User has been updated").build();
-
+        try {
+            userService.updateUser(user);
+            return Response.status(Response.Status.OK).entity("User has been updated").build();
+        } catch (Exception exception) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("User has not been updated. " + exception.getMessage()).build();
+        }
     }
 
     @DELETE

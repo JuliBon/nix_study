@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.validate;
+package com.nixsolutions.bondarenko.study.validate.model;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
@@ -8,10 +8,10 @@ import org.springframework.validation.Errors;
 /**
  * @author Yulya Bondarenko
  */
-public class UserCreateValidator extends UserValidator {
+public class UserModelCreateValidator extends UserModelValidator {
     private UserDao userDao;
 
-    public UserCreateValidator(UserDao userDao) {
+    public UserModelCreateValidator(UserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -26,7 +26,7 @@ public class UserCreateValidator extends UserValidator {
     /***
      * Check whether login is not unique
      */
-    private void validateLogin(UserModel userModel, Errors errors) {
+    public void validateLogin(UserModel userModel, Errors errors) {
         try {
             userDao.findByLogin(userModel.getUser().getLogin());
             errors.rejectValue("user.login", null, ERROR_NOT_UNIQUE_LOGIN);
@@ -37,7 +37,7 @@ public class UserCreateValidator extends UserValidator {
      * Check if there is already a user with this email
      */
     @Override
-    protected void validateEmail(UserModel userModel, Errors errors) {
+    public void validateEmail(UserModel userModel, Errors errors) {
         try {
             userDao.findByEmail(userModel.getUser().getEmail());
             errors.rejectValue("user.email", null, ERROR_NOT_UNIQUE_EMAIL);

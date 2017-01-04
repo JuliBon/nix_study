@@ -1,6 +1,8 @@
 package com.nixsolutions.bondarenko.study.rest.service;
 
 import com.nixsolutions.bondarenko.study.entity.User;
+import com.nixsolutions.bondarenko.study.exception.NotUniqueEmailException;
+import com.nixsolutions.bondarenko.study.exception.NotUniqueLoginException;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    Long createUser(User user);
+    void createUser(User user) throws NotUniqueLoginException, NotUniqueEmailException;
 
-    void updateUser(User user);
+    void updateUser(User user) throws NotUniqueEmailException;
 }

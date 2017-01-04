@@ -99,18 +99,62 @@ public class UserResourceTest {
 
     @Test
     public void testCreateUser() {
-        Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(testUser, MediaType.APPLICATION_JSON), Response.class);
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(testUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
+
+        User userByLogin = userDao.findByLogin(testUser.getLogin());
+        Assert.assertEquals(userByLogin, testUser);
+    }
+
+    @Test
+    public void testCreateUserNotUniqueLogin() {
+        testUser.setLogin(userAdmin.getLogin());
+
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(testUser, MediaType.APPLICATION_JSON), Response.class);
+
+        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
+    }
+
+    @Test
+    public void testCreateUserNotUniqueEmail() {
+        testUser.setEmail(userAdmin.getEmail());
+
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(testUser, MediaType.APPLICATION_JSON), Response.class);
+
+        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test
     public void testUpdateUser() {
         userUser.setRole(roleAdmin);
-        Response response = target.request(MediaType.APPLICATION_JSON).put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
 
         Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+
         User userByLogin = userDao.findByLogin(userUser.getLogin());
         Assert.assertEquals(userByLogin, userUser);
+    }
+
+    @Test
+    public void testUpdateUserBad() {
+        userUser.setPassword("invalid");
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
+
+        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateUserNotUniqueEmail() {
+        userUser.setEmail(userAdmin.getEmail());
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
+
+        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test(expected = UserNotFoundException.class)

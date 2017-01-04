@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.validate;
+package com.nixsolutions.bondarenko.study.validate.model;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
@@ -7,10 +7,10 @@ import com.nixsolutions.bondarenko.study.entity.User;
 import org.springframework.validation.Errors;
 
 
-public class UserUpdateValidator extends UserValidator {
+public class UserModelUpdateValidator extends UserModelValidator {
     private UserDao userDao;
 
-    public UserUpdateValidator(UserDao userDao) {
+    public UserModelUpdateValidator(UserDao userDao) {
         this.userDao = userDao;
     }
 
@@ -18,7 +18,7 @@ public class UserUpdateValidator extends UserValidator {
      * Check if user with this email was found and he is not this user
      */
     @Override
-    protected void validateEmail(UserModel userModel, Errors errors) {
+    public void validateEmail(UserModel userModel, Errors errors) {
         try {
             User userByEmail = userDao.findByEmail(userModel.getUser().getEmail());
             if (userByEmail != null) {

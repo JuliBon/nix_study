@@ -6,8 +6,8 @@ import com.nixsolutions.bondarenko.study.entity.RoleUtils;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
-import com.nixsolutions.bondarenko.study.validate.UserCreateValidator;
-import com.nixsolutions.bondarenko.study.validate.UserUpdateValidator;
+import com.nixsolutions.bondarenko.study.validate.model.UserModelCreateValidator;
+import com.nixsolutions.bondarenko.study.validate.model.UserModelUpdateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -82,7 +82,7 @@ public class AdminController {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
 
-        new UserCreateValidator(userDao).validate(userModel, bindingResult);
+        new UserModelCreateValidator(userDao).validate(userModel, bindingResult);
         if (!bindingResult.hasErrors()) {
             User user = ModelConvert.convertToUser(userModel, roleDao);
             userDao.create(user);
@@ -107,7 +107,7 @@ public class AdminController {
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_EDIT_USER);
 
-        new UserUpdateValidator(userDao).validate(userModel, bindingResult);
+        new UserModelUpdateValidator(userDao).validate(userModel, bindingResult);
         if (!bindingResult.hasErrors()) {
             User user = ModelConvert.convertToUser(userModel, roleDao);
             userDao.update(user);
