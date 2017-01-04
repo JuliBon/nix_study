@@ -1,10 +1,10 @@
 package com.nixsolutions.bondarenko.study.rest.resource;
 
 import com.nixsolutions.bondarenko.study.entity.User;
+import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.rest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.ConstraintViolationException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -57,7 +57,12 @@ public class UsersResource {
 
     @DELETE
     @Path("/{id}")
-    public void deleteUser(@PathParam("id") Long id) {
-        userService.deleteUser(id);
+    public Response deleteUser(@PathParam("id") Long id) {
+        try{
+            userService.deleteUser(id);
+            return Response.status(Response.Status.OK).entity("User has been deleted").build();
+        } catch (UserNotFoundException e){
+            return Response.status(Response.Status.BAD_REQUEST).entity("User with id" + id + "does not exist and can't be deleted").build();
+        }
     }
 }

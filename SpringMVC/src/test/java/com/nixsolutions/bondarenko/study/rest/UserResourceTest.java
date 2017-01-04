@@ -160,8 +160,14 @@ public class UserResourceTest {
     @Test(expected = UserNotFoundException.class)
     public void testDelete() {
         Response response = target.path("/" + userUser.getId()).request().delete();
-        Assert.assertTrue(response.getStatus() == Response.Status.NO_CONTENT.getStatusCode());
+        Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
 
         userDao.findByLogin(userUser.getLogin());
+    }
+
+    @Test
+    public void testDeleteNotExisting() {
+        Response response = target.path("/999").request().delete();
+        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
     }
 }
