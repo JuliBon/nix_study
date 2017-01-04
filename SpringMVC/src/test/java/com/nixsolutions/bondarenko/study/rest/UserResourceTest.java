@@ -47,7 +47,7 @@ public class UserResourceTest {
             "admin", "adminov", Date.valueOf("1980-08-08"), roleAdmin);
     private User userUser = new User(null, "ivan", "Qwe1", "ivan@mail.ru",
             "ivan", "grozniy", Date.valueOf("1530-9-03"), roleUser);
-    private User testUser = new User(null, "nata", "Agent007", "nata@mail.ru",
+    private User newUser = new User(null, "nata", "Agent007", "nata@mail.ru",
             "nataliya", "bondarenko", Date.valueOf("1991-9-19"), roleUser);
 
     private void prepareDB() {
@@ -75,7 +75,7 @@ public class UserResourceTest {
     }
 
     @Test
-    public void testGetUserByLogin() {
+    public void getUserByLogin() {
         Invocation.Builder request = target.path("/admin").request(MediaType.APPLICATION_JSON);
         Response response = request.get();
         Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
@@ -85,7 +85,7 @@ public class UserResourceTest {
     }
 
     @Test
-    public void testGetUsers() throws IOException {
+    public void getUsers() throws IOException {
         Invocation.Builder request = target.request(MediaType.APPLICATION_JSON);
         Response response = request.get();
         Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
@@ -98,37 +98,37 @@ public class UserResourceTest {
     }
 
     @Test
-    public void testCreateUser() {
+    public void createUserPOST() {
         Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(testUser, MediaType.APPLICATION_JSON), Response.class);
+                .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
 
-        User userByLogin = userDao.findByLogin(testUser.getLogin());
-        Assert.assertEquals(userByLogin, testUser);
+        User userByLogin = userDao.findByLogin(newUser.getLogin());
+        Assert.assertEquals(userByLogin, newUser);
     }
 
     @Test
-    public void testCreateUserNotUniqueLogin() {
-        testUser.setLogin(userAdmin.getLogin());
+    public void createUserNotUniqueLoginPOST() {
+        newUser.setLogin(userAdmin.getLogin());
 
         Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(testUser, MediaType.APPLICATION_JSON), Response.class);
+                .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
         Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test
-    public void testCreateUserNotUniqueEmail() {
-        testUser.setEmail(userAdmin.getEmail());
+    public void createUserNotUniqueEmailPOST() {
+        newUser.setEmail(userAdmin.getEmail());
 
         Response response = target.request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(testUser, MediaType.APPLICATION_JSON), Response.class);
+                .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
         Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test
-    public void testUpdateUser() {
+    public void updateUserPUT() {
         userUser.setRole(roleAdmin);
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
@@ -140,7 +140,21 @@ public class UserResourceTest {
     }
 
     @Test
-    public void testUpdateUserBad() {
+    public void createUserPUT_id() {
+        Response response = target.path("/100").request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
+        Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
+    }
+
+    @Test
+    public void updateUserPUT_id() {
+        Response response = target.path("/" + userUser.getId()).request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
+        Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void updateUserBadPUT() {
         userUser.setPassword("invalid");
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
@@ -149,7 +163,7 @@ public class UserResourceTest {
     }
 
     @Test
-    public void testUpdateUserNotUniqueEmail() {
+    public void updateUserNotUniqueEmailPUT() {
         userUser.setEmail(userAdmin.getEmail());
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
@@ -158,15 +172,15 @@ public class UserResourceTest {
     }
 
     @Test(expected = UserNotFoundException.class)
-    public void testDelete() {
+    public void deleteUser() {
         Response response = target.path("/" + userUser.getId()).request().delete();
-        Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+        Assert.assertTrue(response.getStatus() == Response.Status.NO_CONTENT.getStatusCode());
 
         userDao.findByLogin(userUser.getLogin());
     }
 
     @Test
-    public void testDeleteNotExisting() {
+    public void deleteUserNotExisting() {
         Response response = target.path("/999").request().delete();
         Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
     }

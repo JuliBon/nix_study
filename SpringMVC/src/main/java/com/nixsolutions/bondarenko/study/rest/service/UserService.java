@@ -19,4 +19,6 @@ public interface UserService {
     void createUser(User user) throws NotUniqueLoginException, NotUniqueEmailException;
 
     void updateUser(User user) throws NotUniqueEmailException;
+
+    boolean verifyUserExistence(Long id);
 }

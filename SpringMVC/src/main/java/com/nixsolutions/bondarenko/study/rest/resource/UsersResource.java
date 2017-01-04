@@ -55,13 +55,30 @@ public class UsersResource {
         }
     }
 
+    @PUT
+    @Path("{id}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response updateUser(@PathParam("id") Long id, User user) {
+        try {
+            if (userService.verifyUserExistence(id)) {
+                userService.updateUser(user);
+                return Response.status(Response.Status.OK).entity("User has been updated").build();
+            } else {
+                userService.createUser(user);
+                return Response.status(Response.Status.CREATED).entity("A new user has been created").build();
+            }
+        } catch (Exception exception) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Can't create or update user. " + exception.getMessage()).build();
+        }
+    }
+
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Long id) {
-        try{
+        if (userService.verifyUserExistence(id)) {
             userService.deleteUser(id);
-            return Response.status(Response.Status.OK).entity("User has been deleted").build();
-        } catch (UserNotFoundException e){
+            return Response.status(Response.Status.NO_CONTENT).entity("User has been deleted").build();
+        } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("User with id" + id + "does not exist and can't be deleted").build();
         }
     }

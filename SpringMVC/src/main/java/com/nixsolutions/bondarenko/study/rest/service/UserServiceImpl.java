@@ -4,6 +4,7 @@ import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.exception.NotUniqueEmailException;
 import com.nixsolutions.bondarenko.study.exception.NotUniqueLoginException;
+import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.validation.user.UserCreateValidator;
 import com.nixsolutions.bondarenko.study.validation.user.UserUpdateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,14 @@ public class UserServiceImpl implements UserService {
             throw new NotUniqueEmailException();
         }
         userDao.update(user);
+    }
+
+    @Override
+    public boolean verifyUserExistence(Long id) {
+        try {
+            return userDao.findById(id) != null;
+        } catch (UserNotFoundException e) {
+            return false;
+        }
     }
 }
