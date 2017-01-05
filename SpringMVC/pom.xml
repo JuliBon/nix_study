@@ -12,11 +12,25 @@
         <spring.securiry.version>4.2.0.RELEASE</spring.securiry.version>
         <slf4j.version>1.7.21</slf4j.version>
         <jersey.version>2.25</jersey.version>
+        <cxf-rt-frontend-jaxws.version>3.1.9</cxf-rt-frontend-jaxws.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!--Apache-CXF-->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${cxf-rt-frontend-jaxws.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${cxf-rt-frontend-jaxws.version}</version>
+        </dependency>
+
         <!--Jersey-->
         <dependency>
             <groupId>org.glassfish.jersey.ext</groupId>
