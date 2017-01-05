@@ -4,7 +4,7 @@ package com.nixsolutions.bondarenko.study.controller;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
+import com.nixsolutions.bondarenko.study.entity.UserRole;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
@@ -54,7 +54,7 @@ public class RegisterControllerTest {
             "ivan",
             "grozniy",
             new Date(1530, 9, 3),
-            new Role(2L, UserLibraryRole.USER.name()));
+            new Role(2L, UserRole.USER.name()));
 
     @Before
     public void setup() {

@@ -1,6 +1,6 @@
 package com.nixsolutions.bondarenko.study.entity;
 
-public enum UserLibraryRole {
+public enum UserRole {
     USER,
     ADMIN;
 }

@@ -3,7 +3,7 @@ package com.nixsolutions.bondarenko.study.controller;
 import com.nixsolutions.bondarenko.study.dao.RoleDao;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
+import com.nixsolutions.bondarenko.study.entity.UserRole;
 import com.nixsolutions.bondarenko.study.model.ModelConvert;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils;
@@ -58,7 +58,7 @@ public class RegisterController {
         }
         if (valid) {
             User user = ModelConvert.convertToUser(userModel);
-            user.setRole(roleDao.findByName(UserLibraryRole.USER.name()));
+            user.setRole(roleDao.findByName(UserRole.USER.name()));
             userDao.create(user);
 
             modelMap.put("registered", true);

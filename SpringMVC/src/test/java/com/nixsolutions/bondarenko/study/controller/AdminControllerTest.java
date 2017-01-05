@@ -3,7 +3,7 @@ package com.nixsolutions.bondarenko.study.controller;
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
+import com.nixsolutions.bondarenko.study.entity.UserRole;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.model.UserModel;
 import org.junit.Before;
@@ -42,8 +42,8 @@ public class AdminControllerTest {
 
     private MockMvc mockMvc;
 
-    private Role roleAdmin = new Role(1L, UserLibraryRole.ADMIN.name());
-    private Role roleUser = new Role(2L, UserLibraryRole.USER.name());
+    private Role roleAdmin = new Role(1L, UserRole.ADMIN.name());
+    private Role roleUser = new Role(2L, UserRole.USER.name());
 
     private User user1 = new User(1L,
             "admin",

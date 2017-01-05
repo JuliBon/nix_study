@@ -1,11 +1,11 @@
 package com.nixsolutions.bondarenko.study.rest;
 
-import com.nixsolutions.bondarenko.study.dao.RoleDao;
-import com.nixsolutions.bondarenko.study.dao.UserDao;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.entity.UserLibraryRole;
-import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
+import com.nixsolutions.bondarenko.study.entity.UserRole;
 import com.nixsolutions.bondarenko.study.rest.resource.UsersResource;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -15,58 +15,42 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.ws.rs.client.*;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.Date;
-import java.util.List;
 
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({
+        DependencyInjectionTestExecutionListener.class,
+        DbUnitTestExecutionListener.class})
+@DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
 public class UserResourceTest {
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private RoleDao roleDao;
 
-    private HttpServer server;
+    private HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, new ResourceConfig(UsersResource.class));;
     private WebTarget target;
+
     private static final URI BASE_URI = URI.create("http://localhost:8081/rest");
 
-    private Role roleAdmin = new Role(1L, UserLibraryRole.ADMIN.name());
-    private Role roleUser = new Role(1L, UserLibraryRole.USER.name());
-
-    private User userAdmin = new User(null, "admin", "Admin1", "admin@mail.ru",
-            "admin", "adminov", Date.valueOf("1980-08-08"), roleAdmin);
-    private User userUser = new User(null, "ivan", "Qwe1", "ivan@mail.ru",
-            "ivan", "grozniy", Date.valueOf("1530-9-03"), roleUser);
-    private User newUser = new User(null, "nata", "Agent007", "nata@mail.ru",
+    private Role roleAdmin = new Role(1L, UserRole.ADMIN.name());
+    private Role roleUser = new Role(2L, UserRole.USER.name());
+    private User user1 = new User(1L, "yulya", "12345", "yulya@mail.ru",
+            "yuliya", "bondarenko", Date.valueOf("1993-01-10"), roleAdmin);
+    private User newUser = new User(5L, "nata", "Agent007", "nata@mail.ru",
             "nataliya", "bondarenko", Date.valueOf("1991-9-19"), roleUser);
-
-    private void prepareDB() {
-        roleDao.create(roleAdmin);
-        roleDao.create(roleUser);
-        Long id = userDao.create(userAdmin);
-        userAdmin.setId(id);
-        id = userDao.create(userUser);
-        userUser.setId(id);
-    }
 
     @Before
     public void setUp() throws IOException {
-        ResourceConfig resourceConfig = new ResourceConfig(UsersResource.class);
-        server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, resourceConfig);
         server.start();
         target = ClientBuilder.newClient().target(BASE_URI + "/users");
-
-        prepareDB();
     }
 
     @After
@@ -76,112 +60,108 @@ public class UserResourceTest {
 
     @Test
     public void getUserByLogin() {
-        Invocation.Builder request = target.path("/admin").request(MediaType.APPLICATION_JSON);
-        Response response = request.get();
-        Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+        Response response = target.path("/yulya").request(MediaType.APPLICATION_JSON).get();
+        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
 
         User user = response.readEntity(User.class);
-        Assert.assertEquals(user, userAdmin);
+        Assert.assertEquals(user, user1);
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void getUsers() throws IOException {
-        Invocation.Builder request = target.request(MediaType.APPLICATION_JSON);
-        Response response = request.get();
-        Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
-
-        List<User> userList = response.readEntity(new GenericType<List<User>>() {
-        });
-        Assert.assertEquals(userList.size(), 2);
-        Assert.assertTrue(userList.contains(userAdmin));
-        Assert.assertTrue(userList.contains(userUser));
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
+        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
     public void createUserPOST() {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
-        Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
-
-        User userByLogin = userDao.findByLogin(newUser.getLogin());
-        Assert.assertEquals(userByLogin, newUser);
+        Assert.assertEquals(response.getStatus(), Response.Status.CREATED.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void createUserNotUniqueLoginPOST() {
-        newUser.setLogin(userAdmin.getLogin());
+        newUser.setLogin(user1.getLogin());
 
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void createUserNotUniqueEmailPOST() {
-        newUser.setEmail(userAdmin.getEmail());
+        newUser.setEmail(user1.getEmail());
 
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml")
     public void updateUserPUT() {
-        userUser.setRole(roleAdmin);
+        user1.setPassword("Agent007");
         Response response = target.request(MediaType.APPLICATION_JSON)
-                .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
+                .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
-
-        User userByLogin = userDao.findByLogin(userUser.getLogin());
-        Assert.assertEquals(userByLogin, userUser);
+        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
     public void createUserPUT_id() {
-        Response response = target.path("/100").request(MediaType.APPLICATION_JSON)
+        Response response = target.path("/3").request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
-        Assert.assertTrue(response.getStatus() == Response.Status.CREATED.getStatusCode());
+        Assert.assertEquals(response.getStatus(), Response.Status.CREATED.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml")
     public void updateUserPUT_id() {
-        Response response = target.path("/" + userUser.getId()).request(MediaType.APPLICATION_JSON)
-                .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
-        Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+        user1.setPassword("Agent007");
+        Response response = target.path("/1").request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
+        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void updateUserBadPUT() {
-        userUser.setPassword("invalid");
+        user1.setPassword("invalid");
         Response response = target.request(MediaType.APPLICATION_JSON)
-                .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
+                .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void updateUserNotUniqueEmailPUT() {
-        userUser.setEmail(userAdmin.getEmail());
+        user1.setEmail("ivan@mail.ru");
         Response response = target.request(MediaType.APPLICATION_JSON)
-                .put(Entity.entity(userUser, MediaType.APPLICATION_JSON), Response.class);
+                .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
-    }
-
-    @Test(expected = UserNotFoundException.class)
-    public void deleteUser() {
-        Response response = target.path("/" + userUser.getId()).request().delete();
-        Assert.assertTrue(response.getStatus() == Response.Status.NO_CONTENT.getStatusCode());
-
-        userDao.findByLogin(userUser.getLogin());
+        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test
+    @ExpectedDatabase(value = "/test_data/UserRemoveExpectedDataSet.xml")
+    public void deleteUser() {
+        Response response = target.path("/1").request().delete();
+        Assert.assertEquals(response.getStatus(), Response.Status.NO_CONTENT.getStatusCode());
+    }
+
+    @Test
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void deleteUserNotExisting() {
         Response response = target.path("/999").request().delete();
-        Assert.assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
     }
 }
