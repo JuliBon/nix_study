@@ -2,29 +2,35 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns:context="http://www.springframework.org/schema/context"
-             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
-                                http://www.springframework.org/schema/security
-                                http://www.springframework.org/schema/security/spring-security-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+             http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security-4.2.xsd
+             http://www.springframework.org/schema/context
+             http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:annotation-config />
+    <context:annotation-config/>
 
-    <http auto-config="true" >
-        <intercept-url pattern="/" access="permitAll" />
-        <intercept-url pattern="/admin*/**" access="hasRole('ADMIN')" />
-        <intercept-url pattern="/register" access="isAnonymous()" />
-        <intercept-url pattern="/login" access="isAnonymous()" />
-        <form-login  login-page="/login"
-                     default-target-url="/index"
-                     username-parameter="login"
-                     password-parameter="password"
-                     authentication-failure-url="/login?error"/>
+    <http pattern="/soap/**" security="none" create-session="stateless"/>
+
+    <http auto-config="true">
+        <intercept-url pattern="/" access="permitAll"/>
+        <intercept-url pattern="/admin*/**" access="hasRole('ADMIN')"/>
+        <intercept-url pattern="/register" access="isAnonymous()"/>
+        <intercept-url pattern="/login" access="isAnonymous()"/>
+        <form-login login-page="/login"
+                    default-target-url="/index"
+                    username-parameter="login"
+                    password-parameter="password"
+                    authentication-failure-url="/login?error"/>
         <csrf/>
     </http>
 
-    <authentication-manager >
+    <authentication-manager>
         <authentication-provider user-service-ref="customUserDetailsService"/>
     </authentication-manager>
 
-    <beans:bean id="customUserDetailsService" class="com.nixsolutions.bondarenko.study.security.CustomUserDetailsService" />
+    <beans:bean id="customUserDetailsService"
+                class="com.nixsolutions.bondarenko.study.security.CustomUserDetailsService"/>
 
 </beans:beans>
