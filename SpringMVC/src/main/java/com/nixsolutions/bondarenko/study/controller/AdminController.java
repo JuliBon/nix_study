@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -77,7 +78,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
     public ModelAndView create(@ModelAttribute("userModel") @Valid UserModel userModel,
                                BindingResult bindingResult,
-                               ModelMap modelMap) {
+                               ModelMap modelMap) throws ParseException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_CREATE_USER);
@@ -102,7 +103,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
     public ModelAndView edit(@ModelAttribute("userModel") @Valid UserModel userModel,
                              BindingResult bindingResult,
-                             ModelMap modelMap) {
+                             ModelMap modelMap) throws ParseException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         modelMap.addAttribute("userName", authentication.getName());
         modelMap.put("action", ACTION_EDIT_USER);

@@ -5,8 +5,10 @@ import com.nixsolutions.bondarenko.study.entity.User;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,9 +37,11 @@ public class UserTableTag extends TagSupport {
             pageContext.getOut().write("<tbody>");
 
             while (userIterator.hasNext()) {
+
                 User user = userIterator.next();
-                LocalDate birthDate = user.getBirthday().toLocalDate();
+                LocalDate birthDate = user.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 LocalDate currentDate = LocalDate.now();
+
                 int age = Period.between(birthDate, currentDate).getYears();
                 String deleteLink = "<a href=\"/admin/delete/" + user.getId() + "\"" +
                         "onclick=\"return confirm('Delete user " + user.getLogin() + "?')\">Delete</a>";

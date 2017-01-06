@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.text.SimpleDateFormat;
 
 public class UserModel {
     @Valid
@@ -27,7 +28,7 @@ public class UserModel {
     public UserModel(User user) {
         this.user = user;
         if (user.getBirthday() != null) {
-            this.birthdayStr = user.getBirthday().toString();
+            this.birthdayStr = new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday());
         }
         if (user.getRole() != null) {
             this.roleName = user.getRole().getName();

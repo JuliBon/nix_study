@@ -6,10 +6,8 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserRole;
-import com.nixsolutions.bondarenko.study.rest.resource.UsersResource;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,7 +23,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,17 +34,27 @@ import java.sql.Date;
 @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
 public class UserResourceTest {
 
-    private HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, new ResourceConfig(UsersResource.class));;
+    private HttpServer server;
     private WebTarget target;
-
     private static final URI BASE_URI = URI.create("http://localhost:8081/rest");
 
-    private Role roleAdmin = new Role(1L, UserRole.ADMIN.name());
-    private Role roleUser = new Role(2L, UserRole.USER.name());
-    private User user1 = new User(1L, "yulya", "12345", "yulya@mail.ru",
-            "yuliya", "bondarenko", Date.valueOf("1993-01-10"), roleAdmin);
-    private User newUser = new User(5L, "nata", "Agent007", "nata@mail.ru",
-            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), roleUser);
+    private User user1;
+    private User newUser;
+
+    public UserResourceTest() throws ParseException {
+        server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, new JerseyAppConfig());
+
+
+        Role roleAdmin = new Role(1L, UserRole.ADMIN.name());
+        Role roleUser = new Role(2L, UserRole.USER.name());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        user1 = new User(1L, "yulya", "12345", "yulya@mail.ru",
+                "yuliya", "bondarenko", formatter.parse("1993-01-10"), roleAdmin);
+
+        newUser = new User(5L, "nata", "Agent007", "nata@mail.ru",
+                "nataliya", "bondarenko", formatter.parse("1991-09-19"), roleUser);
+    }
 
     @Before
     public void setUp() throws IOException {

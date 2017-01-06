@@ -1,8 +1,10 @@
 package com.nixsolutions.bondarenko.study.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * @author Yuliya Bondarenko
@@ -41,6 +43,8 @@ public class User {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
@@ -155,7 +159,7 @@ public class User {
                 return false;
             } else if (!user.getLastName().equals(lastName)) {
                 return false;
-            } else if (!user.getBirthday().toLocalDate().equals(birthday.toLocalDate())) {
+            } else if (!user.getBirthday().equals(birthday)) {
                 return false;
             } else if (!user.getRole().equals(role)) {
                 return false;

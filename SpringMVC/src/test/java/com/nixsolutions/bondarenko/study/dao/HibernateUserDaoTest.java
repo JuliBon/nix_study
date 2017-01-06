@@ -15,7 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -28,19 +29,25 @@ import static org.junit.Assert.assertEquals;
         DbUnitTestExecutionListener.class})
 public class HibernateUserDaoTest {
 
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
     @Autowired
     private UserDao userDao;
 
-    private User testUser = new User( 3L, "nata", "Agent007", "nata@mail.ru",
-            "nataliya", "bondarenko", Date.valueOf("1991-9-19"), new Role(2L, "USER"));
+    private User testUser;
 
-    //Magic: user id after creation must be 3, but actually 5
-/*    @Test
+    public HibernateUserDaoTest() throws ParseException {
+        testUser = new User(3L, "nata", "Agent007", "nata@mail.ru",
+                "nataliya", "bondarenko", formatter.parse("1991-9-19"), new Role(2L, "USER"));
+    }
+
+    //!!! user id after creation must be 3, but actually 5
+    @Test
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
     public void testCreateUserUniqueLoginAndEmain() throws Exception {
         userDao.create(testUser);
-    }*/
+    }
 
     @Test(expected = Exception.class)
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
@@ -66,21 +73,21 @@ public class HibernateUserDaoTest {
         userDao.create(testUser);
     }
 
-    @Test (expected = UserNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindUserByLogin() throws Exception {
         assertNotNull(userDao.findByLogin("yulya"));
         userDao.findByLogin("nata");
     }
 
-    @Test (expected = UserNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindUserByEmail() throws Exception {
         assertNotNull(userDao.findByEmail("yulya@mail.ru"));
         userDao.findByEmail("nata@mail.ru");
     }
 
-    @Test (expected = UserNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindUserByIdl() throws Exception {
         userDao.findById(67L);

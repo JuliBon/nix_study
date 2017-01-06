@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.ParseException;
 
 @Controller
 public class RegisterController {
@@ -44,7 +45,7 @@ public class RegisterController {
     public ModelAndView register(@ModelAttribute("userModel") @Valid UserModel userModel,
                                  BindingResult bindingResult,
                                  ModelMap modelMap,
-                                 HttpServletRequest request) {
+                                 HttpServletRequest request) throws ParseException {
         modelMap.put("action", ACTION_REGISTER_USER);
 
         new UserModelCreateValidator(userDao).validate(userModel, bindingResult);
