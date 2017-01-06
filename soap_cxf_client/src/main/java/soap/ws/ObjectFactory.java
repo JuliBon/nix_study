@@ -24,13 +24,21 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _TestService_QNAME = new QName("http://ws.soap.study.bondarenko.nixsolutions.com/", "testService");
-    private final static QName _GetGoods_QNAME = new QName("http://ws.soap.study.bondarenko.nixsolutions.com/", "getGoods");
-    private final static QName _SayHelloTo_QNAME = new QName("http://ws.soap.study.bondarenko.nixsolutions.com/", "sayHelloTo");
-    private final static QName _TestServiceResponse_QNAME = new QName("http://ws.soap.study.bondarenko.nixsolutions.com/", "testServiceResponse");
-    private final static QName _Goods_QNAME = new QName("http://ws.soap.study.bondarenko.nixsolutions.com/", "goods");
-    private final static QName _GetGoodsResponse_QNAME = new QName("http://ws.soap.study.bondarenko.nixsolutions.com/", "getGoodsResponse");
-    private final static QName _SayHelloToResponse_QNAME = new QName("http://ws.soap.study.bondarenko.nixsolutions.com/", "sayHelloToResponse");
+    private final static QName _NotUniqueLoginException_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "NotUniqueLoginException");
+    private final static QName _UpdateUser_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "updateUser");
+    private final static QName _NotUniqueEmailException_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "NotUniqueEmailException");
+    private final static QName _GetUser_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "getUser");
+    private final static QName _CreateUserResponse_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "createUserResponse");
+    private final static QName _GetUserResponse_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "getUserResponse");
+    private final static QName _DeleteUserResponse_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "deleteUserResponse");
+    private final static QName _GetUsersResponse_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "getUsersResponse");
+    private final static QName _VerifyUserExistenceResponse_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "verifyUserExistenceResponse");
+    private final static QName _UpdateUserResponse_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "updateUserResponse");
+    private final static QName _User_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "user");
+    private final static QName _CreateUser_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "createUser");
+    private final static QName _DeleteUser_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "deleteUser");
+    private final static QName _GetUsers_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "getUsers");
+    private final static QName _VerifyUserExistence_QNAME = new QName("http://service.study.bondarenko.nixsolutions.com/", "verifyUserExistence");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: soap.ws
@@ -40,122 +48,266 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Goods }
+     * Create an instance of {@link GetUsers }
      * 
      */
-    public Goods createGoods() {
-        return new Goods();
+    public GetUsers createGetUsers() {
+        return new GetUsers();
     }
 
     /**
-     * Create an instance of {@link GetGoodsResponse }
+     * Create an instance of {@link User }
      * 
      */
-    public GetGoodsResponse createGetGoodsResponse() {
-        return new GetGoodsResponse();
+    public User createUser() {
+        return new User();
     }
 
     /**
-     * Create an instance of {@link SayHelloTo }
+     * Create an instance of {@link GetUsersResponse }
      * 
      */
-    public SayHelloTo createSayHelloTo() {
-        return new SayHelloTo();
+    public GetUsersResponse createGetUsersResponse() {
+        return new GetUsersResponse();
     }
 
     /**
-     * Create an instance of {@link TestServiceResponse }
+     * Create an instance of {@link VerifyUserExistenceResponse }
      * 
      */
-    public TestServiceResponse createTestServiceResponse() {
-        return new TestServiceResponse();
+    public VerifyUserExistenceResponse createVerifyUserExistenceResponse() {
+        return new VerifyUserExistenceResponse();
     }
 
     /**
-     * Create an instance of {@link SayHelloToResponse }
+     * Create an instance of {@link GetUserResponse }
      * 
      */
-    public SayHelloToResponse createSayHelloToResponse() {
-        return new SayHelloToResponse();
+    public GetUserResponse createGetUserResponse() {
+        return new GetUserResponse();
     }
 
     /**
-     * Create an instance of {@link TestService }
+     * Create an instance of {@link UpdateUser }
      * 
      */
-    public TestService createTestService() {
-        return new TestService();
+    public UpdateUser createUpdateUser() {
+        return new UpdateUser();
     }
 
     /**
-     * Create an instance of {@link GetGoods }
+     * Create an instance of {@link VerifyUserExistence }
      * 
      */
-    public GetGoods createGetGoods() {
-        return new GetGoods();
+    public VerifyUserExistence createVerifyUserExistence() {
+        return new VerifyUserExistence();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link TestService }{@code >}}
+     * Create an instance of {@link DeleteUserResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.soap.study.bondarenko.nixsolutions.com/", name = "testService")
-    public JAXBElement<TestService> createTestService(TestService value) {
-        return new JAXBElement<TestService>(_TestService_QNAME, TestService.class, null, value);
+    public DeleteUserResponse createDeleteUserResponse() {
+        return new DeleteUserResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetGoods }{@code >}}
+     * Create an instance of {@link UpdateUserResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.soap.study.bondarenko.nixsolutions.com/", name = "getGoods")
-    public JAXBElement<GetGoods> createGetGoods(GetGoods value) {
-        return new JAXBElement<GetGoods>(_GetGoods_QNAME, GetGoods.class, null, value);
+    public UpdateUserResponse createUpdateUserResponse() {
+        return new UpdateUserResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SayHelloTo }{@code >}}
+     * Create an instance of {@link NotUniqueEmailException }
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.soap.study.bondarenko.nixsolutions.com/", name = "sayHelloTo")
-    public JAXBElement<SayHelloTo> createSayHelloTo(SayHelloTo value) {
-        return new JAXBElement<SayHelloTo>(_SayHelloTo_QNAME, SayHelloTo.class, null, value);
+    public NotUniqueEmailException createNotUniqueEmailException() {
+        return new NotUniqueEmailException();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link TestServiceResponse }{@code >}}
+     * Create an instance of {@link GetUser }
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.soap.study.bondarenko.nixsolutions.com/", name = "testServiceResponse")
-    public JAXBElement<TestServiceResponse> createTestServiceResponse(TestServiceResponse value) {
-        return new JAXBElement<TestServiceResponse>(_TestServiceResponse_QNAME, TestServiceResponse.class, null, value);
+    public GetUser createGetUser() {
+        return new GetUser();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Goods }{@code >}}
+     * Create an instance of {@link NotUniqueLoginException }
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.soap.study.bondarenko.nixsolutions.com/", name = "goods")
-    public JAXBElement<Goods> createGoods(Goods value) {
-        return new JAXBElement<Goods>(_Goods_QNAME, Goods.class, null, value);
+    public NotUniqueLoginException createNotUniqueLoginException() {
+        return new NotUniqueLoginException();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetGoodsResponse }{@code >}}
+     * Create an instance of {@link CreateUserResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.soap.study.bondarenko.nixsolutions.com/", name = "getGoodsResponse")
-    public JAXBElement<GetGoodsResponse> createGetGoodsResponse(GetGoodsResponse value) {
-        return new JAXBElement<GetGoodsResponse>(_GetGoodsResponse_QNAME, GetGoodsResponse.class, null, value);
+    public CreateUserResponse createCreateUserResponse() {
+        return new CreateUserResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SayHelloToResponse }{@code >}}
+     * Create an instance of {@link DeleteUser }
      * 
      */
-    @XmlElementDecl(namespace = "http://ws.soap.study.bondarenko.nixsolutions.com/", name = "sayHelloToResponse")
-    public JAXBElement<SayHelloToResponse> createSayHelloToResponse(SayHelloToResponse value) {
-        return new JAXBElement<SayHelloToResponse>(_SayHelloToResponse_QNAME, SayHelloToResponse.class, null, value);
+    public DeleteUser createDeleteUser() {
+        return new DeleteUser();
+    }
+
+    /**
+     * Create an instance of {@link CreateUser }
+     * 
+     */
+    public CreateUser createCreateUser() {
+        return new CreateUser();
+    }
+
+    /**
+     * Create an instance of {@link Role }
+     * 
+     */
+    public Role createRole() {
+        return new Role();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link NotUniqueLoginException }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "NotUniqueLoginException")
+    public JAXBElement<NotUniqueLoginException> createNotUniqueLoginException(NotUniqueLoginException value) {
+        return new JAXBElement<NotUniqueLoginException>(_NotUniqueLoginException_QNAME, NotUniqueLoginException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateUser }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "updateUser")
+    public JAXBElement<UpdateUser> createUpdateUser(UpdateUser value) {
+        return new JAXBElement<UpdateUser>(_UpdateUser_QNAME, UpdateUser.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link NotUniqueEmailException }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "NotUniqueEmailException")
+    public JAXBElement<NotUniqueEmailException> createNotUniqueEmailException(NotUniqueEmailException value) {
+        return new JAXBElement<NotUniqueEmailException>(_NotUniqueEmailException_QNAME, NotUniqueEmailException.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetUser }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "getUser")
+    public JAXBElement<GetUser> createGetUser(GetUser value) {
+        return new JAXBElement<GetUser>(_GetUser_QNAME, GetUser.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateUserResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "createUserResponse")
+    public JAXBElement<CreateUserResponse> createCreateUserResponse(CreateUserResponse value) {
+        return new JAXBElement<CreateUserResponse>(_CreateUserResponse_QNAME, CreateUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetUserResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "getUserResponse")
+    public JAXBElement<GetUserResponse> createGetUserResponse(GetUserResponse value) {
+        return new JAXBElement<GetUserResponse>(_GetUserResponse_QNAME, GetUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteUserResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "deleteUserResponse")
+    public JAXBElement<DeleteUserResponse> createDeleteUserResponse(DeleteUserResponse value) {
+        return new JAXBElement<DeleteUserResponse>(_DeleteUserResponse_QNAME, DeleteUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetUsersResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "getUsersResponse")
+    public JAXBElement<GetUsersResponse> createGetUsersResponse(GetUsersResponse value) {
+        return new JAXBElement<GetUsersResponse>(_GetUsersResponse_QNAME, GetUsersResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link VerifyUserExistenceResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "verifyUserExistenceResponse")
+    public JAXBElement<VerifyUserExistenceResponse> createVerifyUserExistenceResponse(VerifyUserExistenceResponse value) {
+        return new JAXBElement<VerifyUserExistenceResponse>(_VerifyUserExistenceResponse_QNAME, VerifyUserExistenceResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateUserResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "updateUserResponse")
+    public JAXBElement<UpdateUserResponse> createUpdateUserResponse(UpdateUserResponse value) {
+        return new JAXBElement<UpdateUserResponse>(_UpdateUserResponse_QNAME, UpdateUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link User }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "user")
+    public JAXBElement<User> createUser(User value) {
+        return new JAXBElement<User>(_User_QNAME, User.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateUser }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "createUser")
+    public JAXBElement<CreateUser> createCreateUser(CreateUser value) {
+        return new JAXBElement<CreateUser>(_CreateUser_QNAME, CreateUser.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DeleteUser }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "deleteUser")
+    public JAXBElement<DeleteUser> createDeleteUser(DeleteUser value) {
+        return new JAXBElement<DeleteUser>(_DeleteUser_QNAME, DeleteUser.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetUsers }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "getUsers")
+    public JAXBElement<GetUsers> createGetUsers(GetUsers value) {
+        return new JAXBElement<GetUsers>(_GetUsers_QNAME, GetUsers.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link VerifyUserExistence }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.study.bondarenko.nixsolutions.com/", name = "verifyUserExistence")
+    public JAXBElement<VerifyUserExistence> createVerifyUserExistence(VerifyUserExistence value) {
+        return new JAXBElement<VerifyUserExistence>(_VerifyUserExistence_QNAME, VerifyUserExistence.class, null, value);
     }
 
 }

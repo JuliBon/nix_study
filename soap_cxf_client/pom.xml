@@ -13,6 +13,7 @@
         <spring.version>4.3.4.RELEASE</spring.version>
         <cxf-rt-frontend-jaxws.version>3.1.9</cxf-rt-frontend-jaxws.version>
         <src.dir>src/main/java/</src.dir>
+        <hibernate.version>5.2.4.Final</hibernate.version>
     </properties>
 
     <dependencies>
@@ -24,7 +25,6 @@
             <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
@@ -35,7 +35,15 @@
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
 
+        <!--Javax-->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
@@ -55,12 +63,43 @@
             <version>${cxf-rt-frontend-jaxws.version}</version>
         </dependency>
 
+        <!--Hibernate-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
         <!--JUnit-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.5.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.springtestdbunit</groupId>
+            <artifactId>spring-test-dbunit</artifactId>
+            <version>1.3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--Data base-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.193</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.1.1</version>
         </dependency>
     </dependencies>
 
@@ -92,7 +131,7 @@
                     <sei/>
                     <wsdlUrls>
                         <wsdlUrl>
-                            http://10.10.35.56:8080/soap/helloSoap?wsdl
+                            http://10.10.35.56:8080/soap/userService?wsdl
                         </wsdlUrl>
                     </wsdlUrls>
                     <keep>true</keep>

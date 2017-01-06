@@ -6,7 +6,7 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <jaxws:client id="helloSoap"
-                  serviceClass="soap.ws.HelloSoap"
-                  address="http://10.10.35.56:8080/soap/helloSoap"/>
+    <jaxws:client id="userService"
+                  serviceClass="soap.ws.UserService"
+                  address="http://10.10.35.56:8080/soap/userService"/>
 </beans>
