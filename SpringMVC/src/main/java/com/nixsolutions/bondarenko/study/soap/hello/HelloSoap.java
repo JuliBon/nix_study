@@ -1,7 +1,7 @@
-package com.nixsolutions.bondarenko.study.soap.ws;
+package com.nixsolutions.bondarenko.study.soap.hello;
 
 
-import com.nixsolutions.bondarenko.study.soap.ws.model.Goods;
+import com.nixsolutions.bondarenko.study.soap.hello.model.Goods;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

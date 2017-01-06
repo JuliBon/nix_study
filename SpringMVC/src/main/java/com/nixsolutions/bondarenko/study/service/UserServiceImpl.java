@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.rest.service;
+package com.nixsolutions.bondarenko.study.service;
 
 import com.nixsolutions.bondarenko.study.dao.UserDao;
 import com.nixsolutions.bondarenko.study.entity.User;
@@ -10,8 +10,10 @@ import com.nixsolutions.bondarenko.study.validation.user.UserUpdateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.jws.WebService;
 import java.util.List;
 
+@WebService(endpointInterface = "com.nixsolutions.bondarenko.study.service.UserService", serviceName = "userService")
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
@@ -20,11 +22,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
-    }
-
-    @Override
-    public User getUser(Long id) {
-        return userDao.findById(id);
     }
 
     @Override

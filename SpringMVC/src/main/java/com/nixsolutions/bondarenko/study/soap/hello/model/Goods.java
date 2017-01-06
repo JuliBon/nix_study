@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.soap.ws.model;
+package com.nixsolutions.bondarenko.study.soap.hello.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;

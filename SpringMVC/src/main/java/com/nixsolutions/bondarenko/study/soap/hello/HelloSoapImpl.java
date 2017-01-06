@@ -1,11 +1,11 @@
-package com.nixsolutions.bondarenko.study.soap.ws;
+package com.nixsolutions.bondarenko.study.soap.hello;
 
 
-import com.nixsolutions.bondarenko.study.soap.ws.model.Goods;
+import com.nixsolutions.bondarenko.study.soap.hello.model.Goods;
 
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "com.nixsolutions.bondarenko.study.soap.ws.HelloSoap",
+@WebService(endpointInterface = "com.nixsolutions.bondarenko.study.soap.hello.HelloSoap",
         serviceName = "HelloSoap")
 public class HelloSoapImpl implements HelloSoap {
 

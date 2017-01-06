@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * @author Yuliya Bondarenko
- */
+@XmlRootElement(name = "user")
 @Entity
 @Table(name = "USER")
 public class User {
@@ -42,7 +41,6 @@ public class User {
             message = "one or more letters")
     @Column(name = "lastName", nullable = false)
     private String lastName;
-
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     @Column(name = "birthday", nullable = false)

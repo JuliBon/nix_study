@@ -1,7 +1,7 @@
 package com.nixsolutions.bondarenko.study.rest.resource;
 
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.rest.service.UserService;
+import com.nixsolutions.bondarenko.study.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
