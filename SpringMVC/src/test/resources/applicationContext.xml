@@ -9,4 +9,8 @@
 
     <import resource="classpath:database-config.xml"/>
     <context:component-scan base-package="com.nixsolutions.bondarenko.study.rest.service"/>
+
+<!--    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultTimeZone" value="UTC" />
+    </bean>-->
 </beans>

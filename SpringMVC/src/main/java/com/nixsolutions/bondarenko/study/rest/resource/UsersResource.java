@@ -1,7 +1,6 @@
 package com.nixsolutions.bondarenko.study.rest.resource;
 
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.rest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,6 +43,8 @@ public class UserResourceTest {
     private User newUser;
 
     public UserResourceTest() throws ParseException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
         server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, new JerseyAppConfig());
 
 
