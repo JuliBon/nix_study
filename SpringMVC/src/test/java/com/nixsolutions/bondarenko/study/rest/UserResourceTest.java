@@ -18,13 +18,17 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import javax.ws.rs.client.*;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.TimeZone;
 
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
@@ -40,6 +44,7 @@ public class UserResourceTest {
     private static final URI BASE_URI = URI.create("http://localhost:8081/rest");
 
     private User user1;
+    private User user2;
     private User newUser;
 
     public UserResourceTest() throws ParseException {
@@ -54,7 +59,8 @@ public class UserResourceTest {
 
         user1 = new User(1L, "yulya", "12345", "yulya@mail.ru",
                 "yuliya", "bondarenko", formatter.parse("1993-01-10"), roleAdmin);
-
+        user2 = new User(2L, "ivan", "98765", "ivan@mail.ru",
+                "ivan", "grozniy", formatter.parse("1530-09-03"), roleUser);
         newUser = new User(5L, "nata", "Agent007", "nata@mail.ru",
                 "nataliya", "bondarenko", formatter.parse("1991-09-19"), roleUser);
     }
@@ -80,9 +86,13 @@ public class UserResourceTest {
     }
 
     @Test
-    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void getUsers() throws IOException {
         Response response = target.request(MediaType.APPLICATION_JSON).get();
+        List<User> users = response.readEntity(new GenericType<List<User>>() {
+        });
+        Assert.assertEquals(users.size(), 2);
+        Assert.assertTrue(users.contains(user1));
+        Assert.assertTrue(users.contains(user2));
         Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
     }
 
