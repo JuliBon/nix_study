@@ -48,35 +48,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetUsers }
+     * Create an instance of {@link GetUser }
      * 
      */
-    public GetUsers createGetUsers() {
-        return new GetUsers();
-    }
-
-    /**
-     * Create an instance of {@link User }
-     * 
-     */
-    public User createUser() {
-        return new User();
-    }
-
-    /**
-     * Create an instance of {@link GetUsersResponse }
-     * 
-     */
-    public GetUsersResponse createGetUsersResponse() {
-        return new GetUsersResponse();
-    }
-
-    /**
-     * Create an instance of {@link VerifyUserExistenceResponse }
-     * 
-     */
-    public VerifyUserExistenceResponse createVerifyUserExistenceResponse() {
-        return new VerifyUserExistenceResponse();
+    public GetUser createGetUser() {
+        return new GetUser();
     }
 
     /**
@@ -96,14 +72,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link VerifyUserExistence }
-     * 
-     */
-    public VerifyUserExistence createVerifyUserExistence() {
-        return new VerifyUserExistence();
-    }
-
-    /**
      * Create an instance of {@link DeleteUserResponse }
      * 
      */
@@ -112,27 +80,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UpdateUserResponse }
+     * Create an instance of {@link GetUsersResponse }
      * 
      */
-    public UpdateUserResponse createUpdateUserResponse() {
-        return new UpdateUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link NotUniqueEmailException }
-     * 
-     */
-    public NotUniqueEmailException createNotUniqueEmailException() {
-        return new NotUniqueEmailException();
-    }
-
-    /**
-     * Create an instance of {@link GetUser }
-     * 
-     */
-    public GetUser createGetUser() {
-        return new GetUser();
+    public GetUsersResponse createGetUsersResponse() {
+        return new GetUsersResponse();
     }
 
     /**
@@ -144,19 +96,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateUserResponse }
+     * Create an instance of {@link VerifyUserExistenceResponse }
      * 
      */
-    public CreateUserResponse createCreateUserResponse() {
-        return new CreateUserResponse();
+    public VerifyUserExistenceResponse createVerifyUserExistenceResponse() {
+        return new VerifyUserExistenceResponse();
     }
 
     /**
-     * Create an instance of {@link DeleteUser }
+     * Create an instance of {@link Role }
      * 
      */
-    public DeleteUser createDeleteUser() {
-        return new DeleteUser();
+    public Role createRole() {
+        return new Role();
+    }
+
+    /**
+     * Create an instance of {@link VerifyUserExistence }
+     * 
+     */
+    public VerifyUserExistence createVerifyUserExistence() {
+        return new VerifyUserExistence();
     }
 
     /**
@@ -168,11 +128,51 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Role }
+     * Create an instance of {@link UpdateUserResponse }
      * 
      */
-    public Role createRole() {
-        return new Role();
+    public UpdateUserResponse createUpdateUserResponse() {
+        return new UpdateUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetUsers }
+     * 
+     */
+    public GetUsers createGetUsers() {
+        return new GetUsers();
+    }
+
+    /**
+     * Create an instance of {@link NotUniqueEmailException }
+     * 
+     */
+    public NotUniqueEmailException createNotUniqueEmailException() {
+        return new NotUniqueEmailException();
+    }
+
+    /**
+     * Create an instance of {@link DeleteUser }
+     * 
+     */
+    public DeleteUser createDeleteUser() {
+        return new DeleteUser();
+    }
+
+    /**
+     * Create an instance of {@link CreateUserResponse }
+     * 
+     */
+    public CreateUserResponse createCreateUserResponse() {
+        return new CreateUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link User }
+     * 
+     */
+    public User createUser() {
+        return new User();
     }
 
     /**
