@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.hibernate.exception.ConstraintViolationException;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
@@ -37,7 +36,7 @@ public class HibernateRoleDaoTest {
         roleDao.create(new Role(3L, "GUEST"));
     }
 
-    @Test(expected = ConstraintViolationException.class)
+    @Test(expected = RuntimeException.class)
     public void testCreateRoleNotUnique() {
         roleDao.create(new Role(4L, "ADMIN"));
     }
@@ -52,6 +51,11 @@ public class HibernateRoleDaoTest {
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testUpdateRoleNotExisting() {
         roleDao.update(new Role(100L, "system-admin"));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testUpdateRoleNotUnique() {
+        roleDao.update(new Role(2L, "ADMIN"));
     }
 
     @Test(expected = RuntimeException.class)

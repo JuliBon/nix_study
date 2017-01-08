@@ -5,7 +5,6 @@ import com.nixsolutions.bondarenko.study.entity.Role;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +22,6 @@ public class HibernateRoleDao implements RoleDao {
     public void create(Role role) {
         try {
             sessionFactory.getCurrentSession().save(role);
-        } catch (ConstraintViolationException e) {
-            throw e;
         } catch (HibernateException e) {
             throw new RuntimeException("Error while creating role", e);
         }

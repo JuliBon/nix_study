@@ -27,6 +27,8 @@ import static org.junit.Assert.assertEquals;
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
+
+@DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
 public class HibernateUserDaoTest {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -43,14 +45,12 @@ public class HibernateUserDaoTest {
 
     //!!! user id after creation must be 3, but actually 5
     @Test
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
     public void testCreateUserUniqueLoginAndEmain(){
         userDao.create(testUser);
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testCreateUserNotUniqueLogin() {
         testUser.setLogin("yulya");
@@ -58,7 +58,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testCreateUserNotUniqueEmail(){
         testUser.setEmail("yulya@mail.ru");
@@ -66,7 +65,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testCreateUserNotExistingRole() throws Exception {
         testUser.setRole(new Role(100L, null));
@@ -74,27 +72,23 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = UserNotFoundException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindUserByLogin() {
         assertNotNull(userDao.findByLogin("yulya"));
         userDao.findByLogin("nata");
     }
 
     @Test(expected = UserNotFoundException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindUserByEmail() throws Exception {
         assertNotNull(userDao.findByEmail("yulya@mail.ru"));
         userDao.findByEmail("nata@mail.ru");
     }
 
     @Test(expected = UserNotFoundException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindUserByIdl() {
         userDao.findById(67L);
     }
 
     @Test
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/UserRemoveExpectedDataSet.xml")
     public void testRemoveUser() {
         User user = userDao.findByLogin("yulya");
@@ -102,7 +96,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testRemoveUserNotExisting() throws Exception {
         testUser.setId(100L);
@@ -110,7 +103,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml")
     public void testUpdateUser() {
         User user = userDao.findByLogin("yulya");
@@ -119,7 +111,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testUpdateUserBad() {
         User user = userDao.findByLogin("yulya");
@@ -128,7 +119,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     public void testFindAllUsers() {
         List<User> users = userDao.findAll();
         assertNotNull(users);
@@ -136,7 +126,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testCreateUserLoginNull() throws Exception {
         testUser.setLogin(null);
@@ -144,7 +133,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testCreateUserPasswordNull() {
         testUser.setPassword(null);
@@ -152,7 +140,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testCreateUserEmailNull() {
         testUser.setEmail(null);
@@ -160,7 +147,6 @@ public class HibernateUserDaoTest {
     }
 
     @Test(expected = RuntimeException.class)
-    @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void testCreateUserRoleNull() {
         testUser.setBirthday(null);

@@ -24,7 +24,7 @@ public class HibernateUserDao implements UserDao {
     public Long create(User user) {
         try {
             return (Long) sessionFactory.getCurrentSession().save(user);
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             throw new RuntimeException("Error while creating user", e);
         }
     }
@@ -34,7 +34,7 @@ public class HibernateUserDao implements UserDao {
     public void update(User user) {
         try {
             sessionFactory.getCurrentSession().saveOrUpdate(user);
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             throw new RuntimeException("Error while updating user", e);
         }
     }
@@ -43,7 +43,7 @@ public class HibernateUserDao implements UserDao {
     public void remove(User user) {
         try {
             sessionFactory.getCurrentSession().delete(user);
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             throw new RuntimeException("Error while removing user", e);
         }
     }
