@@ -33,46 +33,46 @@ public class HibernateRoleDaoTest {
 
     @Test
     @ExpectedDatabase("/test_data/RoleCreateExpectedDataSet.xml")
-    public void testCreateRole() throws Exception {
+    public void testCreateRole() {
         roleDao.create(new Role(3L, "GUEST"));
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void testCreateRoleNotUnique() throws Exception {
+    public void testCreateRoleNotUnique() {
         roleDao.create(new Role(4L, "ADMIN"));
     }
 
     @Test
     @ExpectedDatabase(value = "/test_data/RoleUpdateExpectedDataSet.xml")
-    public void testUpdateRole() throws Exception {
+    public void testUpdateRole() {
         roleDao.update(new Role(1L, "system-admin"));
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = RuntimeException.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void testUpdateRoleNotExisting() throws Exception {
+    public void testUpdateRoleNotExisting() {
         roleDao.update(new Role(100L, "system-admin"));
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = RuntimeException.class)
     @ExpectedDatabase("/test_data/InitialDataSet.xml")
-    public void testRemoveRole() throws Exception {
+    public void testRemoveRole() {
         roleDao.remove(new Role(2L, "USER"));
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = RuntimeException.class)
     @ExpectedDatabase("/test_data/InitialDataSet.xml")
-    public void testRemoveRoleNotExisting() throws Exception {
+    public void testRemoveRoleNotExisting() {
         roleDao.remove(new Role(100L, "GUEST"));
     }
 
     @Test
-    public void testFindExistingRole() throws Exception {
+    public void testFindExistingRole(){
         assertNotNull(roleDao.findByName("ADMIN"));
     }
 
     @Test
-    public void testFindNotExistingRole() throws Exception {
+    public void testFindNotExistingRole() {
         assertNull(roleDao.findByName("GUEST"));
     }
 }
