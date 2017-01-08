@@ -201,4 +201,10 @@ public class UserResourceTest {
         Response response = target.path("/999").request().delete();
         Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
+
+    @Test
+    public void badPathTest() {
+        Response response2 = target.path("badpath").request(MediaType.APPLICATION_JSON).get();
+        Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response2.getStatus());
+    }
 }

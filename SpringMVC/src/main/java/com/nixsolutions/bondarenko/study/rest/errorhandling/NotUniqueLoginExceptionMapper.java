@@ -9,9 +9,9 @@ import javax.ws.rs.ext.ExceptionMapper;
 public class NotUniqueLoginExceptionMapper implements ExceptionMapper<NotUniqueLoginException> {
     @Override
     public Response toResponse(NotUniqueLoginException e) {
-
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity(new ErrorMessage(Response.Status.BAD_REQUEST))
+        Response.Status status = Response.Status.BAD_REQUEST;
+        return Response.status(status)
+                .entity(new ErrorMessage(status))
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

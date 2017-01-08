@@ -9,8 +9,8 @@ import javax.ws.rs.ext.ExceptionMapper;
 public class NotUniqueEmailExceptionMapper implements ExceptionMapper<NotUniqueEmailException> {
     @Override
     public Response toResponse(NotUniqueEmailException e) {
-
-        return Response.status(Response.Status.BAD_REQUEST)
+        Response.Status status = Response.Status.BAD_REQUEST;
+        return Response.status(status)
                 .entity(new ErrorMessage(Response.Status.BAD_REQUEST))
                 .type(MediaType.APPLICATION_JSON)
                 .build();

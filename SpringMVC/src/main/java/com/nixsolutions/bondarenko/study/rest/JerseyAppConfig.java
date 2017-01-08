@@ -14,6 +14,6 @@ public class JerseyAppConfig extends ResourceConfig {
         register(NotUniqueEmailExceptionMapper.class);
         register(NotUniqueLoginExceptionMapper.class);
         register(GenericExceptionMapper.class);
-        register(NotFoundExceptionMapper.class);
+        register(WebApplicationExceptionMapper.class);
     }
 }
