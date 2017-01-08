@@ -28,7 +28,7 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
-            <param-value>com.nixsolutions.bondarenko.study.rest.JerseyAppConfig</param-value>
+            <param-value>com.nixsolutions.bondarenko.study.ws.rest.JerseyAppConfig</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

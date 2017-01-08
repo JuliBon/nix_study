@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.rest.resource;
+package com.nixsolutions.bondarenko.study.ws.rest.resource;
 
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.service.UserService;
@@ -64,6 +64,6 @@ public class UsersResource {
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Long id) {
         userService.deleteUser(id);
-        return Response.status(Response.Status.NO_CONTENT).entity("User has been deleted").build();
+        return Response.status(Response.Status.OK).entity("User has been deleted").build();
     }
 }

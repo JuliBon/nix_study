@@ -1,4 +1,6 @@
-package com.nixsolutions.bondarenko.study.rest.errorhandling;
+package com.nixsolutions.bondarenko.study.ws.rest.errorhandling;
+
+import com.nixsolutions.bondarenko.study.ws.rest.response.WebServiceResponse;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -9,7 +11,7 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
     @Override
     public Response toResponse(WebApplicationException e) {
         int status = e.getResponse().getStatus();
-        ErrorMessage message = new ErrorMessage(status, e.getMessage());
+        WebServiceResponse message = new WebServiceResponse(status, e.getMessage());
         return Response.status(status)
                 .entity(message)
                 .type(MediaType.APPLICATION_JSON)

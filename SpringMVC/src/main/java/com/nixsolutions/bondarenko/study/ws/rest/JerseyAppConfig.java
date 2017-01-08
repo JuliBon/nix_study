@@ -1,7 +1,7 @@
-package com.nixsolutions.bondarenko.study.rest;
+package com.nixsolutions.bondarenko.study.ws.rest;
 
-import com.nixsolutions.bondarenko.study.rest.errorhandling.*;
-import com.nixsolutions.bondarenko.study.rest.resource.UsersResource;
+import com.nixsolutions.bondarenko.study.ws.rest.errorhandling.*;
+import com.nixsolutions.bondarenko.study.ws.rest.resource.UsersResource;
 import org.glassfish.jersey.server.ResourceConfig;
 
 public class JerseyAppConfig extends ResourceConfig {

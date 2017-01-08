@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.rest;
+package com.nixsolutions.bondarenko.study.ws.rest;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -6,6 +6,8 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserRole;
+import com.nixsolutions.bondarenko.study.ws.rest.response.ResponseCode;
+import com.nixsolutions.bondarenko.study.ws.rest.response.WebServiceResponse;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.junit.After;
@@ -88,6 +90,7 @@ public class UserResourceTest {
     public void getUserNotExist() {
         Response response = target.path("/" + newUser.getId()).request(MediaType.APPLICATION_JSON).get();
         Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.USER_NOT_FOUND, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test
@@ -118,6 +121,7 @@ public class UserResourceTest {
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.NOT_UNIQUE_LOGIN, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test
@@ -129,6 +133,7 @@ public class UserResourceTest {
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.NOT_UNIQUE_EMAIL, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test
@@ -139,6 +144,7 @@ public class UserResourceTest {
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.INVALID_USER, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test
@@ -170,12 +176,13 @@ public class UserResourceTest {
 
     @Test
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void updateUserBadPUT() {
+    public void updateUserInvalidPUT() {
         user1.setPassword("invalid");
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.INVALID_USER, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test
@@ -186,13 +193,14 @@ public class UserResourceTest {
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.NOT_UNIQUE_EMAIL, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test
     @ExpectedDatabase(value = "/test_data/UserRemoveExpectedDataSet.xml")
     public void deleteUser() {
         Response response = target.path("/1").request().delete();
-        Assert.assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -200,6 +208,7 @@ public class UserResourceTest {
     public void deleteUserNotExisting() {
         Response response = target.path("/999").request().delete();
         Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.USER_NOT_FOUND, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test
