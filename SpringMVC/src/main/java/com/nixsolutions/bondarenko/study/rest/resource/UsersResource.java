@@ -20,10 +20,15 @@ public class UsersResource {
     }
 
     @GET
-    @Path("/{login}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@PathParam("login") String login) {
-        return userService.getUser(login);
+    public Response getUser(@PathParam("id") Long id) {
+        if (userService.verifyUserExistence(id)) {
+            User user = userService.getUser(id);
+            return Response.status(Response.Status.OK).entity(user).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).entity("User not exist").build();
+        }
     }
 
     @GET

@@ -52,7 +52,6 @@ public class UserResourceTest {
 
         server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, new JerseyAppConfig());
 
-
         Role roleAdmin = new Role(1L, UserRole.ADMIN.name());
         Role roleUser = new Role(2L, UserRole.USER.name());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -77,12 +76,18 @@ public class UserResourceTest {
     }
 
     @Test
-    public void getUserByLogin() {
-        Response response = target.path("/yulya").request(MediaType.APPLICATION_JSON).get();
-        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+    public void getUser() {
+        Response response = target.path("/" + user1.getId()).request(MediaType.APPLICATION_JSON).get();
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
         User user = response.readEntity(User.class);
         Assert.assertEquals(user, user1);
+    }
+
+    @Test
+    public void getUserNotExist() {
+        Response response = target.path("/" + newUser.getId()).request(MediaType.APPLICATION_JSON).get();
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -93,7 +98,7 @@ public class UserResourceTest {
         Assert.assertEquals(users.size(), 2);
         Assert.assertTrue(users.contains(user1));
         Assert.assertTrue(users.contains(user2));
-        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -101,7 +106,7 @@ public class UserResourceTest {
     public void createUserPOST() {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
-        Assert.assertEquals(response.getStatus(), Response.Status.CREATED.getStatusCode());
+        Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -112,7 +117,7 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -123,7 +128,7 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -133,7 +138,7 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -141,7 +146,7 @@ public class UserResourceTest {
     public void createUserPUT_id() {
         Response response = target.path("/3").request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
-        Assert.assertEquals(response.getStatus(), Response.Status.CREATED.getStatusCode());
+        Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -150,7 +155,7 @@ public class UserResourceTest {
         user1.setPassword("Agent007");
         Response response = target.path("/1").request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
-        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -160,7 +165,7 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -170,20 +175,20 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
-        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
     @Test
     @ExpectedDatabase(value = "/test_data/UserRemoveExpectedDataSet.xml")
     public void deleteUser() {
         Response response = target.path("/1").request().delete();
-        Assert.assertEquals(response.getStatus(), Response.Status.NO_CONTENT.getStatusCode());
+        Assert.assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
 
     @Test
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void deleteUserNotExisting() {
         Response response = target.path("/999").request().delete();
-        Assert.assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 }

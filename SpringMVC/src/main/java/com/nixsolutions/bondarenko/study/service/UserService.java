@@ -1,8 +1,6 @@
 package com.nixsolutions.bondarenko.study.service;
 
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.exception.NotUniqueEmailException;
-import com.nixsolutions.bondarenko.study.exception.NotUniqueLoginException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -13,7 +11,7 @@ import java.util.List;
 public interface UserService {
 
     @WebMethod
-    User getUser(@WebParam(name = "text") String login);
+    User getUser(@WebParam(name = "text") Long id);
 
     @WebMethod
     List<User> getUsers();
@@ -22,10 +20,10 @@ public interface UserService {
     void deleteUser(@WebParam(name = "id") Long id);
 
     @WebMethod
-    void createUser(@WebParam(name = "user") User user) throws NotUniqueLoginException, NotUniqueEmailException;
+    void createUser(@WebParam(name = "user") User user);
 
     @WebMethod
-    void updateUser(@WebParam(name = "user") User user) throws NotUniqueEmailException;
+    void updateUser(@WebParam(name = "user") User user);
 
     boolean verifyUserExistence(Long id);
 }

@@ -1,13 +1,9 @@
 package com.nixsolutions.bondarenko.study.dao;
 
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 
 import java.util.List;
 
-/**
- * @author Yuliya Bondarenko
- */
 public interface UserDao {
     Long create(User user);
 
@@ -17,9 +13,9 @@ public interface UserDao {
 
     List<User> findAll();
 
-    User findById(Long id) throws UserNotFoundException;
+    User findById(Long id);
 
-    User findByLogin(String login) throws UserNotFoundException;
+    User findByLogin(String login);
 
-    User findByEmail(String email) throws UserNotFoundException;
+    User findByEmail(String email);
 }

@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String login) {
-        return userDao.findByLogin(login);
+    public User getUser(Long id) {
+        return userDao.findById(id);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(User user) throws NotUniqueLoginException, NotUniqueEmailException {
+    public void createUser(User user) {
         UserCreateValidator userCreateValidator = new UserCreateValidator(userDao);
         if (!userCreateValidator.isLoginUnique(user)) {
             throw new NotUniqueLoginException();
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) throws NotUniqueEmailException {
+    public void updateUser(User user) {
         if (!new UserUpdateValidator(userDao).isEmailUnique(user)) {
             throw new NotUniqueEmailException();
         }
