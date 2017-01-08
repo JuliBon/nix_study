@@ -11,7 +11,7 @@ import com.nixsolutions.bondarenko.study.validation.model.UserModelCreateValidat
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.*;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.text.ParseException;
 
 @Controller
 public class RegisterController {
@@ -45,7 +44,7 @@ public class RegisterController {
     public ModelAndView register(@ModelAttribute("userModel") @Valid UserModel userModel,
                                  BindingResult bindingResult,
                                  ModelMap modelMap,
-                                 HttpServletRequest request) throws ParseException {
+                                 HttpServletRequest request) {
         modelMap.put("action", ACTION_REGISTER_USER);
 
         new UserModelCreateValidator(userDao).validate(userModel, bindingResult);

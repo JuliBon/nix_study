@@ -7,12 +7,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class ModelConvert {
-    public static User convertToUser(UserModel userModel, RoleDao roleDao) throws ParseException {
+    public static User convertToUser(UserModel userModel, RoleDao roleDao) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         User user = userModel.getUser();
 
-        user.setBirthday(formatter.parse(userModel.getBirthdayStr()));
+        try {
+            user.setBirthday(formatter.parse(userModel.getBirthdayStr()));
+        } catch (ParseException e) {
+            throw  new RuntimeException("Cant't parse date", e);
+        }
 
         if (roleDao != null) {
             if (userModel.getRoleName() != null) {
@@ -22,7 +26,7 @@ public class ModelConvert {
         return user;
     }
 
-    public static User convertToUser(UserModel userModel) throws ParseException {
+    public static User convertToUser(UserModel userModel) {
         return convertToUser(userModel, null);
     }
 }
