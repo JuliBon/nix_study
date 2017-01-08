@@ -87,7 +87,7 @@ public class UserResourceTest {
     @Test
     public void getUserNotExist() {
         Response response = target.path("/" + newUser.getId()).request(MediaType.APPLICATION_JSON).get();
-        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -125,6 +125,16 @@ public class UserResourceTest {
     public void createUserNotUniqueEmailPOST() {
         newUser.setEmail(user1.getEmail());
 
+        Response response = target.request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
+
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
+    public void createUserBadPOST() {
+        newUser.setPassword("invalid");
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
 
@@ -189,6 +199,6 @@ public class UserResourceTest {
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void deleteUserNotExisting() {
         Response response = target.path("/999").request().delete();
-        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 }

@@ -32,7 +32,7 @@
     <jaxws:endpoint id="helloSoap" address="/helloSoap"
                     implementor="com.nixsolutions.bondarenko.study.soap.hello.HelloSoapImpl"/>
 
-    <jaxws:endpoint id="userService" address="/userService"
-                    implementor="com.nixsolutions.bondarenko.study.service.UserServiceImpl"/>
+<!--    <jaxws:endpoint id="userService" address="/userService"
+                    implementor="com.nixsolutions.bondarenko.study.service.UserServiceImpl"/>-->
 
 </beans>

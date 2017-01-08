@@ -30,10 +30,6 @@
             <param-name>javax.ws.rs.Application</param-name>
             <param-value>com.nixsolutions.bondarenko.study.rest.JerseyAppConfig</param-value>
         </init-param>
-<!--        <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>com.nixsolutions.bondarenko.study.rest.resource</param-value>
-        </init-param>-->
     </servlet>
     <servlet-mapping>
         <servlet-name>jersey-serlvet</servlet-name>

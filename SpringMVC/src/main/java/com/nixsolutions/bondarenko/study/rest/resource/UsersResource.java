@@ -23,12 +23,8 @@ public class UsersResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") Long id) {
-        if (userService.verifyUserExistence(id)) {
-            User user = userService.getUser(id);
-            return Response.status(Response.Status.OK).entity(user).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("User not exist").build();
-        }
+        User user = userService.getUser(id);
+        return Response.status(Response.Status.OK).entity(user).build();
     }
 
     @GET
@@ -40,50 +36,34 @@ public class UsersResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     public Response createUser(User user) {
-        try {
-            userService.createUser(user);
-            return Response.status(Response.Status.CREATED).entity("A new user has been created").build();
-        } catch (Exception exception) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("User has not been created. " + exception.getMessage()).build();
-        }
+        userService.createUser(user);
+        return Response.status(Response.Status.CREATED).entity("A new user has been created").build();
     }
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public Response updateUser(User user) {
-        try {
-            userService.updateUser(user);
-            return Response.status(Response.Status.OK).entity("User has been updated").build();
-        } catch (Exception exception) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("User has not been updated. " + exception.getMessage()).build();
-        }
+        userService.updateUser(user);
+        return Response.status(Response.Status.OK).entity("User has been updated").build();
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response updateUser(@PathParam("id") Long id, User user) {
-        try {
-            if (userService.verifyUserExistence(id)) {
-                userService.updateUser(user);
-                return Response.status(Response.Status.OK).entity("User has been updated").build();
-            } else {
-                userService.createUser(user);
-                return Response.status(Response.Status.CREATED).entity("A new user has been created").build();
-            }
-        } catch (Exception exception) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Can't create or update user. " + exception.getMessage()).build();
+        if (userService.verifyUserExistence(id)) {
+            userService.updateUser(user);
+            return Response.status(Response.Status.OK).entity("User has been updated").build();
+        } else {
+            userService.createUser(user);
+            return Response.status(Response.Status.CREATED).entity("A new user has been created").build();
         }
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") Long id) {
-        if (userService.verifyUserExistence(id)) {
-            userService.deleteUser(id);
-            return Response.status(Response.Status.NO_CONTENT).entity("User has been deleted").build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("User with id" + id + "does not exist and can't be deleted").build();
-        }
+        userService.deleteUser(id);
+        return Response.status(Response.Status.NO_CONTENT).entity("User has been deleted").build();
     }
 }
