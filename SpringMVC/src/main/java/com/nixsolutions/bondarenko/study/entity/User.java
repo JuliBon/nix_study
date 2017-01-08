@@ -157,7 +157,7 @@ public class User {
                 return false;
             } else if (!user.getLastName().equals(lastName)) {
                 return false;
-            } else if (!user.getBirthday().equals(birthday)) {
+            } else if (!(user.getBirthday().getTime() == birthday.getTime())) {
                 return false;
             } else if (!user.getRole().equals(role)) {
                 return false;
