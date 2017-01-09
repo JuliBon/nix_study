@@ -2,8 +2,10 @@ package com.nixsolutions.bondarenko.study.ws.result;
 
 import com.nixsolutions.bondarenko.study.entity.User;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+@XmlRootElement(name = "result")
 public class GetUsersResult extends WebServiceResult {
     private List<User> userList;
 

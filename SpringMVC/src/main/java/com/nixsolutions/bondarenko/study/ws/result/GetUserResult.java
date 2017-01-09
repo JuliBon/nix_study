@@ -2,6 +2,9 @@ package com.nixsolutions.bondarenko.study.ws.result;
 
 import com.nixsolutions.bondarenko.study.entity.User;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "result")
 public class GetUserResult extends WebServiceResult {
     private User user;
 

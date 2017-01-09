@@ -28,10 +28,6 @@
 
     <bean id="verifyUtils" class="com.nixsolutions.bondarenko.study.recaptcha.VerifyUtils"/>
 
-
-    <jaxws:endpoint id="helloSoap" address="/helloSoap"
-                    implementor="com.nixsolutions.bondarenko.study.soap.hello.HelloSoapImpl"/>
-
     <jaxws:endpoint id="soapUserService" address="/soapUserService"
                     implementor="com.nixsolutions.bondarenko.study.ws.soap.SoapUserServiceImpl"/>
 

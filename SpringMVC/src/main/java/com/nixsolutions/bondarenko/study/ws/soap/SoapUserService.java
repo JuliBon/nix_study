@@ -14,7 +14,7 @@ import javax.jws.WebService;
 public interface SoapUserService {
 
     @WebMethod
-    GetUserResult getUser(@WebParam(name = "text") Long id);
+    GetUserResult getUser(@WebParam(name = "id") Long id);
 
     @WebMethod
     GetUsersResult getUsers();

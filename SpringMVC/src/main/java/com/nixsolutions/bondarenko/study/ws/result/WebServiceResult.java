@@ -1,7 +1,10 @@
 package com.nixsolutions.bondarenko.study.ws.result;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
-public class WebServiceResult {
+@XmlRootElement(name = "result")
+public class WebServiceResult implements Serializable {
     protected ResultCode resultCode;
     protected ErrorCode errorCode;
     protected String message;

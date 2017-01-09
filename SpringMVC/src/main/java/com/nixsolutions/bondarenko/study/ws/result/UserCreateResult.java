@@ -1,5 +1,8 @@
 package com.nixsolutions.bondarenko.study.ws.result;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "result")
 public class UserCreateResult extends WebServiceResult {
     private Long id;
 
