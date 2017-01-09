@@ -6,7 +6,16 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <jaxws:client id="userService"
-                  serviceClass="soap.ws.UserService"
-                  address="http://10.10.35.56:8080/soap/userService"/>
+    <bean id="exceptionInterceptor" class="ExceptionInterceptor"/>
+
+    <jaxws:client id="soapUserService"
+                  serviceClass="soap.ws.SoapUserService"
+                  address="http://localhost:8080/soap/soapUserService">
+        <jaxws:inFaultInterceptors>
+            <ref bean="exceptionInterceptor"/>
+        </jaxws:inFaultInterceptors>
+        <jaxws:outFaultInterceptors>
+            <ref bean="exceptionInterceptor"/>
+        </jaxws:outFaultInterceptors>
+    </jaxws:client>
 </beans>

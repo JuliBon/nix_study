@@ -131,7 +131,8 @@
                     <sei/>
                     <wsdlUrls>
                         <wsdlUrl>
-                            http://10.10.35.56:8080/soap/userService?wsdl
+                            http://10.10.35.56:8080/soap/soapUserService?wsdl
+                            <!--http://localhost:8080/soap/soapUserService?wsdl-->
                         </wsdlUrl>
                     </wsdlUrls>
                     <keep>true</keep>
