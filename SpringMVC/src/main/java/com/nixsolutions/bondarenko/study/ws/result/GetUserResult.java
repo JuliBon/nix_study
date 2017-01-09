@@ -1,0 +1,30 @@
+package com.nixsolutions.bondarenko.study.ws.result;
+
+import com.nixsolutions.bondarenko.study.entity.User;
+
+public class GetUserResult extends WebServiceResult {
+    private User user;
+
+    public GetUserResult(){
+    }
+
+    public GetUserResult(ResultCode resultCode, ErrorCode errorCode, String message) {
+        this.resultCode = resultCode;
+        this.errorCode = errorCode;
+        this.message = message;
+    }
+
+    public GetUserResult(ResultCode resultCode, User user) {
+        this.resultCode = resultCode;
+        this.user = user;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+}

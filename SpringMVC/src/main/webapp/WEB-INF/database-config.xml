@@ -10,8 +10,8 @@
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="org.h2.Driver" />
-        <!--<property name="url" value="jdbc:h2:tcp://localhost/~/db_user_library" />-->
-        <property name="url" value="jdbc:h2:tcp://localhost/./db/db_user_library" />
+        <property name="url" value="jdbc:h2:tcp://localhost/~/db_user_library" />
+        <!--<property name="url" value="jdbc:h2:tcp://localhost/./db/db_user_library" />-->
         <!--<property name="url" value="jdbc:h2:tcp://localhost/./db/db_user_library?useTimezone=true&amp;serverTimezone=UTC" />-->
         <property name="username" value="sa" />
         <property name="password" value="" />

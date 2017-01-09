@@ -1,8 +1,9 @@
 package com.nixsolutions.bondarenko.study.ws.rest.errorhandling;
 
 import com.nixsolutions.bondarenko.study.exception.NotUniqueEmailException;
-import com.nixsolutions.bondarenko.study.ws.response.ResponseCode;
-import com.nixsolutions.bondarenko.study.ws.response.WebServiceResponse;
+import com.nixsolutions.bondarenko.study.ws.result.ErrorCode;
+import com.nixsolutions.bondarenko.study.ws.result.ResultCode;
+import com.nixsolutions.bondarenko.study.ws.result.WebServiceResult;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -12,9 +13,9 @@ public class NotUniqueEmailExceptionMapper implements ExceptionMapper<NotUniqueE
     @Override
     public Response toResponse(NotUniqueEmailException e) {
         Response.Status status = Response.Status.BAD_REQUEST;
-        WebServiceResponse response = new WebServiceResponse(ResponseCode.NOT_UNIQUE_EMAIL, e.getMessage());
+        WebServiceResult result = new WebServiceResult(ResultCode.ERROR, ErrorCode.NOT_UNIQUE_EMAIL, e.getMessage());
         return Response.status(status)
-                .entity(response)
+                .entity(result)
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

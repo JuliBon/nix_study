@@ -1,7 +1,8 @@
 package com.nixsolutions.bondarenko.study.ws.rest.errorhandling;
 
-import com.nixsolutions.bondarenko.study.ws.response.ResponseCode;
-import com.nixsolutions.bondarenko.study.ws.response.WebServiceResponse;
+import com.nixsolutions.bondarenko.study.ws.result.ErrorCode;
+import com.nixsolutions.bondarenko.study.ws.result.ResultCode;
+import com.nixsolutions.bondarenko.study.ws.result.WebServiceResult;
 
 import javax.validation.ValidationException;
 import javax.ws.rs.core.MediaType;
@@ -13,9 +14,9 @@ public class ValidationExceptionMapper implements ExceptionMapper<javax.validati
     public Response toResponse(ValidationException e) {
         Response.Status status = Response.Status.BAD_REQUEST;
         //TODO say about invalid field
-        WebServiceResponse response = new WebServiceResponse(ResponseCode.INVALID_USER, "Invalid user data");
+        WebServiceResult result = new WebServiceResult(ResultCode.ERROR, ErrorCode.INVALID_USER, "Invalid user data");
         return Response.status(status)
-                .entity(response)
+                .entity(result)
                 .type(MediaType.APPLICATION_JSON)
                 .build();
     }

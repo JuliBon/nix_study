@@ -2,11 +2,11 @@ package com.nixsolutions.bondarenko.study.ws.soap;
 
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.service.UserService;
-import com.nixsolutions.bondarenko.study.ws.response.ResponseCode;
-import com.nixsolutions.bondarenko.study.ws.response.UserCreateResponse;
-import com.nixsolutions.bondarenko.study.ws.response.WebServiceResponse;
-import com.nixsolutions.bondarenko.study.ws.soap.response.SoapGetUserResponse;
-import com.nixsolutions.bondarenko.study.ws.soap.response.SoapGetUsersResponse;
+import com.nixsolutions.bondarenko.study.ws.result.ResultCode;
+import com.nixsolutions.bondarenko.study.ws.result.UserCreateResult;
+import com.nixsolutions.bondarenko.study.ws.result.WebServiceResult;
+import com.nixsolutions.bondarenko.study.ws.result.GetUserResult;
+import com.nixsolutions.bondarenko.study.ws.result.GetUsersResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebService;
@@ -18,29 +18,29 @@ public class SoapUserServiceImpl implements SoapUserService {
     private UserService userService;
 
     @Override
-    public SoapGetUserResponse getUser(Long id) {
-        return new SoapGetUserResponse(ResponseCode.OK, userService.getUser(id));
+    public GetUserResult getUser(Long id) {
+        return new GetUserResult(ResultCode.OK, userService.getUser(id));
     }
 
     @Override
-    public SoapGetUsersResponse getUsers() {
-        return new SoapGetUsersResponse(ResponseCode.OK, userService.getUsers());
+    public GetUsersResult getUsers() {
+        return new GetUsersResult(ResultCode.OK, userService.getUsers());
     }
 
     @Override
-    public WebServiceResponse deleteUser(Long id) {
+    public WebServiceResult deleteUser(Long id) {
         userService.deleteUser(id);
-        return new WebServiceResponse(ResponseCode.OK, "User have been deleted");
+        return new WebServiceResult(ResultCode.OK, "User have been deleted");
     }
 
     @Override
-    public UserCreateResponse createUser(User user) {
-        return new UserCreateResponse(ResponseCode.OK, userService.createUser(user), "User have been created");
+    public UserCreateResult createUser(User user) {
+        return new UserCreateResult(ResultCode.OK, userService.createUser(user), "User have been created");
     }
 
     @Override
-    public WebServiceResponse updateUser(User user) {
+    public WebServiceResult updateUser(User user) {
         userService.updateUser(user);
-        return new WebServiceResponse(ResponseCode.OK, "User have been updated");
+        return new WebServiceResult(ResultCode.OK, "User have been updated");
     }
 }

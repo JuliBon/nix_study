@@ -2,9 +2,7 @@ package com.nixsolutions.bondarenko.study.ws.rest.resource;
 
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.service.UserService;
-import com.nixsolutions.bondarenko.study.ws.response.ResponseCode;
-import com.nixsolutions.bondarenko.study.ws.response.UserCreateResponse;
-import com.nixsolutions.bondarenko.study.ws.response.WebServiceResponse;
+import com.nixsolutions.bondarenko.study.ws.result.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -27,13 +25,17 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") Long id) {
         User user = userService.getUser(id);
-        return Response.status(Response.Status.OK).entity(user).build();
+        GetUserResult getUserResult = new GetUserResult(ResultCode.OK, user);
+        return Response.status(Response.Status.OK).entity(getUserResult).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public Response getUsers() {
+        List<User> users = userService.getUsers();
+        GetUsersResult getUsersResult = new GetUsersResult(ResultCode.OK, users);
+        return Response.status(Response.Status.OK).entity(getUsersResult).build();
+
     }
 
     @POST
@@ -41,8 +43,8 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(User user) {
         Long id = userService.createUser(user);
-        WebServiceResponse response = new UserCreateResponse(ResponseCode.OK, id, "A new user has been created");
-        return Response.status(Response.Status.CREATED).entity(response).build();
+        WebServiceResult result = new UserCreateResult(ResultCode.OK, id, "A new user has been created");
+        return Response.status(Response.Status.CREATED).entity(result).build();
     }
 
     @PUT
@@ -50,8 +52,8 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(User user) {
         userService.updateUser(user);
-        WebServiceResponse response = new WebServiceResponse(ResponseCode.OK, "User has been updated");
-        return Response.status(Response.Status.OK).entity(response).build();
+        WebServiceResult result = new WebServiceResult(ResultCode.OK, "User has been updated");
+        return Response.status(Response.Status.OK).entity(result).build();
     }
 
     @PUT
@@ -59,15 +61,15 @@ public class UsersResource {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@PathParam("id") Long id, User user) {
-        WebServiceResponse response;
+        WebServiceResult result;
         if (userService.verifyUserExistence(id)) {
             userService.updateUser(user);
-            response = new WebServiceResponse(ResponseCode.OK,"User has been updated");
-            return Response.status(Response.Status.OK).entity(response).build();
+            result = new WebServiceResult(ResultCode.OK,"User has been updated");
+            return Response.status(Response.Status.OK).entity(result).build();
         } else {
             Long createdUserId = userService.createUser(user);
-            response = new UserCreateResponse(ResponseCode.OK, createdUserId, "A new user has been created");
-            return Response.status(Response.Status.CREATED).entity(response).build();
+            result = new UserCreateResult(ResultCode.OK, createdUserId, "A new user has been created");
+            return Response.status(Response.Status.CREATED).entity(result).build();
         }
     }
 
@@ -76,7 +78,7 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("id") Long id) {
         userService.deleteUser(id);
-        WebServiceResponse response = new WebServiceResponse(ResponseCode.OK, "User has been deleted");
-        return Response.status(Response.Status.OK).entity(response).build();
+        WebServiceResult result = new WebServiceResult(ResultCode.OK, "User has been deleted");
+        return Response.status(Response.Status.OK).entity(result).build();
     }
 }

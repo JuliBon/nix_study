@@ -1,10 +1,10 @@
 package com.nixsolutions.bondarenko.study.ws.soap;
 
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.ws.response.UserCreateResponse;
-import com.nixsolutions.bondarenko.study.ws.response.WebServiceResponse;
-import com.nixsolutions.bondarenko.study.ws.soap.response.SoapGetUserResponse;
-import com.nixsolutions.bondarenko.study.ws.soap.response.SoapGetUsersResponse;
+import com.nixsolutions.bondarenko.study.ws.result.UserCreateResult;
+import com.nixsolutions.bondarenko.study.ws.result.WebServiceResult;
+import com.nixsolutions.bondarenko.study.ws.result.GetUserResult;
+import com.nixsolutions.bondarenko.study.ws.result.GetUsersResult;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -14,17 +14,17 @@ import javax.jws.WebService;
 public interface SoapUserService {
 
     @WebMethod
-    SoapGetUserResponse getUser(@WebParam(name = "text") Long id);
+    GetUserResult getUser(@WebParam(name = "text") Long id);
 
     @WebMethod
-    SoapGetUsersResponse getUsers();
+    GetUsersResult getUsers();
 
     @WebMethod
-    WebServiceResponse deleteUser(@WebParam(name = "id") Long id);
+    WebServiceResult deleteUser(@WebParam(name = "id") Long id);
 
     @WebMethod
-    UserCreateResponse createUser(@WebParam(name = "user") User user);
+    UserCreateResult createUser(@WebParam(name = "user") User user);
 
     @WebMethod
-    WebServiceResponse updateUser(@WebParam(name = "user") User user);
+    WebServiceResult updateUser(@WebParam(name = "user") User user);
 }
