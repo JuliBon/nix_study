@@ -2,6 +2,9 @@ package com.nixsolutions.bondarenko.study.ws.rest.resource;
 
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.service.UserService;
+import com.nixsolutions.bondarenko.study.ws.response.ResponseCode;
+import com.nixsolutions.bondarenko.study.ws.response.UserCreateResponse;
+import com.nixsolutions.bondarenko.study.ws.response.WebServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -35,35 +38,45 @@ public class UsersResource {
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(User user) {
-        userService.createUser(user);
-        return Response.status(Response.Status.CREATED).entity("A new user has been created").build();
+        Long id = userService.createUser(user);
+        WebServiceResponse response = new UserCreateResponse(ResponseCode.OK, id, "A new user has been created");
+        return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(User user) {
         userService.updateUser(user);
-        return Response.status(Response.Status.OK).entity("User has been updated").build();
+        WebServiceResponse response = new WebServiceResponse(ResponseCode.OK, "User has been updated");
+        return Response.status(Response.Status.OK).entity(response).build();
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@PathParam("id") Long id, User user) {
+        WebServiceResponse response;
         if (userService.verifyUserExistence(id)) {
             userService.updateUser(user);
-            return Response.status(Response.Status.OK).entity("User has been updated").build();
+            response = new WebServiceResponse(ResponseCode.OK,"User has been updated");
+            return Response.status(Response.Status.OK).entity(response).build();
         } else {
-            userService.createUser(user);
-            return Response.status(Response.Status.CREATED).entity("A new user has been created").build();
+            Long createdUserId = userService.createUser(user);
+            response = new UserCreateResponse(ResponseCode.OK, createdUserId, "A new user has been created");
+            return Response.status(Response.Status.CREATED).entity(response).build();
         }
     }
 
     @DELETE
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@PathParam("id") Long id) {
         userService.deleteUser(id);
-        return Response.status(Response.Status.OK).entity("User has been deleted").build();
+        WebServiceResponse response = new WebServiceResponse(ResponseCode.OK, "User has been deleted");
+        return Response.status(Response.Status.OK).entity(response).build();
     }
 }

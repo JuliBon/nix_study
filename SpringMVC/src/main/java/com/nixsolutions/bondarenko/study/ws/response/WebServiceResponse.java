@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study.ws.rest.response;
+package com.nixsolutions.bondarenko.study.ws.response;
 
 
 public class WebServiceResponse {

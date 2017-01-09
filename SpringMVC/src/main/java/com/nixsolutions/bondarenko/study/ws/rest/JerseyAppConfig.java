@@ -9,7 +9,7 @@ public class JerseyAppConfig extends ResourceConfig {
     public JerseyAppConfig() {
         register(UsersResource.class);
 
-        register(ValidationExceptionMapping.class);
+        register(ValidationExceptionMapper.class);
         register(UserNotFoundExceptionMapper.class);
         register(NotUniqueEmailExceptionMapper.class);
         register(NotUniqueLoginExceptionMapper.class);

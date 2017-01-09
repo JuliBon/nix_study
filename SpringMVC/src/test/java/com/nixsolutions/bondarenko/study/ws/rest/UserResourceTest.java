@@ -6,8 +6,9 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserRole;
-import com.nixsolutions.bondarenko.study.ws.rest.response.ResponseCode;
-import com.nixsolutions.bondarenko.study.ws.rest.response.WebServiceResponse;
+import com.nixsolutions.bondarenko.study.ws.response.ResponseCode;
+import com.nixsolutions.bondarenko.study.ws.response.UserCreateResponse;
+import com.nixsolutions.bondarenko.study.ws.response.WebServiceResponse;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.junit.After;
@@ -110,6 +111,7 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+        Assert.assertTrue(response.readEntity(UserCreateResponse.class).getId().equals(3L));
     }
 
     @Test
@@ -163,6 +165,7 @@ public class UserResourceTest {
         Response response = target.path("/3").request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+        Assert.assertTrue(response.readEntity(UserCreateResponse.class).getId().equals(3L));
     }
 
     @Test
@@ -172,6 +175,7 @@ public class UserResourceTest {
         Response response = target.path("/1").request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.OK, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test
@@ -188,7 +192,7 @@ public class UserResourceTest {
     @Test
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void updateUserNotUniqueEmailPUT() {
-        user1.setEmail("ivan@mail.ru");
+        user1.setEmail(user2.getEmail());
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
 
@@ -199,8 +203,9 @@ public class UserResourceTest {
     @Test
     @ExpectedDatabase(value = "/test_data/UserRemoveExpectedDataSet.xml")
     public void deleteUser() {
-        Response response = target.path("/1").request().delete();
+        Response response = target.path("/" + user1.getId()).request().delete();
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Assert.assertEquals(ResponseCode.OK, response.readEntity(WebServiceResponse.class).getCode());
     }
 
     @Test

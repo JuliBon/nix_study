@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(User user) {
+    public Long createUser(User user) {
         UserCreateValidator userCreateValidator = new UserCreateValidator(userDao);
         if (!userCreateValidator.isLoginUnique(user)) {
             throw new NotUniqueLoginException();
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         if (!userCreateValidator.isEmailUnique(user)) {
             throw new NotUniqueEmailException();
         }
-        userDao.create(user);
+        return userDao.create(user);
     }
 
     @Override
