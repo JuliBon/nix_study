@@ -31,6 +31,7 @@ public class ObjectFactory {
     private final static QName _GetUsersResponse_QNAME = new QName("http://soap.ws.study.bondarenko.nixsolutions.com/", "getUsersResponse");
     private final static QName _UpdateUserResponse_QNAME = new QName("http://soap.ws.study.bondarenko.nixsolutions.com/", "updateUserResponse");
     private final static QName _User_QNAME = new QName("http://soap.ws.study.bondarenko.nixsolutions.com/", "user");
+    private final static QName _Result_QNAME = new QName("http://soap.ws.study.bondarenko.nixsolutions.com/", "result");
     private final static QName _GetUserResponse_QNAME = new QName("http://soap.ws.study.bondarenko.nixsolutions.com/", "getUserResponse");
     private final static QName _GetUsers_QNAME = new QName("http://soap.ws.study.bondarenko.nixsolutions.com/", "getUsers");
     private final static QName _GetUser_QNAME = new QName("http://soap.ws.study.bondarenko.nixsolutions.com/", "getUser");
@@ -44,43 +45,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetUsers }
+     * Create an instance of {@link Role }
      * 
      */
-    public GetUsers createGetUsers() {
-        return new GetUsers();
+    public Role createRole() {
+        return new Role();
     }
 
     /**
-     * Create an instance of {@link DeleteUserResponse }
+     * Create an instance of {@link GetUser }
      * 
      */
-    public DeleteUserResponse createDeleteUserResponse() {
-        return new DeleteUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetUserResponse }
-     * 
-     */
-    public GetUserResponse createGetUserResponse() {
-        return new GetUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link User }
-     * 
-     */
-    public User createUser() {
-        return new User();
-    }
-
-    /**
-     * Create an instance of {@link UserCreateResult }
-     * 
-     */
-    public UserCreateResult createUserCreateResult() {
-        return new UserCreateResult();
+    public GetUser createGetUser() {
+        return new GetUser();
     }
 
     /**
@@ -92,11 +69,67 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeleteUser }
+     * 
+     */
+    public DeleteUser createDeleteUser() {
+        return new DeleteUser();
+    }
+
+    /**
+     * Create an instance of {@link GetUserResult }
+     * 
+     */
+    public GetUserResult createGetUserResult() {
+        return new GetUserResult();
+    }
+
+    /**
+     * Create an instance of {@link UpdateUserResponse }
+     * 
+     */
+    public UpdateUserResponse createUpdateUserResponse() {
+        return new UpdateUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link User }
+     * 
+     */
+    public User createUser() {
+        return new User();
+    }
+
+    /**
      * Create an instance of {@link GetUsersResult }
      * 
      */
     public GetUsersResult createGetUsersResult() {
         return new GetUsersResult();
+    }
+
+    /**
+     * Create an instance of {@link GetUserResponse }
+     * 
+     */
+    public GetUserResponse createGetUserResponse() {
+        return new GetUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link CreateUserResponse }
+     * 
+     */
+    public CreateUserResponse createCreateUserResponse() {
+        return new CreateUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link DeleteUserResponse }
+     * 
+     */
+    public DeleteUserResponse createDeleteUserResponse() {
+        return new DeleteUserResponse();
     }
 
     /**
@@ -116,35 +149,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UpdateUserResponse }
+     * Create an instance of {@link UserCreateResult }
      * 
      */
-    public UpdateUserResponse createUpdateUserResponse() {
-        return new UpdateUserResponse();
+    public UserCreateResult createUserCreateResult() {
+        return new UserCreateResult();
     }
 
     /**
-     * Create an instance of {@link CreateUserResponse }
+     * Create an instance of {@link GetUsers }
      * 
      */
-    public CreateUserResponse createCreateUserResponse() {
-        return new CreateUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetUserResult }
-     * 
-     */
-    public GetUserResult createGetUserResult() {
-        return new GetUserResult();
-    }
-
-    /**
-     * Create an instance of {@link GetUser }
-     * 
-     */
-    public GetUser createGetUser() {
-        return new GetUser();
+    public GetUsers createGetUsers() {
+        return new GetUsers();
     }
 
     /**
@@ -153,22 +170,6 @@ public class ObjectFactory {
      */
     public UpdateUser createUpdateUser() {
         return new UpdateUser();
-    }
-
-    /**
-     * Create an instance of {@link Role }
-     * 
-     */
-    public Role createRole() {
-        return new Role();
-    }
-
-    /**
-     * Create an instance of {@link DeleteUser }
-     * 
-     */
-    public DeleteUser createDeleteUser() {
-        return new DeleteUser();
     }
 
     /**
@@ -232,6 +233,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.ws.study.bondarenko.nixsolutions.com/", name = "user")
     public JAXBElement<User> createUser(User value) {
         return new JAXBElement<User>(_User_QNAME, User.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Object }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soap.ws.study.bondarenko.nixsolutions.com/", name = "result")
+    public JAXBElement<Object> createResult(Object value) {
+        return new JAXBElement<Object>(_Result_QNAME, Object.class, null, value);
     }
 
     /**
