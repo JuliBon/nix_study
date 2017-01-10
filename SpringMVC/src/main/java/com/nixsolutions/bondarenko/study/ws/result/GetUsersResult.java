@@ -17,9 +17,8 @@ public class GetUsersResult extends WebServiceResult {
         this.userList = userList;
     }
     public GetUsersResult(ResultCode resultCode, ErrorCode errorCode, String message) {
-        this.resultCode = resultCode;
-        this.errorCode = errorCode;
-        this.message = message;
+        super(resultCode, errorCode, message);
+
     }
 
     public List<User> getUserList() {

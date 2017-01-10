@@ -15,9 +15,8 @@ public class UserCreateResult extends WebServiceResult {
         this.message = message;
     }
 
-    public UserCreateResult(ResultCode resultCode, ErrorCode errorCode, Long id, String message) {
-        this(resultCode, id, message);
-        this.errorCode = errorCode;
+    public UserCreateResult(ResultCode resultCode, ErrorCode errorCode, String message) {
+        super(resultCode, errorCode, message);
     }
 
     public Long getId() {

@@ -12,9 +12,7 @@ public class GetUserResult extends WebServiceResult {
     }
 
     public GetUserResult(ResultCode resultCode, ErrorCode errorCode, String message) {
-        this.resultCode = resultCode;
-        this.errorCode = errorCode;
-        this.message = message;
+        super(resultCode, errorCode, message);
     }
 
     public GetUserResult(ResultCode resultCode, User user) {
