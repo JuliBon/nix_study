@@ -1,13 +1,25 @@
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import org.apache.cxf.interceptor.InFaultInterceptors;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+import com.github.springtestdbunit.dataset.DataSetLoader;
+import org.dbunit.Assertion;
+import org.dbunit.dataset.DataSetException;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import soap.ws.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -18,14 +30,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TimeZone;
 
 @ContextConfiguration(locations = "classpath:application-context.xml")
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({
-        DependencyInjectionTestExecutionListener.class})
+        DependencyInjectionTestExecutionListener.class,
+        DbUnitTestExecutionListener.class})
+@DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
 public class SoapClient {
+
     @Autowired
     private SoapUserService soapUserService;
 
@@ -34,7 +47,6 @@ public class SoapClient {
     private User newUser;
 
     public SoapClient() throws ParseException, DatatypeConfigurationException {
-        //TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
         Role roleAdmin = new Role();
         roleAdmin.setId(1L);
@@ -50,7 +62,7 @@ public class SoapClient {
         user1 = new User();
         user1.setId(1L);
         user1.setLogin("yulya");
-        user1.setPassword("12345");
+        user1.setPassword("Qwe1");
         user1.setEmail("yulya@mail.ru");
         user1.setFirstName("yuliya");
         user1.setLastName("bondarenko");
@@ -62,7 +74,7 @@ public class SoapClient {
         user2 = new User();
         user2.setId(2L);
         user2.setLogin("ivan");
-        user2.setPassword("98765");
+        user2.setPassword("Qwe1");
         user2.setEmail("ivan@mail.ru");
         user2.setFirstName("ivan");
         user2.setLastName("grozniy");
@@ -78,14 +90,14 @@ public class SoapClient {
         newUser.setEmail("nata@mail.ru");
         newUser.setFirstName("nataliya");
         newUser.setLastName("bondarenko");
-        newUser.setRole(roleAdmin);
+        newUser.setRole(roleUser);
 
         c.setTime(formatter.parse("1991-09-19"));
         birthday = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
         newUser.setBirthday(birthday);
     }
 
-    private void assertUserEquals(User userExpected, User userActual){
+    private void assertUserEquals(User userExpected, User userActual) {
         Assert.assertEquals(userExpected.getLogin(), userActual.getLogin());
         Assert.assertEquals(userExpected.getPassword(), userActual.getPassword());
         Assert.assertEquals(userExpected.getEmail(), userActual.getEmail());
@@ -122,7 +134,7 @@ public class SoapClient {
     }
 
     @Test
-    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
+    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void createUser() {
         UserCreateResult result = soapUserService.createUser(newUser);
         Assert.assertEquals(ResultCode.OK, result.getResultCode());
