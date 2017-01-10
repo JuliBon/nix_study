@@ -3,15 +3,13 @@ package com.nixsolutions.bondarenko.study.ws.rest;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserRole;
 import com.nixsolutions.bondarenko.study.ws.result.*;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.junit.After;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,6 +17,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -28,6 +27,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -39,40 +39,31 @@ import java.util.TimeZone;
 @DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
 public class UserResourceTest {
 
-    private HttpServer server;
+    private static final URI BASE_URI = URI.create("http://localhost:8080/rest");
+    Client client;
     private WebTarget target;
-    private static final URI BASE_URI = URI.create("http://localhost:8081/rest");
 
     private User user1;
     private User user2;
     private User newUser;
 
     public UserResourceTest() throws ParseException {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-
-        server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, new JerseyAppConfig());
+        client = ClientBuilder.newClient();
+        client.register(JacksonFeature.class);
+        target = client.target(BASE_URI).path("/users");
 
         Role roleAdmin = new Role(1L, UserRole.ADMIN.name());
         Role roleUser = new Role(2L, UserRole.USER.name());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        formatter.setTimeZone(TimeZone.getDefault());
 
         user1 = new User(1L, "yulya", "12345", "yulya@mail.ru",
                 "yuliya", "bondarenko", formatter.parse("1993-01-10"), roleAdmin);
         user2 = new User(2L, "ivan", "98765", "ivan@mail.ru",
                 "ivan", "grozniy", formatter.parse("1530-09-03"), roleUser);
+        Date parsedDate = formatter.parse("1991-09-19");
         newUser = new User(5L, "nata", "Agent007", "nata@mail.ru",
-                "nataliya", "bondarenko", formatter.parse("1991-09-19"), roleUser);
-    }
-
-    @Before
-    public void setUp() throws IOException {
-        server.start();
-        target = ClientBuilder.newClient().target(BASE_URI + "/users");
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        server.stop();
+                "nataliya", "bondarenko", parsedDate, roleUser);
     }
 
     @Test
@@ -80,7 +71,7 @@ public class UserResourceTest {
         Response response = target.path("/" + user1.getId()).request(MediaType.APPLICATION_JSON).get();
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
-        GetUserResult result =  response.readEntity(GetUserResult.class);
+        GetUserResult result = response.readEntity(GetUserResult.class);
         Assert.assertEquals(ResultCode.OK, result.getResultCode());
         Assert.assertEquals(user1, result.getUser());
     }
@@ -163,7 +154,7 @@ public class UserResourceTest {
     }
 
     @Test
-    @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml")
+    @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void updateUserPUT() {
         user1.setPassword("Agent007");
         Response response = target.request(MediaType.APPLICATION_JSON)
@@ -174,7 +165,7 @@ public class UserResourceTest {
     }
 
     @Test
-    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
+    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void createUserPUT_id() {
         Response response = target.path("/3").request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);

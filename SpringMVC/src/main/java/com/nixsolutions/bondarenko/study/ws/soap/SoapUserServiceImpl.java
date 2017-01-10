@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebService;
 
-
 @WebService(endpointInterface = "com.nixsolutions.bondarenko.study.ws.soap.SoapUserService",
         serviceName = "soapUserService")
 @OutFaultInterceptors(interceptors = {"com.nixsolutions.bondarenko.study.ws.soap.interceptor.ExceptionInterceptor"})

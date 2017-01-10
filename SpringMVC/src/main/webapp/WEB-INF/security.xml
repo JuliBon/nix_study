@@ -12,6 +12,7 @@
     <context:annotation-config/>
 
     <http pattern="/soap/**" security="none" create-session="stateless"/>
+    <http pattern="/rest/**" security="none" create-session="stateless"/>
 
     <http auto-config="true">
         <intercept-url pattern="/" access="permitAll"/>

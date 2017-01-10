@@ -42,7 +42,7 @@ public class User {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy", timezone="UTC")
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
