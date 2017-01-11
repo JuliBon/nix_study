@@ -10,10 +10,10 @@
     <bean id="roleDao" class="com.nixsolutions.bondarenko.study.dao.hibernate.HibernateRoleDao"/>
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-        <property name="driverClassName" value="${driver}" />
+        <property name="driverClassName" value="${db.driver}" />
         <property name="url" value="${db.url}" />
-        <property name="username" value="${username}" />
-        <property name="password" value="${password}" />
+        <property name="username" value="${db.username}" />
+        <property name="password" value="${db.password}" />
     </bean>
 
     <bean id="sessionFactory"
