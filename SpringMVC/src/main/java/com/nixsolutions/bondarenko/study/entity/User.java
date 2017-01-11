@@ -1,6 +1,9 @@
 package com.nixsolutions.bondarenko.study.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.nixsolutions.bondarenko.study.CustomDateDeserializer;
+import com.nixsolutions.bondarenko.study.CustomDateSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -42,7 +45,8 @@ public class User {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy", timezone="UTC")
+    @JsonSerialize(using = CustomDateSerializer.class)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 

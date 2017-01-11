@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<dataset>
-    <ROLE ID="1" NAME="system-admin"/>
-    <ROLE ID="2" NAME="USER"/>
-
-    <USER id="1" login="yulya" password="Qwe1" email="yulya@mail.ru" firstName="yuliya" lastName="bondarenko" birthday="1993-01-10" id_role="1"/>
-    <USER id="2" login="ivan" password="Qwe1" email="ivan@mail.ru" firstName="ivan" lastName="grozniy" birthday="1530-09-03" id_role="2"/>
-</dataset>

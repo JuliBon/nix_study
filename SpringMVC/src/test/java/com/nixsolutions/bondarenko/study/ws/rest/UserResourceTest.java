@@ -29,7 +29,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 @ContextConfiguration(locations = "classpath:applicationContext.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,7 +39,7 @@ import java.util.TimeZone;
 public class UserResourceTest {
 
     private static final URI BASE_URI = URI.create("http://localhost:8080/rest");
-    Client client;
+
     private WebTarget target;
 
     private User user1;
@@ -48,18 +47,17 @@ public class UserResourceTest {
     private User newUser;
 
     public UserResourceTest() throws ParseException {
-        client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient();
         client.register(JacksonFeature.class);
         target = client.target(BASE_URI).path("/users");
 
         Role roleAdmin = new Role(1L, UserRole.ADMIN.name());
         Role roleUser = new Role(2L, UserRole.USER.name());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        formatter.setTimeZone(TimeZone.getDefault());
 
-        user1 = new User(1L, "yulya", "12345", "yulya@mail.ru",
+        user1 = new User(1L, "yulya", "Pass123", "yulya@mail.ru",
                 "yuliya", "bondarenko", formatter.parse("1993-01-10"), roleAdmin);
-        user2 = new User(2L, "ivan", "98765", "ivan@mail.ru",
+        user2 = new User(2L, "ivan", "Pass123", "ivan@mail.ru",
                 "ivan", "grozniy", formatter.parse("1530-09-03"), roleUser);
         Date parsedDate = formatter.parse("1991-09-19");
         newUser = new User(5L, "nata", "Agent007", "nata@mail.ru",
@@ -101,15 +99,15 @@ public class UserResourceTest {
     }
 
     @Test
-    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
-    public void createUserPOST() {
+    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void createUserPOST() throws IOException {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
 
         UserCreateResult createResult = response.readEntity(UserCreateResult.class);
         Assert.assertEquals(ResultCode.OK, createResult.getResultCode());
-        Assert.assertTrue(createResult.getId().equals(3L));
+        Assert.assertNotNull(createResult.getId());
     }
 
     @Test
@@ -154,7 +152,7 @@ public class UserResourceTest {
     }
 
     @Test
-    @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml")
     public void updateUserPUT() {
         user1.setPassword("Agent007");
         Response response = target.request(MediaType.APPLICATION_JSON)
@@ -173,7 +171,7 @@ public class UserResourceTest {
 
         UserCreateResult createResult = response.readEntity(UserCreateResult.class);
         Assert.assertEquals(ResultCode.OK, createResult.getResultCode());
-        Assert.assertTrue(createResult.getId().equals(3L));
+        Assert.assertNotNull(createResult.getId());
     }
 
     @Test

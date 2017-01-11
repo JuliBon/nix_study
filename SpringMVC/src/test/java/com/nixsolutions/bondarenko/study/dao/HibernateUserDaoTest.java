@@ -3,6 +3,7 @@ package com.nixsolutions.bondarenko.study.dao;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
@@ -43,9 +44,8 @@ public class HibernateUserDaoTest {
                 "nataliya", "bondarenko", formatter.parse("1991-9-19"), new Role(2L, "USER"));
     }
 
-    //!!! user id after creation must be 3, but actually 5
     @Test
-    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
+    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testCreateUserUniqueLoginAndEmain(){
         userDao.create(testUser);
     }

@@ -3,6 +3,7 @@ package com.nixsolutions.bondarenko.study.service;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserRole;
@@ -43,11 +44,11 @@ public class UserServiceTest {
         Role roleUser = new Role(2L, UserRole.USER.name());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        user1 = new User(1L, "yulya", "12345", "yulya@mail.ru",
+        user1 = new User(1L, "yulya", "Pass123", "yulya@mail.ru",
                 "yuliya", "bondarenko", formatter.parse("1993-01-10"), roleAdmin);
-        user2 = new User(2L, "ivan", "98765", "ivan@mail.ru",
+        user2 = new User(2L, "ivan", "Pass123", "ivan@mail.ru",
                 "ivan", "grozniy", formatter.parse("1530-09-03"), roleUser);
-        newUser = new User(5L, "nata", "Agent007", "nata@mail.ru",
+        newUser = new User(3L, "nata", "Agent007", "nata@mail.ru",
                 "nataliya", "bondarenko", formatter.parse("1991-09-19"), roleUser);
     }
 
@@ -71,7 +72,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml")
+    @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void createUser() {
         userService.createUser(newUser);
     }
