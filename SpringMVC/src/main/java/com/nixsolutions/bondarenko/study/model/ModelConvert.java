@@ -7,6 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class ModelConvert {
+    private ModelConvert() {
+    }
+
     public static User convertToUser(UserModel userModel, RoleDao roleDao) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -15,7 +18,7 @@ public class ModelConvert {
         try {
             user.setBirthday(formatter.parse(userModel.getBirthdayStr()));
         } catch (ParseException e) {
-            throw  new RuntimeException("Cant't parse date", e);
+            throw new RuntimeException("Cant't parse date", e);
         }
 
         if (roleDao != null) {

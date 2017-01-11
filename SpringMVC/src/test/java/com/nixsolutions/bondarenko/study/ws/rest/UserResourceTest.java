@@ -168,7 +168,7 @@ public class UserResourceTest {
     @Test
     @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void createUserPUT_id() {
-        Response response = target.path("/3").request(MediaType.APPLICATION_JSON)
+        Response response = target.path("/" + newUser.getId()).request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
 
@@ -181,7 +181,7 @@ public class UserResourceTest {
     @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml")
     public void updateUserPUT_id() {
         user1.setPassword("Agent007");
-        Response response = target.path("/1").request(MediaType.APPLICATION_JSON)
+        Response response = target.path("/" + user1.getId()).request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
@@ -227,7 +227,7 @@ public class UserResourceTest {
     @Test
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
     public void deleteUserNotExisting() {
-        Response response = target.path("/999").request().delete();
+        Response response = target.path("/" + newUser.getId()).request().delete();
         Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
         WebServiceResult result = response.readEntity(WebServiceResult.class);

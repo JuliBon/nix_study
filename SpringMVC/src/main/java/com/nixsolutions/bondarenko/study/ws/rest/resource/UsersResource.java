@@ -64,7 +64,7 @@ public class UsersResource {
         WebServiceResult result;
         if (userService.verifyUserExistence(id)) {
             userService.updateUser(user);
-            result = new WebServiceResult(ResultCode.OK,"User has been updated");
+            result = new WebServiceResult(ResultCode.OK, "User has been updated");
             return Response.status(Response.Status.OK).entity(result).build();
         } else {
             Long createdUserId = userService.createUser(user);

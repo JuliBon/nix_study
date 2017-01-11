@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoleUtils {
+    private RoleUtils(){}
 
     public static List<String> getRoleNames() {
         List<String> roleList = new ArrayList<>();

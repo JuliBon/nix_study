@@ -4,12 +4,10 @@ import com.nixsolutions.bondarenko.study.model.UserModel;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-/**
- * @author Yulya Bondarenko
- */
+
 public abstract class UserModelValidator implements Validator {
-    String ERROR_NOT_UNIQUE_LOGIN = "user with this login already exists";
-    String ERROR_NOT_UNIQUE_EMAIL = "this email is already attached to another user";
+    protected String ERROR_NOT_UNIQUE_LOGIN = "user with this login already exists";
+    protected String ERROR_NOT_UNIQUE_EMAIL = "this email is already attached to another user";
 
     @Override
     public boolean supports(Class<?> aClass) {

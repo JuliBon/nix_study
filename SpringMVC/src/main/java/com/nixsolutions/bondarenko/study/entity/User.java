@@ -2,8 +2,8 @@ package com.nixsolutions.bondarenko.study.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.nixsolutions.bondarenko.study.CustomDateDeserializer;
-import com.nixsolutions.bondarenko.study.CustomDateSerializer;
+import com.nixsolutions.bondarenko.study.ws.rest.jsonserializanion.CustomDateDeserializer;
+import com.nixsolutions.bondarenko.study.ws.rest.jsonserializanion.CustomDateSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;

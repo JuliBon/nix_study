@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study;
+package com.nixsolutions.bondarenko.study.ws.rest.jsonserializanion;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

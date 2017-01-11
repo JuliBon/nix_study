@@ -5,9 +5,7 @@ import com.nixsolutions.bondarenko.study.model.UserModel;
 import com.nixsolutions.bondarenko.study.validation.user.UserCreateValidator;
 import org.springframework.validation.Errors;
 
-/**
- * @author Yulya Bondarenko
- */
+
 public class UserModelCreateValidator extends UserModelValidator {
     private UserCreateValidator userCreateValidator;
 

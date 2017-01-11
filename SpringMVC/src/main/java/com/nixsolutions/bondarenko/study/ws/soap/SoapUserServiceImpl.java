@@ -6,14 +6,12 @@ import com.nixsolutions.bondarenko.study.exception.NotUniqueLoginException;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.service.UserService;
 import com.nixsolutions.bondarenko.study.ws.result.*;
-import org.apache.cxf.interceptor.OutFaultInterceptors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebService;
 
 @WebService(endpointInterface = "com.nixsolutions.bondarenko.study.ws.soap.SoapUserService",
         serviceName = "soapUserService")
-@OutFaultInterceptors(interceptors = {"com.nixsolutions.bondarenko.study.ws.soap.interceptor.ExceptionInterceptor"})
 public class SoapUserServiceImpl implements SoapUserService {
     @Autowired
     private UserService userService;

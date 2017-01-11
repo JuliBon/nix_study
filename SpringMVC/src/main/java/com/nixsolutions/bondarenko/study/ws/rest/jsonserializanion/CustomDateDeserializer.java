@@ -1,4 +1,4 @@
-package com.nixsolutions.bondarenko.study;
+package com.nixsolutions.bondarenko.study.ws.rest.jsonserializanion;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

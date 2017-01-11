@@ -1,5 +1,6 @@
 package com.nixsolutions.bondarenko.study.controller;
 
+import org.glassfish.grizzly.http.util.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -23,7 +24,7 @@ public class GlobalControllerExceptionHandler {
 
         logger.error(req.getContextPath(), e);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("status", 500);
+        modelAndView.addObject("status", HttpStatus.INTERNAL_SERVER_ERROR_500);
         modelAndView.setViewName("error");
         return modelAndView;
     }
