@@ -41,7 +41,7 @@ import java.util.List;
 @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
 public class UserResourceTest {
 
-    private static final URI BASE_URI = URI.create("http://localhost:8080/rest");
+    private static final URI BASE_URI = URI.create("http://10.10.35.56:8080/rest");
 
     private WebTarget target;
 
