@@ -1,25 +1,17 @@
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
-import com.github.springtestdbunit.dataset.DataSetLoader;
-import org.dbunit.Assertion;
-import org.dbunit.dataset.DataSetException;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.filter.DefaultColumnFilter;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import soap.ws.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -36,7 +28,8 @@ import java.util.List;
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
-@DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
+@DatabaseSetup(value = "classpath:/test_data/InitialDataSet.xml", type = DatabaseOperation.CLEAN_INSERT)
+@DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
 public class SoapClient {
 
     @Autowired
@@ -62,7 +55,7 @@ public class SoapClient {
         user1 = new User();
         user1.setId(1L);
         user1.setLogin("yulya");
-        user1.setPassword("Qwe1");
+        user1.setPassword("Pass123");
         user1.setEmail("yulya@mail.ru");
         user1.setFirstName("yuliya");
         user1.setLastName("bondarenko");
@@ -74,7 +67,7 @@ public class SoapClient {
         user2 = new User();
         user2.setId(2L);
         user2.setLogin("ivan");
-        user2.setPassword("Qwe1");
+        user2.setPassword("Pass123");
         user2.setEmail("ivan@mail.ru");
         user2.setFirstName("ivan");
         user2.setLastName("grozniy");
