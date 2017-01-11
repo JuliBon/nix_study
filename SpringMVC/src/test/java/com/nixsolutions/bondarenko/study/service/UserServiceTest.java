@@ -1,8 +1,7 @@
 package com.nixsolutions.bondarenko.study.service;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.annotation.*;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
@@ -24,12 +23,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-@ContextConfiguration(locations = "classpath:applicationContext.xml")
+@ContextConfiguration(locations = "classpath:application-context-web-service.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
-@DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
+@DatabaseSetup(value = "classpath:/test_data/InitialDataSet.xml", type = DatabaseOperation.CLEAN_INSERT)
+@DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
 public class UserServiceTest {
 
     @Autowired

@@ -1,7 +1,9 @@
 package com.nixsolutions.bondarenko.study.dao;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import org.junit.Test;
@@ -17,14 +19,15 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 
-@ContextConfiguration(locations = "classpath:database-config.xml")
+@ContextConfiguration(locations = "classpath:application-context-db-in-mem-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 
-@DatabaseSetup("/test_data/InitialDataSet.xml")
+@DatabaseSetup(value = "classpath:/test_data/InitialDataSet.xml", type = DatabaseOperation.CLEAN_INSERT)
+@DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
 public class HibernateRoleDaoTest {
 
     @Autowired

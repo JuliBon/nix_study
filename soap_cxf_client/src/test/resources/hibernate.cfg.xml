@@ -10,7 +10,7 @@
 
         <property name="show_sql">false</property>
         <property name="show_hql">false</property>
-        <property name="hbm2ddl.auto">create-drop</property>
+        <property name="hbm2ddl.auto">create</property>
 
         <mapping class="soap.ws.Role"/>
         <mapping class="soap.ws.User"/>

@@ -1,7 +1,9 @@
 package com.nixsolutions.bondarenko.study.dao;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.nixsolutions.bondarenko.study.entity.Role;
@@ -23,13 +25,14 @@ import java.util.List;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
-@ContextConfiguration(locations = "classpath:database-config.xml")
+@ContextConfiguration(locations = "classpath:application-context-db-in-mem-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 
-@DatabaseSetup("classpath:/test_data/InitialDataSet.xml")
+@DatabaseSetup(value = "classpath:/test_data/InitialDataSet.xml", type = DatabaseOperation.CLEAN_INSERT)
+@DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
 public class HibernateUserDaoTest {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
