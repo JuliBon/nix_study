@@ -24,7 +24,7 @@ public class GlobalControllerExceptionHandler {
 
         logger.error(req.getContextPath(), e);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("status", HttpStatus.INTERNAL_SERVER_ERROR_500);
+        modelAndView.addObject("status", HttpStatus.INTERNAL_SERVER_ERROR_500.getStatusCode());
         modelAndView.setViewName("error");
         return modelAndView;
     }
