@@ -30,7 +30,7 @@ import java.util.List;
         DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "classpath:/test_data/InitialDataSet.xml", type = DatabaseOperation.CLEAN_INSERT)
 @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
-public class SoapClient {
+public class SoapUserServiceTest {
 
     @Autowired
     private SoapUserService soapUserService;
@@ -39,7 +39,7 @@ public class SoapClient {
     private User user2;
     private User newUser;
 
-    public SoapClient() throws ParseException, DatatypeConfigurationException {
+    public SoapUserServiceTest() throws ParseException, DatatypeConfigurationException {
 
         Role roleAdmin = new Role();
         roleAdmin.setId(1L);
