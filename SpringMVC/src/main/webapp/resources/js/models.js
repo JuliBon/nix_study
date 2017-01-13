@@ -11,7 +11,14 @@ var UserModel = Backbone.Model.extend({
         "role": {"id": 1, "name": "ADMIN"}
     },
 
-    idAttribute: 'id'
+    idAttribute: 'id',
+    initialize: function () {
+        Backbone.Model.prototype.initialize.apply(this, arguments);
+        this.on("change", function (model, options) {
+            if (options && options.save === false) return;
+            model.save();
+        });
+    }
 });
 
 var UserCollection = Backbone.Collection.extend({

@@ -14,9 +14,6 @@
     <link href="${pageContext.request.contextPath}/resources/lib/backgrid/backgrid.css" media="all" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<button onclick="save()">Save default</button>
-<button onclick="get()">Get all</button>
-
 
 <div id="usersApp">
     <div class="title">
