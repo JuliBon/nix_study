@@ -4,6 +4,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+import org.h2.api.ErrorCode;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -101,25 +102,18 @@ public class SoapUserServiceTest {
     }
 
     @Test
-    public void getUser() {
-        GetUserResult result = soapUserService.getUser(user1.getId());
-        Assert.assertEquals(ResultCode.OK, result.getResultCode());
-        assertUserEquals(user1, result.getUser());
+    public void getUser() throws UserNotFoundException_Exception {
+        assertUserEquals(user1, soapUserService.getUser(user1.getId()));
     }
 
-    @Test
-    public void getUserNotExist() {
-        GetUserResult result = soapUserService.getUser(99L);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.USER_NOT_FOUND, result.getErrorCode());
+    @Test(expected = UserNotFoundException_Exception.class)
+    public void getUserNotExist() throws UserNotFoundException_Exception {
+        soapUserService.getUser(newUser.getId());
     }
 
     @Test
     public void getUsers() throws IOException {
-        GetUsersResult result = soapUserService.getUsers();
-        Assert.assertEquals(ResultCode.OK, result.getResultCode());
-
-        List<User> users = result.getUserList();
+        List<User> users = soapUserService.getUsers();
         Assert.assertEquals(users.size(), 2);
 
         assertUserEquals(user1, users.get(0));
@@ -128,79 +122,61 @@ public class SoapUserServiceTest {
 
     @Test
     @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
-    public void createUser() {
-        UserCreateResult result = soapUserService.createUser(newUser);
-        Assert.assertEquals(ResultCode.OK, result.getResultCode());
-        Assert.assertNotNull(result.getId());
+    public void createUser() throws NotUniqueLoginException_Exception, NotUniqueEmailException_Exception, ValidationException_Exception {
+        Assert.assertNotNull(soapUserService.createUser(newUser));
     }
 
-    @Test
+    @Test(expected = NotUniqueLoginException_Exception.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void createUserNotUniqueLogin() {
+    public void createUserNotUniqueLogin() throws NotUniqueLoginException_Exception, NotUniqueEmailException_Exception, ValidationException_Exception {
         newUser.setLogin(user1.getLogin());
-
-        UserCreateResult result = soapUserService.createUser(newUser);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.NOT_UNIQUE_LOGIN, result.getErrorCode());
+        soapUserService.createUser(newUser);
     }
 
-    @Test
+    @Test(expected = NotUniqueEmailException_Exception.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void createUserNotUniqueEmail() {
+    public void createUserNotUniqueEmail() throws NotUniqueLoginException_Exception, NotUniqueEmailException_Exception, ValidationException_Exception {
         newUser.setEmail(user1.getEmail());
-        UserCreateResult result = soapUserService.createUser(newUser);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.NOT_UNIQUE_EMAIL, result.getErrorCode());
+        soapUserService.createUser(newUser);
     }
 
-    @Test
+    @Test(expected = ValidationException_Exception.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void createUserInvalid() {
+    public void createUserInvalid() throws NotUniqueLoginException_Exception, NotUniqueEmailException_Exception, ValidationException_Exception {
         newUser.setPassword("invalid");
-        UserCreateResult result = soapUserService.createUser(newUser);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.INVALID_USER, result.getErrorCode());
+        soapUserService.createUser(newUser);
     }
 
     @Test
     @ExpectedDatabase(value = "/test_data/UserUpdateExpectedDataSet.xml")
-    public void updateUser() {
+    public void updateUser() throws NotUniqueEmailException_Exception, ValidationException_Exception {
         user1.setPassword("Agent007");
-        WebServiceResult result = soapUserService.updateUser(user1);
-        Assert.assertEquals(ResultCode.OK, result.getResultCode());
+        soapUserService.updateUser(user1);
     }
 
-    @Test
+    @Test(expected = NotUniqueEmailException_Exception.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void updateUserInvalid() {
-        user1.setPassword("invalid");
-        WebServiceResult result = soapUserService.updateUser(user1);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.INVALID_USER, result.getErrorCode());
-
-    }
-
-    @Test
-    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void updateUserNotUniqueEmail() {
+    public void updateUserNotUniqueEmail() throws NotUniqueEmailException_Exception, ValidationException_Exception {
         user1.setEmail(user2.getEmail());
-        WebServiceResult result = soapUserService.updateUser(user1);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.NOT_UNIQUE_EMAIL, result.getErrorCode());
+        soapUserService.updateUser(user1);
+    }
+
+    @Test(expected = ValidationException_Exception.class)
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
+    public void updateUserInvalid() throws NotUniqueEmailException_Exception, ValidationException_Exception {
+        user1.setPassword("invalid");
+        soapUserService.updateUser(user1);
     }
 
     @Test
     @ExpectedDatabase(value = "/test_data/UserRemoveExpectedDataSet.xml")
-    public void deleteUser() {
-        WebServiceResult result = soapUserService.deleteUser(user1.getId());
-        Assert.assertEquals(ResultCode.OK, result.getResultCode());
+    public void deleteUser() throws UserNotFoundException_Exception {
+        soapUserService.deleteUser(user1.getId());
     }
 
-    @Test
+    @Test(expected = UserNotFoundException_Exception.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void deleteUserNotExisting() {
-        WebServiceResult result = soapUserService.deleteUser(99L);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.USER_NOT_FOUND, result.getErrorCode());
+    public void deleteUserNotExisting() throws UserNotFoundException_Exception {
+        soapUserService.deleteUser(newUser.getId());
     }
 }
