@@ -12,12 +12,14 @@ import com.nixsolutions.bondarenko.study.entity.UserRole;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -39,7 +41,7 @@ import java.util.List;
         DbUnitTestExecutionListener.class})
 @DatabaseSetup(value = "classpath:/test_data/InitialDataSet.xml", type = DatabaseOperation.CLEAN_INSERT)
 @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL)
-public class UserResourceTest {
+public class UsersResourceTest {
 
     private static final URI BASE_URI = URI.create("http://10.10.35.56:8080/rest");
 
@@ -49,7 +51,9 @@ public class UserResourceTest {
     private User user2;
     private User newUser;
 
-    public UserResourceTest() throws ParseException {
+
+    @Before
+    public void setUp() throws ParseException {
         Client client = ClientBuilder.newClient();
         client.register(JacksonFeature.class);
         target = client.target(BASE_URI).path("/users");

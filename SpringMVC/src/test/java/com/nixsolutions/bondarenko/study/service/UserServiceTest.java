@@ -10,6 +10,7 @@ import com.nixsolutions.bondarenko.study.exception.NotUniqueEmailException;
 import com.nixsolutions.bondarenko.study.exception.NotUniqueLoginException;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class UserServiceTest {
     private User user2;
     private User newUser;
 
-    public UserServiceTest() throws ParseException {
+    @Before
+    public void setUp() throws ParseException {
         Role roleAdmin = new Role(1L, UserRole.ADMIN.name());
         Role roleUser = new Role(2L, UserRole.USER.name());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
