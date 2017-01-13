@@ -5,10 +5,11 @@ import com.nixsolutions.bondarenko.study.exception.NotUniqueEmailException;
 import com.nixsolutions.bondarenko.study.exception.NotUniqueLoginException;
 import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 import com.nixsolutions.bondarenko.study.service.UserService;
-import com.nixsolutions.bondarenko.study.ws.result.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebService;
+import javax.validation.ValidationException;
+import java.util.List;
 
 @WebService(endpointInterface = "com.nixsolutions.bondarenko.study.ws.soap.SoapUserService",
         serviceName = "soapUserService")
@@ -16,68 +17,28 @@ public class SoapUserServiceImpl implements SoapUserService {
     @Autowired
     private UserService userService;
 
-    private String invalidUserMessage = "Invalid user";
-    private String serverErrorMessage = "Server error";
-
     @Override
-    public GetUserResult getUser(Long id) {
-        try {
-            User user = userService.getUser(id);
-            return new GetUserResult(ResultCode.OK, user);
-        } catch (UserNotFoundException e) {
-            return new GetUserResult(ResultCode.ERROR, ErrorCode.USER_NOT_FOUND, e.getMessage());
-        } catch (Exception e) {
-            return new GetUserResult(ResultCode.ERROR, ErrorCode.SERVER_ERROR, e.getMessage());
-        }
+    public User getUser(Long id) throws UserNotFoundException {
+        return userService.getUser(id);
     }
 
     @Override
-    public GetUsersResult getUsers() {
-        try {
-            return new GetUsersResult(ResultCode.OK, userService.getUsers());
-        } catch (Exception e) {
-            return new GetUsersResult(ResultCode.ERROR, ErrorCode.SERVER_ERROR, e.getMessage());
-        }
+    public List<User> getUsers() {
+        return userService.getUsers();
     }
 
     @Override
-    public WebServiceResult deleteUser(Long id) {
-        try {
-            userService.deleteUser(id);
-            return new WebServiceResult(ResultCode.OK, "User have been deleted");
-        } catch (UserNotFoundException e) {
-            return new WebServiceResult(ResultCode.ERROR, ErrorCode.USER_NOT_FOUND, e.getMessage());
-        } catch (Exception e) {
-            return new WebServiceResult(ResultCode.ERROR, ErrorCode.SERVER_ERROR, serverErrorMessage);
-        }
+    public void deleteUser(Long id) throws UserNotFoundException {
+        userService.deleteUser(id);
     }
 
     @Override
-    public UserCreateResult createUser(User user) {
-        try {
-            return new UserCreateResult(ResultCode.OK, userService.createUser(user), "User have been created");
-        } catch (javax.validation.ValidationException e) {
-            return new UserCreateResult(ResultCode.ERROR, ErrorCode.INVALID_USER, invalidUserMessage);
-        } catch (NotUniqueEmailException e) {
-            return new UserCreateResult(ResultCode.ERROR, ErrorCode.NOT_UNIQUE_EMAIL, e.getMessage());
-        } catch (NotUniqueLoginException e) {
-            return new UserCreateResult(ResultCode.ERROR, ErrorCode.NOT_UNIQUE_LOGIN, e.getMessage());
-        } catch (Exception e) {
-            return new UserCreateResult(ResultCode.ERROR, ErrorCode.SERVER_ERROR, serverErrorMessage);
-        }
+    public Long createUser(User user) throws NotUniqueLoginException, NotUniqueEmailException, ValidationException {
+        return userService.createUser(user);
     }
 
     @Override
-    public WebServiceResult updateUser(User user) {
-        try {
-            userService.updateUser(user);
-            return new WebServiceResult(ResultCode.OK, "User have been updated");
-        } catch (javax.validation.ValidationException e) {
-            return new UserCreateResult(ResultCode.ERROR, ErrorCode.INVALID_USER, invalidUserMessage);
-        } catch (NotUniqueEmailException e) {
-            return new UserCreateResult(ResultCode.ERROR, ErrorCode.NOT_UNIQUE_EMAIL, e.getMessage());
-        } catch (Exception e) {
-            return new UserCreateResult(ResultCode.ERROR, ErrorCode.SERVER_ERROR, serverErrorMessage);
-        }
+    public void updateUser(User user) throws NotUniqueEmailException, ValidationException {
+        userService.updateUser(user);
     }
 }

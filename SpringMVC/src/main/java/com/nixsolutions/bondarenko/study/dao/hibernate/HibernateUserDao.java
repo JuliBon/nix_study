@@ -58,7 +58,7 @@ public class HibernateUserDao implements UserDao {
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(Long id) throws UserNotFoundException {
         try {
             User userById = sessionFactory.getCurrentSession().byId(User.class).load(id);
             if (userById != null) {
@@ -71,7 +71,7 @@ public class HibernateUserDao implements UserDao {
     }
 
     @Override
-    public User findByLogin(String login) {
+    public User findByLogin(String login) throws UserNotFoundException{
         try {
             User user = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                     .add(Restrictions.naturalId()
@@ -87,7 +87,7 @@ public class HibernateUserDao implements UserDao {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public User findByEmail(String email) throws UserNotFoundException{
         try {
             User user = (User) sessionFactory.getCurrentSession().createCriteria(User.class)
                     .add(Restrictions.naturalId()

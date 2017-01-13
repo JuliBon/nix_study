@@ -9,7 +9,7 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.nixsolutions.bondarenko.study.entity.Role;
 import com.nixsolutions.bondarenko.study.entity.User;
 import com.nixsolutions.bondarenko.study.entity.UserRole;
-import com.nixsolutions.bondarenko.study.ws.result.*;
+
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,11 +18,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -72,19 +72,13 @@ public class UserResourceTest {
         Response response = target.path("/" + user1.getId()).request(MediaType.APPLICATION_JSON).get();
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
-        GetUserResult result = response.readEntity(GetUserResult.class);
-        Assert.assertEquals(ResultCode.OK, result.getResultCode());
-        Assert.assertEquals(user1, result.getUser());
+        Assert.assertEquals(user1, response.readEntity(User.class));
     }
 
     @Test
     public void getUserNotExist() {
         Response response = target.path("/" + newUser.getId()).request(MediaType.APPLICATION_JSON).get();
         Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-
-        WebServiceResult result = response.readEntity(WebServiceResult.class);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.USER_NOT_FOUND, result.getErrorCode());
     }
 
     @Test
@@ -92,10 +86,8 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON).get();
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
-        GetUsersResult result = response.readEntity(GetUsersResult.class);
-        Assert.assertEquals(ResultCode.OK, result.getResultCode());
-
-        List<User> users = result.getUserList();
+        List<User> users = response.readEntity(new GenericType<List<User>>() {
+        });
         Assert.assertEquals(users.size(), 2);
         Assert.assertTrue(users.contains(user1));
         Assert.assertTrue(users.contains(user2));
@@ -108,9 +100,7 @@ public class UserResourceTest {
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
 
-        UserCreateResult createResult = response.readEntity(UserCreateResult.class);
-        Assert.assertEquals(ResultCode.OK, createResult.getResultCode());
-        Assert.assertNotNull(createResult.getId());
+        Assert.assertNotNull(response.readEntity(Long.class));
     }
 
     @Test
@@ -121,10 +111,6 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-
-        WebServiceResult result = response.readEntity(WebServiceResult.class);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.NOT_UNIQUE_LOGIN, result.getErrorCode());
     }
 
     @Test
@@ -135,23 +121,15 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-
-        WebServiceResult result = response.readEntity(WebServiceResult.class);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.NOT_UNIQUE_EMAIL, result.getErrorCode());
     }
 
     @Test
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void createUserBadPOST() {
+    public void createUserInvalidPOST() {
         newUser.setPassword("invalid");
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-
-        WebServiceResult result = response.readEntity(WebServiceResult.class);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.INVALID_USER, result.getErrorCode());
     }
 
     @Test
@@ -161,8 +139,6 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-
-        Assert.assertEquals(ResultCode.OK, response.readEntity(WebServiceResult.class).getResultCode());
     }
 
     @Test
@@ -172,9 +148,7 @@ public class UserResourceTest {
                 .put(Entity.entity(newUser, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
 
-        UserCreateResult createResult = response.readEntity(UserCreateResult.class);
-        Assert.assertEquals(ResultCode.OK, createResult.getResultCode());
-        Assert.assertNotNull(createResult.getId());
+        Assert.assertNotNull(response.readEntity(Long.class));
     }
 
     @Test
@@ -184,8 +158,6 @@ public class UserResourceTest {
         Response response = target.path("/" + user1.getId()).request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-
-        Assert.assertEquals(ResultCode.OK, response.readEntity(WebServiceResult.class).getResultCode());
     }
 
     @Test
@@ -196,10 +168,6 @@ public class UserResourceTest {
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 
-        WebServiceResult result = response.readEntity(WebServiceResult.class);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.INVALID_USER, result.getErrorCode());
-
     }
 
     @Test
@@ -209,10 +177,6 @@ public class UserResourceTest {
         Response response = target.request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(user1, MediaType.APPLICATION_JSON), Response.class);
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-
-        WebServiceResult result = response.readEntity(WebServiceResult.class);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.NOT_UNIQUE_EMAIL, result.getErrorCode());
     }
 
     @Test
@@ -220,8 +184,6 @@ public class UserResourceTest {
     public void deleteUser() {
         Response response = target.path("/" + user1.getId()).request().delete();
         Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-
-        Assert.assertEquals(ResultCode.OK, response.readEntity(WebServiceResult.class).getResultCode());
     }
 
     @Test
@@ -229,19 +191,11 @@ public class UserResourceTest {
     public void deleteUserNotExisting() {
         Response response = target.path("/" + newUser.getId()).request().delete();
         Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-
-        WebServiceResult result = response.readEntity(WebServiceResult.class);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.USER_NOT_FOUND, result.getErrorCode());
     }
 
     @Test
     public void badPathTest() {
         Response response = target.path("badpath").request(MediaType.APPLICATION_JSON).get();
         Assert.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-
-        WebServiceResult result = response.readEntity(WebServiceResult.class);
-        Assert.assertEquals(ResultCode.ERROR, result.getResultCode());
-        Assert.assertEquals(ErrorCode.WEB_APPLICATION_ERROR, result.getErrorCode());
     }
 }

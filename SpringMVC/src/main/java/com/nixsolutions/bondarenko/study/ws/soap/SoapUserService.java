@@ -1,30 +1,31 @@
 package com.nixsolutions.bondarenko.study.ws.soap;
 
 import com.nixsolutions.bondarenko.study.entity.User;
-import com.nixsolutions.bondarenko.study.ws.result.UserCreateResult;
-import com.nixsolutions.bondarenko.study.ws.result.WebServiceResult;
-import com.nixsolutions.bondarenko.study.ws.result.GetUserResult;
-import com.nixsolutions.bondarenko.study.ws.result.GetUsersResult;
+import com.nixsolutions.bondarenko.study.exception.NotUniqueEmailException;
+import com.nixsolutions.bondarenko.study.exception.NotUniqueLoginException;
+import com.nixsolutions.bondarenko.study.exception.UserNotFoundException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.validation.ValidationException;
+import java.util.List;
 
 @WebService
 public interface SoapUserService {
 
     @WebMethod
-    GetUserResult getUser(@WebParam(name = "id") Long id);
+    User getUser(@WebParam(name = "id") Long id) throws UserNotFoundException;
 
     @WebMethod
-    GetUsersResult getUsers();
+    List<User> getUsers();
 
     @WebMethod
-    WebServiceResult deleteUser(@WebParam(name = "id") Long id);
+    void deleteUser(@WebParam(name = "id") Long id) throws UserNotFoundException;
 
     @WebMethod
-    UserCreateResult createUser(@WebParam(name = "user") User user);
+    Long createUser(@WebParam(name = "user") User user) throws NotUniqueLoginException, NotUniqueEmailException, ValidationException;
 
     @WebMethod
-    WebServiceResult updateUser(@WebParam(name = "user") User user);
+    void updateUser(@WebParam(name = "user") User user) throws NotUniqueEmailException, ValidationException;
 }

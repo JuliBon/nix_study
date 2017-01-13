@@ -18,6 +18,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import javax.validation.ValidationException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,13 +54,13 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getUserByLogin() {
+    public void getUserByLogin() throws UserNotFoundException {
         User user = userService.getUser(user1.getId());
         Assert.assertEquals(user1, user);
     }
 
     @Test(expected = UserNotFoundException.class)
-    public void getUserByLoginNotExisting() {
+    public void getUserByLoginNotExisting() throws UserNotFoundException {
         userService.getUser(newUser.getId());
     }
 
@@ -73,27 +74,42 @@ public class UserServiceTest {
 
     @Test
     @ExpectedDatabase(value = "/test_data/UserCreateExpectedDataSet.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
-    public void createUser() {
+    public void createUser() throws NotUniqueLoginException, NotUniqueEmailException {
         userService.createUser(newUser);
     }
 
     @Test(expected = NotUniqueLoginException.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void createUserNotUniqueLogin() {
+    public void createUserNotUniqueLogin() throws NotUniqueLoginException, NotUniqueEmailException {
         newUser.setLogin(user1.getLogin());
         userService.createUser(newUser);
     }
 
     @Test(expected = NotUniqueEmailException.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void createUserNotUniqueEmail() {
+    public void createUserNotUniqueEmail() throws NotUniqueLoginException, NotUniqueEmailException {
         newUser.setEmail(user1.getEmail());
         userService.createUser(newUser);
     }
+
+    @Test(expected = ValidationException.class)
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
+    public void createUserInvalid() throws NotUniqueEmailException {
+        newUser.setPassword("invalid");
+        userService.updateUser(newUser);
+    }
+
     @Test(expected = NotUniqueEmailException.class)
     @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
-    public void updateUserNotUniqueEmail() {
+    public void updateUserNotUniqueEmail() throws NotUniqueEmailException {
         user1.setEmail(user2.getEmail());
+        userService.updateUser(user1);
+    }
+
+    @Test(expected = ValidationException.class)
+    @ExpectedDatabase(value = "/test_data/InitialDataSet.xml")
+    public void updateUserInvalid() throws NotUniqueEmailException {
+        user1.setPassword("invalid");
         userService.updateUser(user1);
     }
 
