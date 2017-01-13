@@ -6,6 +6,7 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import org.h2.api.ErrorCode;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class SoapUserServiceTest {
     private User user2;
     private User newUser;
 
-    public SoapUserServiceTest() throws ParseException, DatatypeConfigurationException {
-
+    @Before
+    public void setUp() throws ParseException, DatatypeConfigurationException {
         Role roleAdmin = new Role();
         roleAdmin.setId(1L);
         roleAdmin.setName("ADMIN");
