@@ -22,6 +22,7 @@
 
     <div id="userGrid">
     </div>
+    <button id="addRow">Add row</button>
 </div>
 </body>
 </html>
