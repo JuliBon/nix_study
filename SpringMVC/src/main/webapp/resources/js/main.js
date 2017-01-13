@@ -8,17 +8,17 @@ $(function () {
 
         template: _.template($('#itemTemplate').html()),
 
-        initialize: function() {
+        initialize: function () {
             this.model.bind('change', this.render, this);
         },
 
-        render: function() {
+        render: function () {
             $(this.el).html(this.template(this.model.toJSON()));
             this.setContent();
             return this;
         },
 
-        setContent: function() {
+        setContent: function () {
             var id = this.model.get('id');
             this.$('.user-id').text(id);
 
@@ -43,29 +43,82 @@ $(function () {
             var role = this.model.get('role');
             var roleId = role.id;
             this.$('.user-role-id').text(roleId);
-            var roleName =  role.name;
+            var roleName = role.name;
             this.$('.user-role-name').text(roleName);
         }
 
+    });
+
+    window.DeleteCell = Backgrid.Cell.extend({
+        template: _.template('<button class="btnDelete">Delete</button>'),
+        events: {
+            'click .btnDelete': 'deleteRow'
+        },
+        deleteRow: function(e) {
+            e.preventDefault();
+            this.model.destroy();
+        },
+        render: function () {
+            this.$el.html(this.template());
+            this.delegateEvents();
+            return this;
+        }
+    });
+
+    window.columns = [{
+        name: "id",
+        label: "ID",
+        editable: false,
+        cell: Backgrid.IntegerCell.extend({
+            orderSeparator: ''
+        })
+    }, {
+        name: "login",
+        label: "Login",
+        cell: "string"
+    }, {
+        name: "password",
+        label: "Password",
+        cell: "string"
+    }, {
+        name: "email",
+        label: "Email",
+        cell: "email"
+    }, {
+        name: "firstName",
+        label: "First name",
+        cell: "string"
+    }, {
+        name: "lastName",
+        label: "Last name",
+        cell: "string"
+    }, {
+        name: "birthday",
+        label: "Birthday",
+        cell: "date"
+    } , {
+        name: "",
+        label: 'Delete',
+        cell: DeleteCell
+    } ];
+
+
+    window.grid = new Backgrid.Grid({
+        columns: columns,
+        collection: Users
     });
 
     window.AppView = Backbone.View.extend({
         el: $("#usersApp"),
 
         initialize: function () {
-            Users.bind('add',   this.addOne, this);
             Users.bind('reset', this.addAll, this);
 
-            Users.fetch();
+            Users.fetch({reset: true});
         },
 
-        addOne: function(user) {
-            var view = new UserView({model: user});
-            this.$("#userList").append(view.render().el);
-        },
-
-        addAll: function() {
-            Users.each(this.addOne);
+        addAll: function () {
+            this.$("#userGrid").append(grid.render().el);
         }
     });
 
