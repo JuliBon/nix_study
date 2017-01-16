@@ -35,10 +35,7 @@ $(function () {
         }, {
             name: "login",
             label: "Login",
-            cell: "string",
-            editable: function () {
-                return this.model.id === null;
-            }
+            cell: "string"
         }, {
             name: "password",
             label: "Password",
