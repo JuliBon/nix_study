@@ -1,18 +1,18 @@
 var UserModel = Backbone.Model.extend({
     urlRoot: '/rest/users',
-/*
     defaults: {
-        "login": "",
-        "password": "",
-        "email": "",
-        "firstName": "",
-        "lastName": "",
-        "birthday": "",
-        "role": {"id": "", "name": ""}
+        "id": 7,
+        "login": "admin",
+        "password": "Admin123",
+        "email": "admin@mail.ru",
+        "firstName": "admin",
+        "lastName": "admin",
+        "birthday": "15-05-1985",
+        "role": {"id": 1, "name": "ADMIN"}
     },
-*/
 
     idAttribute: 'id',
+
     initialize: function () {
         Backbone.Model.prototype.initialize.apply(this, arguments);
         this.on("change", function (model, options) {

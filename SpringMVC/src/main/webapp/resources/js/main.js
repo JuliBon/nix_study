@@ -1,73 +1,72 @@
 $(function () {
     window.Users = new UserCollection;
 
-    window.ActionCell = Backgrid.Cell.extend({
-        template: _.template(
-            '<button class="btnDelete">' +
-            'Delete' +
-            '</button>'),
+
+    window.UserView = Backbone.View.extend({
+        tagName: "tr",
+
+        className: "user-item",
+
+        template: _.template($('#itemTemplate').html()),
+
         events: {
-            'click .btnDelete': 'deleteRow'
+            "click .btn-delete": "deleteUser",
+            "keyup": "updateOnEnter"
         },
-        deleteRow: function (e) {
-            e.preventDefault();
+
+        initialize: function () {
+            this.model.bind('change', this.render, this);
+            this.model.bind('destroy', this.remove, this);
+        },
+
+        render: function () {
+            $(this.el).html(this.template(this.model.toJSON()));
+            this.setContent();
+            return this;
+        },
+
+        deleteUser: function () {
             this.model.destroy();
         },
-        render: function () {
-            this.$el.html(this.template());
-            this.delegateEvents();
-            return this;
-        }
-    });
 
-
-    window.grid = new Backgrid.Grid({
-
-        collection: Users,
-
-        columns: [{
-            name: "id",
-            label: "ID",
-            editable: false,
-            cell: Backgrid.IntegerCell.extend({
-                orderSeparator: ''
-            })
-        }, {
-            name: "login",
-            label: "Login",
-            cell: "string"
-        }, {
-            name: "password",
-            label: "Password",
-            cell: "string"
-        }, {
-            name: "email",
-            label: "Email",
-            cell: "email"
-        }, {
-            name: "firstName",
-            label: "First name",
-            cell: "string"
-        }, {
-            name: "lastName",
-            label: "Last name",
-            cell: "string"
-        }, {
-            name: "birthday",
-            label: "Birthday",
-            cell: "date"
-        }, {
-            name: "",
-            label: 'Actions',
-            cell: ActionCell
-        }],
-
-        events: {
-            'backgrid:next': 'newRow'
+        updateOnEnter: function (e) {
+            if (e.keyCode == 13) {
+                this.model.save({
+                    login: this.$('.user-login').val(),
+                    password: this.$('.user-password').val(),
+                    email: this.$('.user-email').val(),
+                    firstName: this.$('.user-first-name').val(),
+                    lastName: this.$('.user-last-name').val(),
+                    birthday: this.$('.user-birthday').val()
+                });
+            }
         },
 
-        newRow: function (i, j, outOfBound) {
-            if (outOfBound) grid.collection.add({});
+
+        setContent: function () {
+            var id = this.model.get('id');
+            this.$('.user-id').val(id);
+
+            var login = this.model.get('login');
+            this.$('.user-login').val(login);
+
+            var password = this.model.get('password');
+            this.$('.user-password').val(password);
+
+            var email = this.model.get('email');
+            this.$('.user-email').val(email);
+
+            var firstName = this.model.get('firstName');
+            this.$('.user-first-name').val(firstName);
+
+            var lastName = this.model.get('lastName');
+            this.$('.user-last-name').val(lastName);
+
+            var birthday = this.model.get('birthday');
+            this.$('.user-birthday').val(birthday);
+
+            var role = this.model.get('role');
+            this.$('.user-role').val(role.name);
         }
     });
 
@@ -75,22 +74,19 @@ $(function () {
         el: $("#usersApp"),
 
         initialize: function () {
+            Users.bind('add', this.addOne, this);
             Users.bind('reset', this.addAll, this);
 
-            Users.fetch({reset: true});
+            Users.fetch();
         },
 
-        events: {
-            "click #addRow": "addRow"
-        },
-
-        addRow: function (e) {
-            alert("hohoh!");
-            grid.collection.add({});
+        addOne: function (user) {
+            var view = new UserView({model: user});
+            this.$("#table-body").append(view.render().el);
         },
 
         addAll: function () {
-            this.$("#userGrid").append(grid.render().el);
+            Users.each(this.addOne);
         }
     });
 
