@@ -27,7 +27,9 @@ $(function () {
         },
 
         deleteUser: function () {
-            this.model.destroy();
+            if(confirm('Delete user with id = '+ this.model.id +'?')){
+                this.model.destroy();
+            }
         },
 
         changed: function (evt) {
