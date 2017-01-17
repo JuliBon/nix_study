@@ -81,8 +81,8 @@
     </td>
     <td class="form-group">
         <select name="role" title="Role" class="form-control">
-            <option value="1">ADMIN</option>
-            <option value="2">USER</option>
+            <option value='{"id":1,"name":"ADMIN"}'>ADMIN</option>
+            <option value='{"id":2,"name":"USER"}'>USER</option>
         </select>
         <span class="help-block"></span>
     </td>

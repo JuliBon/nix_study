@@ -1,7 +1,6 @@
 $(function () {
     window.Users = new UserCollection;
 
-
     window.UserView = Backbone.View.extend({
         tagName: "tr",
 
@@ -11,11 +10,11 @@ $(function () {
 
         events: {
             "click .btn-delete": "deleteUser",
-            "change .form-control": "changed"
+            "change input.form-control": "changed",
+            "change select.form-control": "changedRole"
         },
 
         initialize: function () {
-            _.bindAll(this, "changed");
             this.model.bind('destroy', this.remove, this);
             Backbone.Validation.bind(this);
         },
@@ -34,10 +33,17 @@ $(function () {
 
         changed: function (evt) {
             var changed = evt.currentTarget;
-            var value = $(evt.currentTarget).val();
             var obj = {};
-            obj[changed.name] = value;
-            this.model.set(obj);
+            obj[changed.name] =  $(evt.currentTarget).val();
+            this.model.save(obj);
+        },
+
+        changedRole: function (evt) {
+            var changed = evt.currentTarget;
+            var val = $(evt.currentTarget).val();
+            var obj = {};
+            obj[changed.name] = jQuery.parseJSON(val);
+            this.model.save(obj);
         },
 
         setContent: function () {
@@ -60,7 +66,7 @@ $(function () {
             this.$('[name="birthday"]').val(birthday);
 
             var role = this.model.get('role');
-            this.$('[name="role"]').val(role.name);
+            this.$('[name="role"]').val(JSON.stringify(role));
         }
     });
 
