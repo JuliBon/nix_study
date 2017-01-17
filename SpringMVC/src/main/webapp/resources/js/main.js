@@ -13,13 +13,14 @@ $(function () {
             "click .btn-delete": "deleteUser",
             "change input.user-input": "changed"
             /*,
-            "change select.user-input": "changed"*/
+             "change select.user-input": "update"*/
         },
 
         initialize: function () {
             _.bindAll(this, "changed");
             this.model.bind('change', this.render, this);
             this.model.bind('destroy', this.remove, this);
+            Backbone.Validation.bind(this);
         },
 
         render: function () {
@@ -64,6 +65,15 @@ $(function () {
 
             var role = this.model.get('role');
             this.$('input[name="role"]').val(role.name);
+        }
+    });
+
+    _.extend(Backbone.Validation.callbacks, {
+        valid: function(view, attr, selector) {
+            alert("Valid " + attr);
+        },
+        invalid: function(view, attr, error, selector) {
+            alert("Invalid. " + attr + " "+ error);
         }
     });
 

@@ -7,7 +7,9 @@
     <script src="${pageContext.request.contextPath}/resources/lib/jquery.js"></script>
     <script src="${pageContext.request.contextPath}/resources/lib/underscore.js"></script>
     <script src="${pageContext.request.contextPath}/resources/lib/backbone.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/lib/backbone-validation.js"></script>
 
+    <script src="${pageContext.request.contextPath}/resources/js/validation.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/models.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 </head>

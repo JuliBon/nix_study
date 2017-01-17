@@ -19,6 +19,36 @@ var UserModel = Backbone.Model.extend({
             if (options && options.save === false) return;
             model.save();
         });
+    },
+
+    validation: {
+        login: {
+            required: true,
+            pattern: 'loginPattern'
+        },
+        password: {
+            required: true,
+            pattern: 'passwordPattern'
+        },
+        passwordConfirm: {
+            required: true,
+            equalTo: 'password'
+        },
+        email: {
+            required: true,
+            pattern: 'emailPattern'
+        },
+        firstName: {
+            required: true,
+            pattern: 'namePattern'
+        },
+        lastName: {
+            required: true,
+            pattern: 'namePattern'
+        },
+        birthday: {
+            required: true
+        }
     }
 });
 
