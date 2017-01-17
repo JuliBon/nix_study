@@ -30,10 +30,6 @@ var UserModel = Backbone.Model.extend({
             required: true,
             pattern: 'passwordPattern'
         },
-        passwordConfirm: {
-            required: true,
-            equalTo: 'password'
-        },
         email: {
             required: true,
             pattern: 'emailPattern'

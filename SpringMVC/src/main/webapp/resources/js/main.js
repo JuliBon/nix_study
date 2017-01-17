@@ -11,14 +11,11 @@ $(function () {
 
         events: {
             "click .btn-delete": "deleteUser",
-            "change input.user-input": "changed"
-            /*,
-             "change select.user-input": "update"*/
+            "change .form-control": "changed"
         },
 
         initialize: function () {
             _.bindAll(this, "changed");
-            this.model.bind('change', this.render, this);
             this.model.bind('destroy', this.remove, this);
             Backbone.Validation.bind(this);
         },
@@ -46,34 +43,39 @@ $(function () {
             this.$('.user-id').text(id);
 
             var login = this.model.get('login');
-            this.$('input[name="login"]').val(login);
-
-            var password = this.model.get('password');
-            this.$('input[name="password"]').val(password);
+            this.$('[name="login"]').val(login);
 
             var email = this.model.get('email');
-            this.$('input[name="email"]').val(email);
+            this.$('[name="email"]').val(email);
 
             var firstName = this.model.get('firstName');
-            this.$('input[name="firstName"]').val(firstName);
+            this.$('[name="firstName"]').val(firstName);
 
             var lastName = this.model.get('lastName');
-            this.$('input[name="lastName"]').val(lastName);
+            this.$('[name="lastName"]').val(lastName);
 
             var birthday = this.model.get('birthday');
-            this.$('input[name="birthday"]').val(birthday);
+            this.$('[name="birthday"]').val(birthday);
 
             var role = this.model.get('role');
-            this.$('input[name="role"]').val(role.name);
+            this.$('[name="role"]').val(role.name);
         }
     });
 
     _.extend(Backbone.Validation.callbacks, {
         valid: function(view, attr, selector) {
-            alert("Valid " + attr);
+            var $el = view.$('[name=' + attr + ']'),
+                $group = $el.closest('.form-group');
+
+            $group.removeClass('has-error');
+            $group.find('.help-block').html('');
         },
         invalid: function(view, attr, error, selector) {
-            alert("Invalid. " + attr + " "+ error);
+            var $el = view.$('[name=' + attr + ']'),
+                $group = $el.closest('.form-group');
+
+            $group.addClass('has-error');
+            $group.find('.help-block').html(error);
         }
     });
 

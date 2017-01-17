@@ -1,0 +1,14 @@
+.form-group {
+    margin-bottom: 0 !important;
+}
+
+.help-block {
+    display: block;
+    height: 12px;
+
+    font-size: 10pt;
+    text-align: center;
+
+    margin-top: -2px !important;
+    margin-bottom: 2px !important;
+}

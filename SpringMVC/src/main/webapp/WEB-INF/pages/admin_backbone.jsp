@@ -12,6 +12,11 @@
     <script src="${pageContext.request.contextPath}/resources/js/validation.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/models.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+
+    <link href="${pageContext.request.contextPath}/resources/css/admin_backbone.css" media="all" rel="stylesheet"
+          type="text/css"/>
+    <link href="<c:url value="/resources/lib/bootstrap/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 
@@ -42,21 +47,46 @@
 </div>
 
 <script type="text/template" id="itemTemplate">
-    <td><span class="user-id"></span></td>
-    <td><input type="text" name="login" placeholder="login" class="user-input"></td>
-    <td><input type="password" name="password" placeholder="password" class="user-input"></td>
-    <td><input type="password" name="passwordConfirm" placeholder="confirm password" class="user-input"></td>
-    <td><input type="email" name="email" placeholder="email" class="user-input"></td>
-    <td><input type="text" name="firstName" placeholder="first name" class="user-input"></td>
-    <td><input type="text" name="lastName" placeholder="last name" class="user-input"></td>
-    <td><input type="text" name="birthday" placeholder="birthday" class="user-input"></td>
-    <td>
-        <select name="role" title="Role" class="user-input">
+    <td class="form-group">
+        <span class="user-id"></span>
+    </td>
+    <td class="form-group">
+        <input type="text" name="login" placeholder="login" class="form-control">
+        <span class="help-block"></span>
+    </td>
+    <td class="form-group">
+        <input type="password" name="password" placeholder="password" class="form-control">
+        <span class="help-block"></span>
+    </td>
+    <td class="form-group">
+        <input type="password" name="passwordConfirm" placeholder="confirm password"
+               class="form-control">
+        <span class="help-block"></span>
+    </td>
+    <td class="form-group">
+        <input type="email" name="email" placeholder="email" class="form-control">
+        <span class="help-block"></span>
+    </td>
+    <td class="form-group">
+        <input type="text" name="firstName" placeholder="first name" class="form-control">
+        <span class="help-block"></span>
+    </td>
+    <td class="form-group">
+        <input type="text" name="lastName" placeholder="last name" class="form-control">
+        <span class="help-block"></span>
+    </td>
+    <td class="form-group">
+        <input type="text" name="birthday" placeholder="birthday" class="form-control">
+        <span class="help-block"></span>
+    </td>
+    <td class="form-group">
+        <select name="role" title="Role" class="form-control">
             <option value="1">ADMIN</option>
             <option value="2">USER</option>
         </select>
+        <span class="help-block"></span>
     </td>
-    <td>
+    <td class="form-group">
         <button class="btn-delete">Delete</button>
     </td>
 </script>
