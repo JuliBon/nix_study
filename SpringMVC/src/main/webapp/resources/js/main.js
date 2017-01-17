@@ -42,7 +42,7 @@ $(function () {
 
         setContent: function () {
             var id = this.model.get('id');
-            this.$('input[name="id"]').val(id);
+            this.$('.user-id').text(id);
 
             var login = this.model.get('login');
             this.$('input[name="login"]').val(login);

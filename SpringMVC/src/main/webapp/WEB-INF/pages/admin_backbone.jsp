@@ -24,9 +24,9 @@
             <tr>
                 <th>ID</th>
                 <th>Login</th>
-                <th>Email</th>
                 <th>Password</th>
                 <th>Password confirm</th>
+                <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Birthday</th>
