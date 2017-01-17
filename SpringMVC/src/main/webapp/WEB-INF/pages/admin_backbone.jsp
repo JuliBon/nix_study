@@ -41,20 +41,22 @@
 
 <script type="text/template" id="itemTemplate">
     <td><span class="user-id"></span></td>
-    <td><input type="text" placeholder="login" class=".user-input user-login"></td>
-    <td><input type="password" placeholder="password" class=".user-input user-password"></td>
-    <td><input type="password" placeholder="confirm password" class=".user-input user-password-confirm"></td>
-    <td><input type="email" placeholder="email" class=".user-input user-email"></td>
-    <td><input type="text" placeholder="first name" class=".user-input user-first-name"></td>
-    <td><input type="text" placeholder="last name" class=".user-input user-last-name"></td>
-    <td><input type="text" placeholder="birthday" class=".user-input user-birthday"></td>
+    <td><input type="text" name="login" placeholder="login" class="user-input"></td>
+    <td><input type="password" name="password" placeholder="password" class="user-input"></td>
+    <td><input type="password" name="passwordConfirm" placeholder="confirm password" class="user-input"></td>
+    <td><input type="email" name="email" placeholder="email" class="user-input"></td>
+    <td><input type="text" name="firstName" placeholder="first name" class="user-input"></td>
+    <td><input type="text" name="lastName" placeholder="last name" class="user-input"></td>
+    <td><input type="text" name="birthday" placeholder="birthday" class="user-input"></td>
     <td>
-        <select title="Role" class="user-role">
+        <select name="role" title="Role" class="user-input">
             <option value="1">ADMIN</option>
             <option value="2">USER</option>
         </select>
     </td>
-    <td><button class="btn-delete">Delete</button></td>
+    <td>
+        <button class="btn-delete">Delete</button>
+    </td>
 </script>
 </body>
 </html>

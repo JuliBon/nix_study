@@ -11,10 +11,13 @@ $(function () {
 
         events: {
             "click .btn-delete": "deleteUser",
-            "keyup": "updateOnEnter"
+            "change input.user-input": "changed"
+            /*,
+            "change select.user-input": "changed"*/
         },
 
         initialize: function () {
+            _.bindAll(this, "changed");
             this.model.bind('change', this.render, this);
             this.model.bind('destroy', this.remove, this);
         },
@@ -29,44 +32,38 @@ $(function () {
             this.model.destroy();
         },
 
-        updateOnEnter: function (e) {
-            if (e.keyCode == 13) {
-                this.model.save({
-                    login: this.$('.user-login').val(),
-                    password: this.$('.user-password').val(),
-                    email: this.$('.user-email').val(),
-                    firstName: this.$('.user-first-name').val(),
-                    lastName: this.$('.user-last-name').val(),
-                    birthday: this.$('.user-birthday').val()
-                });
-            }
+        changed: function (evt) {
+            var changed = evt.currentTarget;
+            var value = $(evt.currentTarget).val();
+            var obj = {};
+            obj[changed.name] = value;
+            this.model.set(obj);
         },
-
 
         setContent: function () {
             var id = this.model.get('id');
-            this.$('.user-id').val(id);
+            this.$('input[name="id"]').val(id);
 
             var login = this.model.get('login');
-            this.$('.user-login').val(login);
+            this.$('input[name="login"]').val(login);
 
             var password = this.model.get('password');
-            this.$('.user-password').val(password);
+            this.$('input[name="password"]').val(password);
 
             var email = this.model.get('email');
-            this.$('.user-email').val(email);
+            this.$('input[name="email"]').val(email);
 
             var firstName = this.model.get('firstName');
-            this.$('.user-first-name').val(firstName);
+            this.$('input[name="firstName"]').val(firstName);
 
             var lastName = this.model.get('lastName');
-            this.$('.user-last-name').val(lastName);
+            this.$('input[name="lastName"]').val(lastName);
 
             var birthday = this.model.get('birthday');
-            this.$('.user-birthday').val(birthday);
+            this.$('input[name="birthday"]').val(birthday);
 
             var role = this.model.get('role');
-            this.$('.user-role').val(role.name);
+            this.$('input[name="role"]').val(role.name);
         }
     });
 
