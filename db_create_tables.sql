@@ -18,8 +18,9 @@ FOREIGN KEY (id_role) REFERENCES Role(id)
 INSERT into ROLE (id, name) VALUES (1, 'ADMIN');
 INSERT into ROLE (id, name) VALUES (2, 'USER');
 
-INSERT into USER (login, password, email, firstName, lastName, birthday, id_role) VALUES ('admin', 'Admin123', 'admin@mail.ru',  'admin', 'admin', '1985-05-15', 1);
 
+
+INSERT into USER (login, password, email, firstName, lastName, birthday, id_role) VALUES ('admin', 'Admin123', 'admin@mail.ru',  'admin', 'admin', '1985-05-15', 1);
 INSERT into USER (login, password, email, firstName, lastName, birthday, id_role) VALUES ('yulya', 'Pass123', 'yulya@mail.ru',  'yuliya', 'bondarenko', '1993-01-10', 1);
 INSERT into USER (login, password, email, firstName, lastName, birthday, id_role) VALUES ('ivan', 'Pass123', 'ivan@mail.ru',  'ivan', 'grozniy', '1530-09-03', 2);
 
