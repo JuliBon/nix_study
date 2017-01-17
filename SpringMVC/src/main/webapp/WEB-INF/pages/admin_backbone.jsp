@@ -76,7 +76,7 @@
         <span class="help-block"></span>
     </td>
     <td class="form-group">
-        <input type="text" name="birthday" placeholder="birthday" class="form-control">
+        <input type="date" name="birthday" placeholder="birthday" class="form-control">
         <span class="help-block"></span>
     </td>
     <td class="form-group">

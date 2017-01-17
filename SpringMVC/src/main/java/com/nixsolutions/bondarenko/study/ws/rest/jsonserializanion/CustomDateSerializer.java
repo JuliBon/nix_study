@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CustomDateSerializer extends StdSerializer<Date> {
-    private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     public CustomDateSerializer() {
         this(null);
