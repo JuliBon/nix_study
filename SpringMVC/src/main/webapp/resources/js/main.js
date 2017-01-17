@@ -103,6 +103,10 @@ $(function () {
             Users.fetch();
         },
 
+        events: {
+            "click #addUserRow": "addUserRow"
+        },
+
         addOne: function (user) {
             var view = new UserView({model: user});
             this.$("#table-body").append(view.render().el);
@@ -110,6 +114,10 @@ $(function () {
 
         addAll: function () {
             Users.each(this.addOne);
+        },
+
+        addUserRow: function () {
+            this.addOne(new UserModel());
         }
     });
 

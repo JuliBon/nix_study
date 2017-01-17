@@ -44,6 +44,8 @@
             </thead>
             <tbody id="table-body"></tbody>
         </table>
+
+        <button id="addUserRow">Add user </button>
     </div>
 </div>
 
