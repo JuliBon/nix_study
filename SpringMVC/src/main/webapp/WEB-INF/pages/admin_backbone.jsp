@@ -39,6 +39,7 @@
                 <th>Birthday</th>
                 <th>Role</th>
                 <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody id="table-body"></tbody>
@@ -88,6 +89,9 @@
     </td>
     <td class="form-group">
         <button class="btn-delete">Delete</button>
+    </td>
+    <td class="form-group">
+        <button class="btn-save">Save</button>
     </td>
 </script>
 </body>

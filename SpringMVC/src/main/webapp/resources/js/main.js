@@ -10,8 +10,7 @@ $(function () {
 
         events: {
             "click .btn-delete": "deleteUser",
-            "change input.form-control": "changed",
-            "change select.form-control": "changedRole"
+            "click .btn-save": "saveUser"
         },
 
         initialize: function () {
@@ -26,24 +25,31 @@ $(function () {
         },
 
         deleteUser: function () {
-            if(confirm('Delete user with id = '+ this.model.id +'?')){
+            if (confirm('Delete user with id = ' + this.model.id + '?')) {
                 this.model.destroy();
             }
         },
 
-        changed: function (evt) {
-            var changed = evt.currentTarget;
-            var obj = {};
-            obj[changed.name] =  $(evt.currentTarget).val();
-            this.model.save(obj);
-        },
+        saveUser: function () {
+            var id = this.$('.user-id').text();
+            var login = this.$('[name="login"]').val();
+            var password = this.$('[name="password"]').val();
+            var email = this.$('[name="email"]').val();
+            var firstName = this.$('[name="firstName"]').val();
+            var lastName = this.$('[name="lastName"]').val();
+            var birthday = this.$('[name="birthday"]').val();
+            var role = jQuery.parseJSON(this.$('[name="role"]').val());
 
-        changedRole: function (evt) {
-            var changed = evt.currentTarget;
-            var val = $(evt.currentTarget).val();
-            var obj = {};
-            obj[changed.name] = jQuery.parseJSON(val);
-            this.model.save(obj);
+            this.model.save({
+                "id": id,
+                "login": login,
+                "password": password,
+                "email": email,
+                "firstName": firstName,
+                "lastName": lastName,
+                "birthday": birthday,
+                "role": role
+            });
         },
 
         setContent: function () {
@@ -71,14 +77,14 @@ $(function () {
     });
 
     _.extend(Backbone.Validation.callbacks, {
-        valid: function(view, attr, selector) {
+        valid: function (view, attr, selector) {
             var $el = view.$('[name=' + attr + ']'),
                 $group = $el.closest('.form-group');
 
             $group.removeClass('has-error');
             $group.find('.help-block').html('');
         },
-        invalid: function(view, attr, error, selector) {
+        invalid: function (view, attr, error, selector) {
             var $el = view.$('[name=' + attr + ']'),
                 $group = $el.closest('.form-group');
 
