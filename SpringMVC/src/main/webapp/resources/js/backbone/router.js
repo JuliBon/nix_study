@@ -11,7 +11,7 @@ $(function () {
 
         users: function () {
             $(".block").hide();
-            $("#users").show();
+            $("#usersBlock").show();
 
             app.Users.fetch();
             app.usersView = new app.UsersView();
@@ -19,14 +19,16 @@ $(function () {
 
         create: function () {
             $(".block").hide();
-            $("#createUser").show();
+            $("#createUserBlock").show();
 
             app.createView = new app.CreateView();
         },
 
         edit: function () {
             $(".block").hide();
-            $("#editUser").show();
+            $("#editUserBlock").show();
+
+            app.editView = new app.EditView();
         }
     });
 

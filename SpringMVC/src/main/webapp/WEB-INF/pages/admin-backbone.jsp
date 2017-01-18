@@ -10,10 +10,12 @@
 
     <script src="${pageContext.request.contextPath}/resources/js/backbone/models.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/backbone/main.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/backbone/view/create-view.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/backbone/view/edit-view.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/backbone/router.js"></script>
     <script src="${pageContext.request.contextPath}/resources/lib/backbone-validation.js"></script>
 
-    <link href="${pageContext.request.contextPath}/resources/css/adminBackbone.css" media="all" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/resources/css/admin-backbone.css" media="all" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"
           type="text/css">
     <link href="${pageContext.request.contextPath}/resources/css/shared.css" rel="stylesheet" type="text/css">
@@ -21,21 +23,30 @@
 </head>
 <body>
 <div class="container" id="usersApp">
+
     <div class="adminLogout">Admin ${userName} <a href="/logout">(logout)</a></div>
+
     <div id="menu">
         <ul class="list-inline">
             <li><a href="#!/">Users</a></li>
             <li><a href="#!/create">Create user</a></li>
         </ul>
     </div>
-    <div id="users" class="block">
+
+    <div id="usersBlock" class="block">
         <h2>Users</h2>
+        <div id="users">
+        </div>
     </div>
-    <div id="createUser" class="block">
+    <div id="createUserBlock" class="block">
         <h2>Create user</h2>
+        <div id="createUser">
+        </div>
     </div>
-    <div id="editUser" class="block">
+    <div id="editUserBlock" class="block">
         <h2>Edit user</h2>
+        <div id="editUser">
+        </div>
     </div>
 </div>
 
@@ -71,7 +82,7 @@
 </script>
 
 
-<script type="text/template" id="userCreateTemplate">
+<script type="text/template" id="userCreateEditTemplate">
     <div class="form-user">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
@@ -135,7 +146,7 @@
         </div>
         <div class="form-group row">
             <div class="btns-center">
-                <button class="btn btn-primary" id="btnCreateUser">Ok</button>
+                <button class="btn btn-primary" id="btnOk">Ok</button>
                 <button class="btn btn-primary" onclick="location.href = '#!/';" id="btnCancel">Cancel</button>
             </div>
         </div>

@@ -36,7 +36,8 @@ $(function () {
         },
 
         events: {
-            "click .btn-delete": "deleteUser"
+            "click .btn-delete": "deleteUser",
+            "click .link-edit": "navigateEdit"
         },
 
         calculateAge: function (birthday) {
@@ -52,6 +53,10 @@ $(function () {
             if (confirm('Delete user with id = ' + this.model.id + '?')) {
                 this.model.destroy();
             }
+        },
+
+        navigateEdit: function () {
+            app.AdminRouter.navigate("!/edit", {trigger: true});
         }
     });
 
@@ -78,54 +83,6 @@ $(function () {
 
         addAll: function () {
             app.Users.each(this.addOne);
-        }
-    });
-
-    app.CreateView = Backbone.View.extend({
-        el: $('#createUser'),
-        template: _.template($('#userCreateTemplate').html()),
-
-        events: {
-            "click #btnCreateUser": "createUser",
-        },
-
-        initialize: function () {
-            this.render();
-            return this;
-        },
-
-        render: function () {
-            this.$el.empty().html(this.template());
-            return this;
-        },
-
-        createUser: function () {
-            var login = this.$('[name="login"]').val();
-            var password = this.$('[name="password"]').val();
-            var email = this.$('[name="email"]').val();
-            var firstName = this.$('[name="firstName"]').val();
-            var lastName = this.$('[name="lastName"]').val();
-            var birthday = this.$('[name="birthday"]').val();
-            var role = jQuery.parseJSON(this.$('[name="role"]').val());
-
-            var user = {
-                "login": login,
-                "password": password,
-                "email": email,
-                "firstName": firstName,
-                "lastName": lastName,
-                "birthday": birthday,
-                "role": role
-            };
-
-            app.Users.create(user, {
-                type: 'POST',
-                success: function (evt) {
-                    app.AdminRouter.navigate("!/", {trigger: true});
-
-                    alert("New user has been created");
-                }
-            });
         }
     });
 

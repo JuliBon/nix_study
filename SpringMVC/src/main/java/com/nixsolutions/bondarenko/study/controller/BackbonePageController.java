@@ -14,7 +14,7 @@ public class BackbonePageController {
     public String adminBackbone(ModelMap modelMap) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         modelMap.addAttribute("userName", authentication.getName());
-        return "adminBackbone";
+        return "admin-backbone";
     }
 
 }
