@@ -7,6 +7,10 @@ $(function () {
         className: "user-item",
         template: _.template($('#itemTemplate').html()),
 
+        initialize: function(){
+            this.model.bind('destroy', this.remove, this);
+        },
+
         render: function () {
             $(this.el).html(this.template());
 
@@ -31,6 +35,10 @@ $(function () {
             return this;
         },
 
+        events: {
+            "click .btn-delete": "deleteUser"
+        },
+
         calculateAge: function (birthday) {
             var dateSplit = birthday.split("-");
             var birthdayDate = new Date(dateSplit[0], dateSplit[1] - 1, dateSplit[2]);
@@ -38,6 +46,12 @@ $(function () {
             var ageDifMs = Date.now() - birthdayDate.getTime();
             var ageDate = new Date(ageDifMs);
             return Math.abs(ageDate.getUTCFullYear() - 1970);
+        },
+
+        deleteUser: function () {
+            if (confirm('Delete user with id = ' + this.model.id + '?')) {
+                this.model.destroy();
+            }
         }
     });
 
