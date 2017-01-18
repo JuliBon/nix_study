@@ -1,6 +1,9 @@
 package com.nixsolutions.bondarenko.study.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -8,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class BackbonePageController {
 
     @RequestMapping(value = "/admin/backbone", method = RequestMethod.GET)
-    public String admin_backbone() {
+    public String adminBackbone(ModelMap modelMap) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        modelMap.addAttribute("userName", authentication.getName());
         return "adminBackbone";
     }
 

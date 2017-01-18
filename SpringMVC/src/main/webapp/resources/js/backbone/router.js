@@ -1,28 +1,34 @@
-var AdminRouter = Backbone.Router.extend({
-    routes: {
-        "": "users",
-        "!/": "users",
-        "!/create": "create",
-        "!/edit": "edit"
-    },
+var app = app || {};
 
-    users: function () {
-        $(".block").hide(); // Прячем все блоки
-        $("#users").show(); // Показываем нужный
-    },
+$(function () {
+    app.AdminRouter = Backbone.Router.extend({
+        routes: {
+            "": "users",
+            "!/": "users",
+            "!/create": "create",
+            "!/edit": "edit"
+        },
 
-    create: function () {
-        $(".block").hide();
-        $("#createUser").show();
-    },
+        users: function () {
+            $(".block").hide();
+            $("#users").show();
 
-    edit: function () {
-        $(".block").hide();
-        $("#editUser").show();
-    }
+            app.Users.fetch();
+            app.usersView = new app.UsersView();
+        },
 
+        create: function () {
+            $(".block").hide();
+            $("#createUser").show();
+        },
+
+        edit: function () {
+            $(".block").hide();
+            $("#editUser").show();
+        }
+    });
+
+    app.AdminRouter = new app.AdminRouter;
+
+    Backbone.history.start();
 });
-
-var adminRouter = new AdminRouter();
-
-Backbone.history.start();

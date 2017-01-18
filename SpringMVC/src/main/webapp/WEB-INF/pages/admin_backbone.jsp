@@ -10,7 +10,7 @@
     <script src="${pageContext.request.contextPath}/resources/lib/backbone-validation.js"></script>
 
     <script src="${pageContext.request.contextPath}/resources/js/validation.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/models.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/backbone/models.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 
     <link href="${pageContext.request.contextPath}/resources/css/admin_backbone.css" media="all" rel="stylesheet"
