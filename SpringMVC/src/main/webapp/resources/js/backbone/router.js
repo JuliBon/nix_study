@@ -20,6 +20,8 @@ $(function () {
         create: function () {
             $(".block").hide();
             $("#createUser").show();
+
+            app.createView = new app.CreateView();
         },
 
         edit: function () {

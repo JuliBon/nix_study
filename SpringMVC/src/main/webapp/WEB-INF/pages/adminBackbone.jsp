@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="forms" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Admin page</title>
@@ -16,6 +17,7 @@
     <link href="${pageContext.request.contextPath}/resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"
           type="text/css">
     <link href="${pageContext.request.contextPath}/resources/css/shared.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/resources/css/user.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container" id="usersApp">
@@ -66,6 +68,78 @@
         <tbody id="tableBody">
         </tbody>
     </table>
+</script>
+
+
+<script type="text/template" id="userCreateTemplate">
+    <div class="form-user">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+        <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Login</label>
+            <div class="col-xs-10">
+                <input name="login" class="form-control" placeholder="Login"/>
+                <span class="help-block"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Password</label>
+            <div class="col-xs-10">
+                <input name="password" type="password" class="form-control" placeholder="password"/>
+                <span class="help-block"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Confirm password</label>
+            <div class="col-xs-10">
+                <input name="passwordConfirm" type="password" class="form-control" placeholder="confirm password"/>
+                <span class="help-block"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Email</label>
+            <div class="col-xs-10">
+                <input name="email" class="form-control" placeholder="email"/>
+                <span class="help-block"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-2 col-form-label">First name</label>
+            <div class="col-xs-10">
+                <input name="firstName" class="form-control" placeholder="first name"/>
+                <span class="help-block"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Last name</label>
+            <div class="col-xs-10">
+                <input name="lastName" class="form-control" placeholder="last name"/>
+                <span class="help-block"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Birhday</label>
+            <div class="col-xs-10">
+                <input name="birthday" type="date" class="form-control" placeholder="birthday"/>
+                <span class="help-block"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Role</label>
+            <div class="col-xs-10">
+                <select name="role" title="Role" class="form-control">
+                    <option value='{"id":2,"name":"USER"}'>USER</option>
+                    <option value='{"id":1,"name":"ADMIN"}'>ADMIN</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="btns-center">
+                <button class="btn btn-primary" id="btnCreateUser">Ok</button>
+                <button class="btn btn-primary" onclick="location.href = '#!/';" id="btnCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
 </script>
 
 </body>

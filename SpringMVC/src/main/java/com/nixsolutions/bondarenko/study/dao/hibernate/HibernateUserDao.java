@@ -33,7 +33,7 @@ public class HibernateUserDao implements UserDao {
     @Override
     public void update(User user) {
         try {
-            sessionFactory.getCurrentSession().saveOrUpdate(user);
+            sessionFactory.getCurrentSession().update(user);
         } catch (HibernateException e) {
             throw new RuntimeException("Error while updating user", e);
         }

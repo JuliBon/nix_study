@@ -5,7 +5,6 @@ $(function () {
     app.UserModel = Backbone.Model.extend({
         urlRoot: '/rest/users',
         defaults: {
-            "id": "",
             "login": "",
             "password": "",
             "email": "",
