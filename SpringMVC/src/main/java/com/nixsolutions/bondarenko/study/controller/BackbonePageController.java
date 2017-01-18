@@ -9,7 +9,7 @@ public class BackbonePageController {
 
     @RequestMapping(value = "/admin/backbone", method = RequestMethod.GET)
     public String admin_backbone() {
-        return "admin_backbone";
+        return "adminBackbone";
     }
 
 }
