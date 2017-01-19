@@ -86,6 +86,8 @@
     <div class="form-user">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
+        <input type="hidden" path="user.id"/>
+
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>
             <div class="col-xs-10">

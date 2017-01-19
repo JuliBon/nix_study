@@ -51,7 +51,7 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(User user) throws NotUniqueEmailException {
         userService.updateUser(user);
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.OK).entity("User has been updated").build();
     }
 
     @PUT

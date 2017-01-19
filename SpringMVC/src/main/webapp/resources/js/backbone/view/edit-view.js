@@ -9,7 +9,7 @@ $(function () {
             "click #btnOk": "editUser"
         },
 
-        initialize: function (opt) {
+        initialize: function () {
             this.render();
             return this;
         },
@@ -17,7 +17,31 @@ $(function () {
         render: function () {
             this.$el.empty().html(this.template());
             this.$('[name="login"]').attr("readonly", "readonly");
+            this.setContent();
             return this;
+        },
+
+        setContent: function(){
+            var id = this.model.get('id');
+            this.$('.user-id').val(id);
+
+            var login = this.model.get('login');
+            this.$('[name="login"]').val(login);
+
+            var email = this.model.get('email');
+            this.$('[name="email"]').val(email);
+
+            var firstName = this.model.get('firstName');
+            this.$('[name="firstName"]').val(firstName);
+
+            var lastName = this.model.get('lastName');
+            this.$('[name="lastName"]').val(lastName);
+
+            var birthday = this.model.get('birthday');
+            this.$('[name="birthday"]').val(birthday);
+
+            var role = this.model.get('role');
+            this.$('[name="role"]').val(JSON.stringify(role));
         },
 
         editUser: function () {
@@ -39,12 +63,14 @@ $(function () {
                 "role": role
             };
 
-            app.Users.update(user, {
-                type: 'PUT',
-                success: function (evt) {
+            this.model.save(user, {
+                dataType:"text",
+                success: function (model, resp) {
                     app.AdminRouter.navigate("!/", {trigger: true});
-
-                    alert("User has been saved");
+                    alert("User has been updated");
+                },
+                error: function(model, resp){
+                    alert("Error while updating user");
                 }
             });
         }

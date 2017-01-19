@@ -6,7 +6,7 @@ $(function () {
             "": "users",
             "!/": "users",
             "!/create": "create",
-            "!/edit": "edit"
+            "!/edit/:id": "edit"
         },
 
         users: function () {
@@ -24,11 +24,12 @@ $(function () {
             app.createView = new app.CreateView();
         },
 
-        edit: function () {
+        edit: function (userId) {
             $(".block").hide();
             $("#editUserBlock").show();
 
-            app.editView = new app.EditView();
+            var userModel = app.Users.findWhere({id: parseInt(userId)});
+            app.editView = new app.EditView({model: userModel});
         }
     });
 

@@ -7,7 +7,7 @@ $(function () {
         className: "user-item",
         template: _.template($('#itemTemplate').html()),
 
-        initialize: function(){
+        initialize: function () {
             this.model.bind('destroy', this.remove, this);
         },
 
@@ -56,7 +56,7 @@ $(function () {
         },
 
         navigateEdit: function () {
-            app.AdminRouter.navigate("!/edit", {trigger: true});
+            app.AdminRouter.navigate("!/edit/" + this.model.id, {trigger: true});
         }
     });
 
