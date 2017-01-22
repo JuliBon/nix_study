@@ -58,7 +58,8 @@ $(function () {
                         alert("New user has been created");
                     },
                     error: function (model, resp) {
-                        alert("Error while creating user");
+                        var errors = jQuery.parseJSON(resp.responseText);
+                        app.editView.showErrors(errors);
                     }
                 });
             } else {

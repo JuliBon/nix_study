@@ -83,7 +83,8 @@ $(function () {
                         app.AdminRouter.navigate("!/", {trigger: true});
                     },
                     error: function (model, resp) {
-                        alert("Error while updating user");
+                        var errors = jQuery.parseJSON(resp.responseText);
+                        app.editView.showErrors(errors);
                     }
                 });
             } else {
