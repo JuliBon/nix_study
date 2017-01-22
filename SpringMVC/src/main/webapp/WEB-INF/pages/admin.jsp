@@ -9,7 +9,8 @@
     <script src="${pageContext.request.contextPath}/resources/lib/backbone.js"></script>
 
     <script src="${pageContext.request.contextPath}/resources/js/backbone/models.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/backbone/main.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/backbone/view/user-view.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/backbone/view/users-view.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/backbone/view/create-view.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/backbone/view/edit-view.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/backbone/router.js"></script>
