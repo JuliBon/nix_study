@@ -7,6 +7,7 @@ $(function () {
         defaults: {
             "login": "",
             "password": "",
+            "passwordConfirm": "",
             "email": "",
             "firstName": "",
             "lastName": "",
@@ -16,38 +17,42 @@ $(function () {
 
         idAttribute: 'id',
 
-        initialize: function () {
-            Backbone.Model.prototype.initialize.apply(this, arguments);
-            this.on("change", function (model, options) {
-                if (options && options.save === false) return;
-                model.save();
-            });
+        ignored: ['passwordConfirm'],
+        toJSON: function(options) {
+            return _.omit(this.attributes, this.ignored);
         },
 
-        validation: {
-            login: {
-                required: true,
-                pattern: 'loginPattern'
-            },
-            password: {
-                required: true,
-                pattern: 'passwordPattern'
-            },
-            email: {
-                required: true,
-                pattern: 'emailPattern'
-            },
-            firstName: {
-                required: true,
-                pattern: 'namePattern'
-            },
-            lastName: {
-                required: true,
-                pattern: 'namePattern'
-            },
-            birthday: {
-                required: true
+        initialize: function () {
+            Backbone.Model.prototype.initialize.apply(this, arguments);
+        },
+
+        validate: function (attrs) {
+            var loginRegExp = new RegExp('^[a-zA-Z](([._-][a-zA-Z0-9])|[a-zA-Z0-9])*$');
+            var emailRegExp = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$');
+            var passwordRegExp = new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$');
+            var nameRegExp = new RegExp('^[A-Za-z]+$');
+
+            var errors = [];
+
+            if(!loginRegExp.test(attrs.login)){
+                errors.push({name: 'login', message: "3-15 characters, beginning with letter. Can include letters, numbers, dashes, and underscores"});
             }
+            if(!emailRegExp.test(attrs.email)){
+                errors.push({name: 'email', message: "not a well-formed email address"});
+            }
+            if(!passwordRegExp.test(attrs.password)){
+                errors.push({name: 'password', message: "at least one number and one uppercase and lowercase letters"});
+            }
+            if(attrs.password != attrs.passwordConfirm){
+                errors.push({name: 'passwordConfirm', message: "confirm password"});
+            }
+            if(!nameRegExp.test(attrs.firstName)){
+                errors.push({name: 'firstName', message: "one or more letters"});
+            }
+            if(!nameRegExp.test(attrs.lastName)){
+                errors.push({name: 'lastName', message: "one or more letters"});
+            }
+            return errors.length > 0 ? errors : false;
         }
     });
 

@@ -21,7 +21,7 @@ $(function () {
             return this;
         },
 
-        setContent: function(){
+        setContent: function () {
             var id = this.model.get('id');
             this.$('[name="id"]').val(id);
 
@@ -48,6 +48,7 @@ $(function () {
             var id = this.$('[name="id"]').val();
             var login = this.$('[name="login"]').val();
             var password = this.$('[name="password"]').val();
+            var passwordConfirm = this.$('[name="passwordConfirm"]').val();
             var email = this.$('[name="email"]').val();
             var firstName = this.$('[name="firstName"]').val();
             var lastName = this.$('[name="lastName"]').val();
@@ -58,6 +59,7 @@ $(function () {
                 "id": id,
                 "login": login,
                 "password": password,
+                "passwordConfirm": passwordConfirm,
                 "email": email,
                 "firstName": firstName,
                 "lastName": lastName,
@@ -65,16 +67,44 @@ $(function () {
                 "role": role
             };
 
-            this.model.save(user, {
-                dataType:"text",
-                success: function (model, resp) {
-                    app.AdminRouter.navigate("!/", {trigger: true});
-                    alert("User {id:" +  model.id + "} has been updated");
-                },
-                error: function(model, resp){
-                    alert("Error while updating user");
-                }
-            });
+            this.model.set(user,
+                {
+                    validate: true,
+                    save: false
+                });
+            var errors = this.model.validationError;
+            if (!errors) {
+                this.hideErrors();
+                this.model.save(user, {
+                    validate: false,
+                    dataType: "text",
+                    success: function (model, resp) {
+                        app.AdminRouter.navigate("!/", {trigger: true});
+                        alert("User {id:" + model.id + "} has been updated");
+                    },
+                    error: function (model, resp) {
+                        alert("Error while updating user");
+                    }
+                });
+            } else {
+                this.showErrors(errors);
+            }
+        },
+
+        showErrors: function (errors) {
+            this.hideErrors();
+            _.each(errors, function (error) {
+                var $el = $('[name=' + error.name + ']');
+                var $group = $el.closest('.form-group');
+
+                $group.addClass('has-error');
+                $group.find('.help-block').html(error.message);
+            }, this);
+        },
+
+        hideErrors: function () {
+            this.$('.form-group').removeClass('has-error');
+            this.$('.help-block').html('');
         }
     });
 });
