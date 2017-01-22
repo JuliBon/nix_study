@@ -58,8 +58,8 @@
     <td class="age"></td>
     <td class="role"></td>
     <td class="actions">
-        <button class="btn-delete">Delete</button>
-        <a class="link-edit">Edit user</a>
+        <a class="link-delete">Delete</a>
+        <a class="link-edit">Edit</a>
     </td>
 </script>
 
@@ -86,7 +86,7 @@
     <div class="form-user">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-        <input type="hidden" path="user.id"/>
+        <input type="hidden" name="id"/>
 
         <div class="form-group row">
             <label class="col-xs-2 col-form-label">Login</label>

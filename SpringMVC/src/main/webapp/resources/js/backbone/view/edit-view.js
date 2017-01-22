@@ -23,7 +23,7 @@ $(function () {
 
         setContent: function(){
             var id = this.model.get('id');
-            this.$('.user-id').val(id);
+            this.$('[name="id"]').val(id);
 
             var login = this.model.get('login');
             this.$('[name="login"]').val(login);
@@ -45,6 +45,7 @@ $(function () {
         },
 
         editUser: function () {
+            var id = this.$('[name="id"]').val();
             var login = this.$('[name="login"]').val();
             var password = this.$('[name="password"]').val();
             var email = this.$('[name="email"]').val();
@@ -54,6 +55,7 @@ $(function () {
             var role = jQuery.parseJSON(this.$('[name="role"]').val());
 
             var user = {
+                "id": id,
                 "login": login,
                 "password": password,
                 "email": email,
@@ -67,7 +69,7 @@ $(function () {
                 dataType:"text",
                 success: function (model, resp) {
                     app.AdminRouter.navigate("!/", {trigger: true});
-                    alert("User has been updated");
+                    alert("User {id:" +  model.id + "} has been updated");
                 },
                 error: function(model, resp){
                     alert("Error while updating user");

@@ -36,7 +36,7 @@ $(function () {
         },
 
         events: {
-            "click .btn-delete": "deleteUser",
+            "click .link-delete": "deleteUser",
             "click .link-edit": "navigateEdit"
         },
 
