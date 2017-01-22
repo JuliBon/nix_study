@@ -50,7 +50,7 @@ $(function () {
         },
 
         deleteUser: function () {
-            if (confirm('Delete user with login = ' + this.model.login + '?')) {
+            if (confirm('Delete user ' + this.model.get('login') + '?')) {
                 this.model.destroy();
             }
         },
@@ -85,14 +85,4 @@ $(function () {
             app.Users.each(this.addOne);
         }
     });
-
-    app.AppView = Backbone.View.extend({
-        el: $('#usersApp'),
-
-        initialize: function () {
-            app.Users = new app.UserCollection;
-        }
-    });
-
-    app.App = new app.AppView();
 });

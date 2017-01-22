@@ -9,6 +9,10 @@ $(function () {
             "!/edit/:id": "edit"
         },
 
+        initialize: function(){
+            app.Users = new app.UserCollection;
+        },
+
         users: function () {
             $(".block").hide();
             $("#usersBlock").show();
