@@ -1,19 +1,14 @@
 package com.nixsolutions.bondarenko.study.ws.rest.jsonserializanion;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CustomDateDeserializer extends StdDeserializer<Date> {
-
-    private SimpleDateFormat formatter =
-            new SimpleDateFormat("yyyy-MM-dd");
 
     public CustomDateDeserializer() {
         this(null);
@@ -25,10 +20,10 @@ public class CustomDateDeserializer extends StdDeserializer<Date> {
 
     @Override
     public Date deserialize(JsonParser jsonparser, DeserializationContext context)
-            throws IOException, JsonProcessingException {
+            throws IOException {
         String date = jsonparser.getText();
         try {
-            return formatter.parse(date);
+            return ConcurrentDateFormatAccess.convertStringToDate(date);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

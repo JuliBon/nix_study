@@ -5,11 +5,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CustomDateSerializer extends StdSerializer<Date> {
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     public CustomDateSerializer() {
         this(null);
@@ -21,6 +19,6 @@ public class CustomDateSerializer extends StdSerializer<Date> {
 
     @Override
     public void serialize(Date date, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeObject(formatter.format(date));
+        jsonGenerator.writeObject(ConcurrentDateFormatAccess.convertDateToString(date));
     }
 }
