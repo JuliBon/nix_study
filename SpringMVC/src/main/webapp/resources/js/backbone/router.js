@@ -21,7 +21,7 @@ $(function () {
             $(".block").hide();
             $("#createUserBlock").show();
 
-            app.createView = new app.CreateView();
+            app.createView = new app.CreateView({model: new app.UserModel});
         },
 
         edit: function (userId) {

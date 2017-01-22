@@ -31,6 +31,7 @@ $(function () {
             var emailRegExp = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}$');
             var passwordRegExp = new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*$');
             var nameRegExp = new RegExp('^[A-Za-z]+$');
+            var dateRegExp = new RegExp(/^\d{4}-(0\d|10|11|12)-([012]\d|30|31)$/);
 
             var errors = [];
 
@@ -51,6 +52,9 @@ $(function () {
             }
             if(!nameRegExp.test(attrs.lastName)){
                 errors.push({name: 'lastName', message: "one or more letters"});
+            }
+            if(!dateRegExp.test(attrs.birthday)){
+                errors.push({name: 'birthday', message: "bad date format"});
             }
             return errors.length > 0 ? errors : false;
         }
