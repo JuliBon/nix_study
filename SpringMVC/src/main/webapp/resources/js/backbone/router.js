@@ -19,17 +19,27 @@ $(function () {
 
         create: function () {
             $(".block").hide();
-            $("#createUserBlock").show();
 
+            if (app.createView != null) {
+                app.createView.remove();
+            }
             app.createView = new app.CreateView({model: new app.UserModel});
+            var $createUserBlock = $("#createUserBlock");
+            $createUserBlock.append(app.createView.el);
+            $createUserBlock.show();
         },
 
         edit: function (userId) {
             $(".block").hide();
-            $("#editUserBlock").show();
 
+            if (app.editView != null) {
+                app.editView.remove();
+            }
             var userModel = app.Users.findWhere({id: parseInt(userId)});
             app.editView = new app.EditView({model: userModel});
+            var $editUserBlock = $("#editUserBlock");
+            $editUserBlock.append(app.editView.el);
+            $editUserBlock.show();
         }
     });
 

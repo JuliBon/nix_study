@@ -39,13 +39,9 @@
     </div>
     <div id="createUserBlock" class="block">
         <h2>Create user</h2>
-        <div id="createUser">
-        </div>
     </div>
     <div id="editUserBlock" class="block">
         <h2>Edit user</h2>
-        <div id="editUser">
-        </div>
     </div>
 </div>
 

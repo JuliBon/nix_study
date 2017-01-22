@@ -2,7 +2,8 @@ var app = app || {};
 
 $(function () {
     app.CreateView = Backbone.View.extend({
-        el: $('#createUser'),
+        id: 'createUser',
+
         template: _.template($('#userCreateEditTemplate').html()),
 
         events: {

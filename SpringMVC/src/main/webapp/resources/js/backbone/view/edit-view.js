@@ -2,7 +2,8 @@ var app = app || {};
 
 $(function () {
     app.EditView = Backbone.View.extend({
-        el: $('#editUser'),
+        id: "editUser",
+
         template: _.template($('#userCreateEditTemplate').html()),
 
         events: {
@@ -80,7 +81,6 @@ $(function () {
                     dataType: "text",
                     success: function (model, resp) {
                         app.AdminRouter.navigate("!/", {trigger: true});
-                        alert("User {id:" + model.id + "} has been updated");
                     },
                     error: function (model, resp) {
                         alert("Error while updating user");

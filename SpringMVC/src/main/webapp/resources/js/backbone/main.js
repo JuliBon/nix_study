@@ -50,7 +50,7 @@ $(function () {
         },
 
         deleteUser: function () {
-            if (confirm('Delete user with id = ' + this.model.id + '?')) {
+            if (confirm('Delete user with login = ' + this.model.login + '?')) {
                 this.model.destroy();
             }
         },
