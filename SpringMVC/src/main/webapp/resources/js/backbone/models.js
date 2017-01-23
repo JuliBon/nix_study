@@ -18,12 +18,9 @@ $(function () {
         idAttribute: 'id',
 
         ignored: ['passwordConfirm'],
+
         toJSON: function(options) {
             return _.omit(this.attributes, this.ignored);
-        },
-
-        initialize: function () {
-            Backbone.Model.prototype.initialize.apply(this, arguments);
         },
 
         validate: function (attrs) {
@@ -44,7 +41,7 @@ $(function () {
             if(!passwordRegExp.test(attrs.password)){
                 errors.push({name: 'password', message: "at least one number and one uppercase and lowercase letters"});
             }
-            if(attrs.password != attrs.passwordConfirm){
+            if(attrs.password !== attrs.passwordConfirm){
                 errors.push({name: 'passwordConfirm', message: "confirm password"});
             }
             if(!nameRegExp.test(attrs.firstName)){

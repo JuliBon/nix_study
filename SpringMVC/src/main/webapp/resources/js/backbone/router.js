@@ -5,6 +5,7 @@ $(function () {
         routes: {
             "": "users",
             "!/": "users",
+            "!/users": "users",
             "!/create": "create",
             "!/edit/:id": "edit"
         },
@@ -48,6 +49,5 @@ $(function () {
     });
 
     app.AdminRouter = new app.AdminRouter;
-
     Backbone.history.start();
 });

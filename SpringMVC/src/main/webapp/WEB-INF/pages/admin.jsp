@@ -16,7 +16,6 @@
     <script src="${pageContext.request.contextPath}/resources/js/backbone/view/edit-view.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/backbone/router.js"></script>
 
-    <link href="${pageContext.request.contextPath}/resources/css/admin-backbone.css" media="all" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/resources/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"
           type="text/css">
     <link href="${pageContext.request.contextPath}/resources/css/shared.css" rel="stylesheet" type="text/css">
@@ -27,12 +26,10 @@
 
     <div class="adminLogout">Admin ${userName} <a href="/logout">(logout)</a></div>
 
-    <div id="menu">
-        <ul class="list-inline">
-            <li><a href="#!/">Users</a></li>
-            <li><a href="#!/create">Create user</a></li>
-        </ul>
-    </div>
+    <ul class="list-inline">
+        <li><a href="#!/">Users</a></li>
+        <li><a href="#!/create">Create user</a></li>
+    </ul>
 
     <div id="usersBlock" class="block">
         <h2>Users</h2>
