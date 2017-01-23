@@ -2,10 +2,12 @@ var app = app || {};
 
 $(function () {
     app.EditView = app.AbstractFormView.extend({
-        id: "editUser",
+        el: $('#actionBlock'),
 
-        events: {
-            "click #btnOk": "editUser"
+        events: function () {
+            return _.extend({}, app.AbstractFormView.prototype.events, {
+                "click #btnOk": "editUser"
+            });
         },
 
         initialize: function () {
@@ -17,6 +19,8 @@ $(function () {
             this.$el.empty().html(this.template());
             this.$('[name="login"]').attr("readonly", "readonly");
             this.setContent();
+
+            this.$el.closest("#usersApp").find('#actionHeader').text("Edit user");
             return this;
         },
 

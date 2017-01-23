@@ -2,10 +2,12 @@ var app = app || {};
 
 $(function () {
     app.CreateView = app.AbstractFormView.extend({
-        id: 'createUser',
+        el: $('#actionBlock'),
 
-        events: {
-            "click #btnOk": "createUser"
+        events: function () {
+            return _.extend({}, app.AbstractFormView.prototype.events, {
+                "click #btnOk": "createUser"
+            });
         },
 
         initialize: function (opt) {
@@ -15,6 +17,8 @@ $(function () {
 
         render: function () {
             this.$el.empty().html(this.template());
+
+            this.$el.closest("#usersApp").find('#actionHeader').text("Create user");
             return this;
         },
 

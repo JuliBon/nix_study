@@ -23,24 +23,10 @@
 </head>
 <body>
 <div class="container" id="usersApp">
-
     <div class="adminLogout">Admin ${userName} <a href="/logout">(logout)</a></div>
 
-    <ul class="list-inline">
-        <li><a href="#!/">Users</a></li>
-        <li><a href="#!/create">Create user</a></li>
-    </ul>
-
-    <div id="usersBlock" class="block">
-        <h2>Users</h2>
-        <div id="users">
-        </div>
-    </div>
-    <div id="createUserBlock" class="block">
-        <h2>Create user</h2>
-    </div>
-    <div id="editUserBlock" class="block">
-        <h2>Edit user</h2>
+    <h2 id="actionHeader"></h2>
+    <div id="actionBlock" class="block">
     </div>
 </div>
 
@@ -58,6 +44,7 @@
 </script>
 
 <script type="text/template" id="usersTemplate">
+    <a href="#!/create"><h4>Create user</h4></a>
     <table id="usersTable" class="table">
         <thead>
         <tr>
@@ -143,7 +130,7 @@
         <div class="form-group row">
             <div class="btns-center">
                 <button class="btn btn-primary" id="btnOk">Ok</button>
-                <button class="btn btn-primary" onclick="location.href = '#!/';" id="btnCancel">Cancel</button>
+                <button class="btn btn-primary" id="btnCancel">Cancel</button>
             </div>
         </div>
     </div>

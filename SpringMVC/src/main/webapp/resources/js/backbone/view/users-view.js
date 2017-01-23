@@ -2,7 +2,8 @@ var app = app || {};
 
 $(function () {
     app.UsersView = Backbone.View.extend({
-        el: $('#users'),
+        el: $('#actionBlock'),
+
         template: _.template($('#usersTemplate').html()),
 
         initialize: function () {
@@ -14,6 +15,8 @@ $(function () {
         render: function () {
             this.$el.empty().html(this.template());
             this.addAll();
+
+            this.$el.closest("#usersApp").find('#actionHeader').text("Users");
             return this;
         },
 

@@ -5,6 +5,20 @@ $(function () {
 
         template: _.template($('#userCreateEditTemplate').html()),
 
+        events: {
+            "click #btnCancel": "cancel"
+        },
+
+        destroy: function(){
+            this.$el.empty().off();
+            this.stopListening();
+        },
+
+        cancel: function () {
+            this.destroy();
+            app.AdminRouter.navigate("!/", {trigger: true});
+        },
+
         readUser: function(){
             var login = this.$('[name="login"]').val();
             var password = this.$('[name="password"]').val();
