@@ -4,8 +4,6 @@ $(function () {
     app.CreateView = app.AbstractFormView.extend({
         id: 'createUser',
 
-        template: _.template($('#userCreateEditTemplate').html()),
-
         events: {
             "click #btnOk": "createUser"
         },
@@ -21,25 +19,7 @@ $(function () {
         },
 
         createUser: function () {
-            var login = this.$('[name="login"]').val();
-            var password = this.$('[name="password"]').val();
-            var passwordConfirm = this.$('[name="passwordConfirm"]').val();
-            var email = this.$('[name="email"]').val();
-            var firstName = this.$('[name="firstName"]').val();
-            var lastName = this.$('[name="lastName"]').val();
-            var birthday = this.$('[name="birthday"]').val();
-            var role = jQuery.parseJSON(this.$('[name="role"]').val());
-
-            var user = {
-                "login": login,
-                "password": password,
-                "passwordConfirm": passwordConfirm,
-                "email": email,
-                "firstName": firstName,
-                "lastName": lastName,
-                "birthday": birthday,
-                "role": role
-            };
+            var user = this.readUser();
 
             this.model.set(user,
                 {
